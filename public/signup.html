@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Training Signup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+    <body>
+
+        <div class="container">
+            <h2 class="center-align">Sign Up for Personal Training</h2>
+            <form action="/api/users" method="POST">
+                <div class="input-field">
+                    <input type="text" id="fullName" name="fullName" required>
+                    <label for="fullName">Full Name:</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="age" name="age" required>
+                    <label for="age">Age:</label>
+                </div>
+                
+                <div class="input-field">
+                    <select id="Gender" name="Gender" required>
+                        <option value="" disabled selected>Choose your option</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <label>Gender</label>
+                </div>
+                
+                <div class="input-field">
+                    <input type="text" id="weight" name="weight" required>
+                    <label for="weight">Weight:</label>
+                </div>
+
+                <div class="input-field">
+                    <input type="email" id="email" name="email" required>
+                    <label for="email">Email:</label>
+                </div>
+
+                <div class="input-field">
+                    <input type="password" id="password" name="password" required>
+                    <label for="password">Password:</label>
+                </div>
+                
+                <div class="input-field">
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <label for="confirmPassword">Re-enter Password:</label>
+                </div>
+                
+
+                <div class="input-field">
+                    <input type="tel" id="phone" name="phone" required>
+                    <label for="phone">Phone Number:</label>
+                </div>
+
+                <div class="input-field">
+                    <textarea id="goal" name="goal" class="materialize-textarea" required></textarea>
+                    <label for="goal">Training Goals (e.g. weight loss, strength training, etc.):</label>
+                </div>
+
+                <div class="input-field col s12 center-align">
+                    <input type="submit" class="waves-effect waves-light btn" value="Submit">
+                </div>
+            </form>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="js/scripts.js"></script>
+
+    </body>
+</html>

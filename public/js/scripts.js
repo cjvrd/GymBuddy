@@ -1,25 +1,7 @@
 
-// const cardList = [
-//     {
-//         title: "Kitten 2",
-//         image: "images/brown-kitten2.jpg",
-//         link: "About Kitten 2",
-//         desciption: "Demo desciption about kitten 2"
-//     },
-//     {
-//         title: "Kitten 3",
-//         image: "images/white-kitten.jpg",
-//         link: "About Kitten 3",
-//         desciption: "Demo desciption about kitten 3"
-//     }
-// ]
-
-
 const clickMe = () => {
     alert("Thanks for clicking. Hope you have a nice day!")
 }
-
-
 
 const addCards = (items) => {
     items.forEach(item => {
@@ -36,34 +18,46 @@ const addCards = (items) => {
     });
 }
 
-const submitForm = () => {
+const submitForm = (e) => {
+    e.prevenDefault();
+
+    let password = $('#password').val();
+    let confirmPassword = $('#confirmPassword').val();
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        M.toast({html: 'Passwords do not match!'});
+        return; // Exit the function if passwords do not match
+    }
+
     let formData = {};
     formData.fullName = $('#fullName').val();
     formData.email = $('#subTitle').val();
     formData.phone = $('#phone').val();
     formData.goal = $('#goal').val();
+    formData.password = password; // Assuming you also want to send the password
 
-    // console.log(formData)
-    postClient(formData);
+    postUser(formData);
 }
 
+
 // POST request 
-function postClient(client){
-    console.log("in  postClient")
+function postUser(user){
+    console.log("in  postUser")
     $.ajax({
         url:'/api/users',
         type:'POST',
-        data: client,
+        data: user,
         success: function(result){
             if(result.statusCode === 201){
-                alert('client post successful')
+                alert('user post successful')
             }
         }
     });
 }
 
 // GET request
-function getAllClients(){
+function getAllUsers(){
     $.get('/api/users', (response)=>{
         if(response.statusCode === 200){
             addCards(response.data)
@@ -72,15 +66,33 @@ function getAllClients(){
     })
 }
 
+    // This function checks if the passwords match
+    function checkPasswordsMatch() {
+        let password = $('#password').val();
+        let confirmPassword = $('#confirmPassword').val();
+
+        // Check if passwords match
+        if (password !== confirmPassword) {
+            M.toast({html: 'Passwords do not match!'});
+            $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
+        } else {
+            $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
+        }
+    }
+
 
 $(document).ready(function(){
     $('.materialbox').materialbox();
+    $('select').formSelect();
+
+    // Attach the blur event to the confirmPassword field
+    $('#confirmPassword').on('blur', checkPasswordsMatch);
 
     $('#formSubmit').click(()=>{
         submitForm();
         console.log("formSubmit")
     })
     $('.modal').modal();
-    getAllClients();
-})
+    getAllUsers();
 
+})
