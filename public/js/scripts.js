@@ -51,7 +51,7 @@ const submitForm = () => {
 function postClient(client){
     console.log("in  postClient")
     $.ajax({
-        url:'/api/user',
+        url:'/api/users',
         type:'POST',
         data: client,
         success: function(result){
