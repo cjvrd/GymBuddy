@@ -25,7 +25,7 @@ const submitForm = (event) => {
 
     // Check if passwords match
     if (password !== confirmPassword) {
-        M.toast({html: 'Passwords do not match!'});
+        M.toast({ html: 'Passwords do not match!' });
         return; // Exit the function if passwords do not match
     }
 
@@ -41,53 +41,53 @@ const submitForm = (event) => {
 
 
 // POST request 
-function postUser(user){
+function postUser(user) {
     console.log("in  postUser")
     $.ajax({
-        url:'/api/users',
-        type:'POST',
+        url: '/api/users',
+        type: 'POST',
         data: user,
-        success: function(result){
-            if(result.statusCode === 201){
+        success: function (result) {
+            if (result.statusCode === 201) {
                 alert('user post successful')
-            }
+            };
         }
     });
-}
+};
 
 // GET request
-function getAllUsers(){
-    $.get('/api/users', (response)=>{
-        if(response.statusCode === 200){
+function getAllUsers() {
+    $.get('/api/users', (response) => {
+        if (response.statusCode === 200) {
             addCards(response.data)
 
         }
-    })
-}
+    });
+};
 
-    // This function checks if the passwords match
-    function checkPasswordsMatch() {
-        let password = $('#password').val();
-        let confirmPassword = $('#confirmPassword').val();
+// This function checks if the passwords match
+function checkPasswordsMatch() {
+    let password = $('#password').val();
+    let confirmPassword = $('#confirmPassword').val();
 
-        // Check if passwords match
-        if (password !== confirmPassword) {
-            M.toast({html: 'Passwords do not match!'});
-            $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
-        } else {
-            $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
-        }
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        M.toast({ html: 'Passwords do not match!' });
+        $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
+    } else {
+        $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
     }
+};
 
 
-$(document).ready(function(){
+$(document).ready(function () {
     $('.materialbox').materialbox();
     $('select').formSelect();
 
     // Attach the blur event to the confirmPassword field
     $('#confirmPassword').on('blur', checkPasswordsMatch);
 
-    $('#formSubmit').click(()=>{
+    $('#formSubmit').click(() => {
         submitForm();
         console.log("formSubmit")
     })
