@@ -1,6 +1,6 @@
-let express = require('express')
+let express = require('express');
 let router = express.Router();
-let controller = require('../controllers/controller')
+let controller = require('../controllers/controller');
 
 // GET users handler
 router.get('/', (req,res) =>{
@@ -13,4 +13,4 @@ router.post('/', function(req, res){
     controller.postUser(req, res);
 })
 
-module.exports = router 
+module.exports = router;

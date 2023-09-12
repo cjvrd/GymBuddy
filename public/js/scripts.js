@@ -1,25 +1,24 @@
+// const clickMe = () => {
+//     alert("Thanks for clicking. Hope you have a nice day!")
+// }
 
-const clickMe = () => {
-    alert("Thanks for clicking. Hope you have a nice day!")
-}
+// const addCards = (items) => {
+//     items.forEach(item => {
+//     let itemToAppend =
+//     '<div class="card"><div class="card-image waves-effect waves-block waves-light"><img class="activator" src="'+item.path+'">'+
+//     '</div><div class="card-content">'+
+//     '<span class="card-title activator grey-text text-darken-4">'+item.title+'<i class="material-icons right">more_vert</i></span><p><a href="#">'+item.link+'</a></p></div>'+
+//     '<div class="card-reveal">'+
+//     '<span class="card-title grey-text text-darken-4">'+item.title+'<i class="material-icons right">close</i></span>'+
+//     '<p class="card-text">'+item.desciption+'</p>'+
+//     '</div></div>';
 
-const addCards = (items) => {
-    items.forEach(item => {
-    let itemToAppend =
-    '<div class="card"><div class="card-image waves-effect waves-block waves-light"><img class="activator" src="'+item.path+'">'+
-    '</div><div class="card-content">'+
-    '<span class="card-title activator grey-text text-darken-4">'+item.title+'<i class="material-icons right">more_vert</i></span><p><a href="#">'+item.link+'</a></p></div>'+
-    '<div class="card-reveal">'+
-    '<span class="card-title grey-text text-darken-4">'+item.title+'<i class="material-icons right">close</i></span>'+
-    '<p class="card-text">'+item.desciption+'</p>'+
-    '</div></div>';
+//     $(".cards-wrapper").append(itemToAppend)
+//     });
+// }
 
-    $(".cards-wrapper").append(itemToAppend)
-    });
-}
-
-const submitForm = (e) => {
-    e.prevenDefault();
+const submitForm = (event) => {
+    event.preventDefault();
 
     let password = $('#password').val();
     let confirmPassword = $('#confirmPassword').val();
