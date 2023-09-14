@@ -1,5 +1,7 @@
 - create 9 programs
 - 3 age brackets/3 goals
+- all programs 4 weeks, 3x sessions per week, 3 movements per session
+
 young lose weight - 1
 young build muscle - 2
 young build strength - 3
