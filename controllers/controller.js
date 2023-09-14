@@ -43,7 +43,7 @@ const signIn = (req, res) => {
 
             res.json({
                 statusCode: 200,
-                data: {token},
+                token: token,
                 message: 'Logged in successfully'
             })
         })
