@@ -11,7 +11,7 @@
 
         <div class="container">
             <h2 class="center-align">Sign Up for Personal Training</h2>
-            <form action="/api/users" method="POST">
+            <form id="signupForm">
                 <div class="input-field">
                     <input type="text" id="fullName" name="fullName" required>
                     <label for="fullName">Full Name:</label>
@@ -57,8 +57,13 @@
                 </div>
 
                 <div class="input-field">
-                    <textarea id="goal" name="goal" class="materialize-textarea" required></textarea>
-                    <label for="goal">Training Goals (e.g. weight loss, strength training, etc.):</label>
+                    <select id="goal" name="goal" required>
+                        <option value="" disabled selected>Choose your option</option>
+                        <option value="Strength Training">Strength Training</option>
+                        <option value="Weight Loss">Weight Loss</option>
+                        <option value="Build Mass">Build Mass</option>
+                    </select>
+                    <label>Fitness Goal</label>
                 </div>
 
                 <div class="input-field col s12 center-align">
@@ -70,6 +75,8 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <script src="js/scripts.js"></script>
+ 
 
     </body>
 </html>
+ 
