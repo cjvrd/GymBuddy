@@ -1,84 +1,68 @@
 
-const clickMe = () => {
-    alert("Thanks for clicking. Hope you have a nice day!")
-}
 
-const addCards = (items) => {
-    items.forEach(item => {
-    let itemToAppend =
-    '<div class="card"><div class="card-image waves-effect waves-block waves-light"><img class="activator" src="'+item.path+'">'+
-    '</div><div class="card-content">'+
-    '<span class="card-title activator grey-text text-darken-4">'+item.title+'<i class="material-icons right">more_vert</i></span><p><a href="#">'+item.link+'</a></p></div>'+
-    '<div class="card-reveal">'+
-    '<span class="card-title grey-text text-darken-4">'+item.title+'<i class="material-icons right">close</i></span>'+
-    '<p class="card-text">'+item.desciption+'</p>'+
-    '</div></div>';
-
-    $(".cards-wrapper").append(itemToAppend)
+// POST request using fetch
+function signupUser(user) {
+    console.log("in postUser");
+    fetch('/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if(result.statusCode === 201){
+            alert('User post successful');
+        } else {
+            alert('Signup failed. ' + (result.message || ''));
+        }
+    })
+    .catch(err => {
+        alert('Failed to signup. Please try again.');
+        console.error('Signup Error:', err);
     });
 }
 
-const submitForm = (e) => {
-    e.prevenDefault();
+// POST request for login using fetch
+function loginUser(loginData) {
+    console.log("Attempting login");
+    fetch('/signin', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginData)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if(result.statusCode === 200) {
+            alert('Login successful');
+            // Redirect user to a dashboard or homepage, for example:
+            window.location.href = '/progress.html';
+        } else {
+            alert('Login failed. ' + (result.message || ''));
+        }
+    })
+    .catch(err => {
+        alert('Login error. Please try again.');
+        console.error('Login Error:', err);
+    });
+}
 
+// This function checks if the passwords match
+function checkPasswordsMatch() {
     let password = $('#password').val();
     let confirmPassword = $('#confirmPassword').val();
 
     // Check if passwords match
     if (password !== confirmPassword) {
         M.toast({html: 'Passwords do not match!'});
-        return; // Exit the function if passwords do not match
+        $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
+    } else {
+        $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
     }
-
-    let formData = {};
-    formData.fullName = $('#fullName').val();
-    formData.email = $('#subTitle').val();
-    formData.phone = $('#phone').val();
-    formData.goal = $('#goal').val();
-    formData.password = password; // Assuming you also want to send the password
-
-    postUser(formData);
 }
-
-
-// POST request 
-function postUser(user){
-    console.log("in  postUser")
-    $.ajax({
-        url:'/api/users',
-        type:'POST',
-        data: user,
-        success: function(result){
-            if(result.statusCode === 201){
-                alert('user post successful')
-            }
-        }
-    });
-}
-
-// GET request
-function getAllUsers(){
-    $.get('/api/users', (response)=>{
-        if(response.statusCode === 200){
-            addCards(response.data)
-
-        }
-    })
-}
-
-    // This function checks if the passwords match
-    function checkPasswordsMatch() {
-        let password = $('#password').val();
-        let confirmPassword = $('#confirmPassword').val();
-
-        // Check if passwords match
-        if (password !== confirmPassword) {
-            M.toast({html: 'Passwords do not match!'});
-            $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
-        } else {
-            $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
-        }
-    }
 
 
 $(document).ready(function(){
@@ -88,11 +72,39 @@ $(document).ready(function(){
     // Attach the blur event to the confirmPassword field
     $('#confirmPassword').on('blur', checkPasswordsMatch);
 
-    $('#formSubmit').click(()=>{
-        submitForm();
-        console.log("formSubmit")
-    })
-    $('.modal').modal();
-    getAllUsers();
+    // Attach event to handle form submission
+    $('#signupForm').on('submit', function(event) {
+        event.preventDefault();
 
+        // Gather form data
+        const user = {
+            fullName: $("#fullName").val(),
+            age: $("#age").val(),
+            Gender: $("#Gender").val(),
+            weight: $("#weight").val(),
+            email: $("#email").val(),
+            password: $("#password").val(),
+            confirmPassword: $("#confirmPassword").val(),
+            phone: $("#phone").val(),
+            goal: $("#goal").val()
+        };
+
+        // Send the data via a POST request
+        signupUser(user);
+    });
+
+    // Login form submission event
+    $('#loginForm').on('submit', function(event) {
+        event.preventDefault();
+
+        // Gather form data for login
+        const loginData = {
+            email: $("#email").val(),
+            password: $("#password").val()
+        };
+
+        // Send the data via a POST request for login
+        loginUser(loginData);
+    });
 })
+
