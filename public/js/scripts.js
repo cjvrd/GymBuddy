@@ -1,82 +1,108 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Materialize dropdowns
-    setTimeout(function() {
-        var elems = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(elems);
-    }, 0);
-    
-
-// Signup form submission
-const signupForm = document.getElementById('signupForm');
-if (signupForm) {
-    signupForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        
-        const data = {
-            fullName: document.getElementById('fullName').value,
-            age: document.getElementById('age').value,
-            Gender: document.getElementById('Gender').value,
-            weight: document.getElementById('weight').value,
-            email: document.getElementById('email').value,
-            password: document.getElementById('password').value,
-            confirmPassword: document.getElementById('confirmPassword').value,
-            phone: document.getElementById('phone').value,
-            goal: document.getElementById('goal').value
-        };
-        
-        fetch('/api/users/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.statusCode === 201) {
-                alert('Signup successful!');
-                window.location.href = '/details.html';
-            } else {
-                alert(data.message || 'Error signing up.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error signing up.');
-        });
+// POST request using fetch
+function signupUser(user) {
+    console.log("in postUser");
+    fetch('/signup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if(result.statusCode === 201){
+            alert('User post successful');
+        } else {
+            alert('Signup failed. ' + (result.message || ''));
+        }
+    })
+    .catch(err => {
+        alert('Failed to signup. Please try again.');
+        console.error('Signup Error:', err);
     });
 }
 
-    // Login form submission
-    const loginForm = document.getElementById('loginForm');
-if (loginForm) {
-    loginForm.addEventListener('submit', function(event) {
+// POST request for login using fetch
+function loginUser(loginData) {
+    console.log("Attempting login");
+    fetch('/signin', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginData)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if(result.statusCode === 200) {
+            alert('Login successful');
+            // Redirect user to a dashboard or homepage, for example:
+            window.location.href = '/progress.html';
+        } else {
+            alert('Login failed. ' + (result.message || ''));
+        }
+    })
+    .catch(err => {
+        alert('Login error. Please try again.');
+        console.error('Login Error:', err);
+    });
+}
+
+// This function checks if the passwords match
+function checkPasswordsMatch() {
+    let password = $('#password').val();
+    let confirmPassword = $('#confirmPassword').val();
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+        M.toast({html: 'Passwords do not match!'});
+        $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
+    } else {
+        $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
+    }
+}
+
+
+$(document).ready(function(){
+    $('.materialbox').materialbox();
+    $('select').formSelect();
+
+    // Attach the blur event to the confirmPassword field
+    $('#confirmPassword').on('blur', checkPasswordsMatch);
+
+    // Attach event to handle form submission
+    $('#signupForm').on('submit', function(event) {
         event.preventDefault();
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        // Gather form data
+        const user = {
+            fullName: $("#fullName").val(),
+            age: $("#age").val(),
+            Gender: $("#Gender").val(),
+            weight: $("#weight").val(),
+            email: $("#email").val(),
+            password: $("#password").val(),
+            confirmPassword: $("#confirmPassword").val(),
+            phone: $("#phone").val(),
+            goal: $("#goal").val()
+        };
 
-        fetch('/api/users/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.statusCode === 200) {
-                    alert('Login successful!');
-                    window.location.href = '/details.html';
-                } else {
-                    alert(data.message || 'Error logging in.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error logging in.');
-            });
-        });
-    }
-});
+        // Send the data via a POST request
+        signupUser(user);
+    });
+
+    // Login form submission event
+    $('#loginForm').on('submit', function(event) {
+        event.preventDefault();
+
+        // Gather form data for login
+        const loginData = {
+            email: $("#email").val(),
+            password: $("#password").val()
+        };
+
+        // Send the data via a POST request for login
+        loginUser(loginData);
+    });
+})
+
