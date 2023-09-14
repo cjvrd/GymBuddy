@@ -13,6 +13,7 @@ app.get('/signup', (req, res) => {
     res.sendFile(__dirname + '/public/signup.html');
 });
 
+
 app.listen(port,()=>{
     console.log("App listening to: "+port)
 })

@@ -1,97 +1,82 @@
-// const clickMe = () => {
-//     alert("Thanks for clicking. Hope you have a nice day!")
-// }
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Materialize dropdowns
+    setTimeout(function() {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+    }, 0);
+    
 
-// const addCards = (items) => {
-//     items.forEach(item => {
-//     let itemToAppend =
-//     '<div class="card"><div class="card-image waves-effect waves-block waves-light"><img class="activator" src="'+item.path+'">'+
-//     '</div><div class="card-content">'+
-//     '<span class="card-title activator grey-text text-darken-4">'+item.title+'<i class="material-icons right">more_vert</i></span><p><a href="#">'+item.link+'</a></p></div>'+
-//     '<div class="card-reveal">'+
-//     '<span class="card-title grey-text text-darken-4">'+item.title+'<i class="material-icons right">close</i></span>'+
-//     '<p class="card-text">'+item.desciption+'</p>'+
-//     '</div></div>';
-
-//     $(".cards-wrapper").append(itemToAppend)
-//     });
-// }
-
-const submitForm = (event) => {
-    event.preventDefault();
-
-    let password = $('#password').val();
-    let confirmPassword = $('#confirmPassword').val();
-
-    // Check if passwords match
-    if (password !== confirmPassword) {
-        M.toast({ html: 'Passwords do not match!' });
-        return; // Exit the function if passwords do not match
-    }
-
-    let formData = {};
-    formData.fullName = $('#fullName').val();
-    formData.email = $('#subTitle').val();
-    formData.phone = $('#phone').val();
-    formData.goal = $('#goal').val();
-    formData.password = password; // Assuming you also want to send the password
-
-    postUser(formData);
+// Signup form submission
+const signupForm = document.getElementById('signupForm');
+if (signupForm) {
+    signupForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        
+        const data = {
+            fullName: document.getElementById('fullName').value,
+            age: document.getElementById('age').value,
+            Gender: document.getElementById('Gender').value,
+            weight: document.getElementById('weight').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            confirmPassword: document.getElementById('confirmPassword').value,
+            phone: document.getElementById('phone').value,
+            goal: document.getElementById('goal').value
+        };
+        
+        fetch('/api/users/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.statusCode === 201) {
+                alert('Signup successful!');
+                window.location.href = '/details.html';
+            } else {
+                alert(data.message || 'Error signing up.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error signing up.');
+        });
+    });
 }
 
+    // Login form submission
+    const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault();
 
-// POST request 
-function postUser(user) {
-    console.log("in  postUser")
-    $.ajax({
-        url: '/api/users',
-        type: 'POST',
-        data: user,
-        success: function (result) {
-            if (result.statusCode === 201) {
-                alert('user post successful')
-            };
-        }
-    });
-};
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
 
-// GET request
-function getAllUsers() {
-    $.get('/api/users', (response) => {
-        if (response.statusCode === 200) {
-            addCards(response.data)
-
-        }
-    });
-};
-
-// This function checks if the passwords match
-function checkPasswordsMatch() {
-    let password = $('#password').val();
-    let confirmPassword = $('#confirmPassword').val();
-
-    // Check if passwords match
-    if (password !== confirmPassword) {
-        M.toast({ html: 'Passwords do not match!' });
-        $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
-    } else {
-        $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
+        fetch('/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.statusCode === 200) {
+                    alert('Login successful!');
+                    window.location.href = '/details.html';
+                } else {
+                    alert(data.message || 'Error logging in.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error logging in.');
+            });
+        });
     }
-};
-
-
-$(document).ready(function () {
-    $('.materialbox').materialbox();
-    $('select').formSelect();
-
-    // Attach the blur event to the confirmPassword field
-    $('#confirmPassword').on('blur', checkPasswordsMatch);
-
-    $('#formSubmit').click(() => {
-        submitForm();
-        console.log("formSubmit")
-    })
-    $('.modal').modal();
-    getAllUsers();
-
-})
+});
