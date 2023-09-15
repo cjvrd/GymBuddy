@@ -16,10 +16,11 @@ function createUser(user, callback){
         if(err){
             return callback(err);
         };
-        user.password = hash
-        collection.insertOne(user, callback)
+        user.password = hash;
+        collection.insertOne(user, callback);
     });
 };
+
 // finding user instance by email 
 function findUserByEmail(email, callback){
     collection.findOne({email: email}, callback);

@@ -16,4 +16,4 @@ function verifyAndAuthorize(req, res, next) {
     }
 };
 
-module.exports = { verifyAndAuthorize };
+module.exports = verifyAndAuthorize;
