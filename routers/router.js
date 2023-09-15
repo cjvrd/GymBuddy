@@ -14,12 +14,11 @@ router.get('/users', (req,res) =>{
 //     controller.postUser(req, res);
 // })
 
-
 // SignUp handler
-router.post('/signup', controller.signUp)
+router.post('/signup', controller.signUp);
 
 // SignIn handler
-router.post('/signin', controller.signIn)
+router.post('/signin', controller.signIn);
 
 // Sample protected route
 router.put('/update-progress', verifyAndAuthorize, (req, res) => {
@@ -31,8 +30,6 @@ router.put('/update-progress', verifyAndAuthorize, (req, res) => {
     }
 
     // if IDs match, process with updating
+});
 
-})
-
-
-module.exports = router 
+module.exports = router; 

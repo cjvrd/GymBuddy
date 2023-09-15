@@ -25,27 +25,26 @@ async function signupUser(user) {
         alert('Failed to signup. Please try again.');
         console.error('Signup Error:', err);
     }
-}
-
+};
 
 // POST request for login using fetch
 async function loginUser(loginData) {
-    try{
+    try {
         const response = await fetch('/signin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(loginData)
-        })
+        });
 
-        if(!response.ok){
-            throw new Error(`HTTP error! Status: ${response.status}`)
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
 
-        if (data && data.token){
+        if (data && data.token) {
             localStorage.setItem('token', data.token);
             // window.location.href = '/progress.html'
             window.location.reload();
@@ -57,8 +56,8 @@ async function loginUser(loginData) {
     catch (err) {
         // alert('Login error. Please try again.');
         console.error('Login Error:', err);
-    };
-}
+    }
+};
 
 // This function checks if the passwords match
 function checkPasswordsMatch() {
@@ -67,15 +66,14 @@ function checkPasswordsMatch() {
 
     // Check if passwords match
     if (password !== confirmPassword) {
-        M.toast({html: 'Passwords do not match!'});
+        M.toast({ html: 'Passwords do not match!' });
         $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
     } else {
         $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
     }
-}
+};
 
-
-$(document).ready(function(){
+$(document).ready(function () {
     $('.materialbox').materialbox();
     $('select').formSelect();
 
@@ -83,7 +81,7 @@ $(document).ready(function(){
     $('#confirmPassword').on('blur', checkPasswordsMatch);
 
     // Attach event to handle form submission
-    $('#signupForm').on('submit', function(event) {
+    $('#signupForm').on('submit', function (event) {
         event.preventDefault();
 
         // Gather form data
@@ -104,7 +102,7 @@ $(document).ready(function(){
     });
 
     // Login form submission event
-    $('#loginForm').on('submit', function(event) {
+    $('#loginForm').on('submit', function (event) {
         event.preventDefault();
 
         // Gather form data for login
@@ -117,7 +115,7 @@ $(document).ready(function(){
         loginUser(loginData);
     });
 
-    // check for the token in local storage and siaplay appropraite UI
+    // check for the token in local storage and display appropraite UI
     const token = localStorage.getItem('token');
     const loginContainer = $("#loginContainer");
     const newuserContainer = $("#newuserContainer");
@@ -138,7 +136,7 @@ $(document).ready(function(){
     }
 
     // handle logout
-    $('#logoutButton').on('click', function(){
+    $('#logoutButton').on('click', function () {
         // remove the token from local storage
         localStorage.removeItem('token');
 
@@ -151,6 +149,5 @@ $(document).ready(function(){
         newuserContainer.show();
         console.log("refreshing..")
         location.reload('');
-    })
-})
-
+    });
+});
