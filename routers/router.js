@@ -33,4 +33,4 @@ router.put('/update-progress', verifyAndAuthorize, (req, res) => {
 });
 
 
-module.exports = { router }; 
+module.exports = router; 
