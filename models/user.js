@@ -2,11 +2,11 @@ let client = require('../dbConnection');
 const bcrypt = require('bcrypt');
 let collection = client.db().collection('User');
 
-function postUser(user, callback){
+function postUser(user, callback){ //is this function needed anymore?
     collection.insertOne(user, callback);
 };
 
-function getAllUsers(callback){
+function getAllUsers(callback){ //is this function needed anymore?
     collection.find({}).toArray(callback);
 };
 
