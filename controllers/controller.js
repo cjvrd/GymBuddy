@@ -5,19 +5,44 @@ const secret = 'SECRET_KEY';
 
 const signUp = (req, res) => {
     let user = req.body;
-    collection.createUser(user, (err, result) => {
-        if(!err){
+
+    // checking if email already exists
+    collection.findUserByEmail(user.email, (err, existingUser) => {
+        if (err) {
+            return res.json({
+                statusCode: 500,
+                message: 'Server error when checking email'
+            })
+        }
+
+        // if a user with the given email is found
+        if (existingUser) {
+            return res.json({
+                statusCode: 400,
+                message: 'Email already in use'
+            });
+        }
+        // creating the new user
+        collection.createUser(user, (err, result) => {
+            if(err){
+                return res.json({
+                    statusCode: 500,
+                    message: 'Server error when creating user'
+                });
+            }
+
             res.json({
                 statusCode: 201,
                 data: result,
                 message: 'User registered successfully'
             });
-        }
+        });
     });
 };
 
 const signIn = (req, res) => {
     let {email, password} = req.body;
+    let userData;
     collection.findUserByEmail(email, (err, user) => {
         if(err || !user){
             return res.status(400).json({message: 'User not found'});
@@ -38,10 +63,12 @@ const signIn = (req, res) => {
             const token = jwt.sign({id: user._id, email: user.email}, secret, {
                 expiresIn: '1h'
             });
+            console.log(user)
 
             res.json({
                 statusCode: 200,
                 token: token,
+                user: user,
                 message: 'Logged in successfully'
             });
         });
@@ -66,29 +93,6 @@ const postUser = (req, res) => {
     });
 };
 
-// const loginUser = (req, res) => {
-//     let { email, password } = req.body;
-//     collection.findUserByEmail(email, (err, user) => {
-//         if (err || !user) {
-//             res.json({
-//                 statusCode: 404,
-//                 message: 'User not found'
-//             });
-//             return;
-//         }
-//         if (user.password === password) {
-//             res.json({
-//                 statusCode: 200,
-//                 message: 'Login successful'
-//             });
-//         } else {
-//             res.json({
-//                 statusCode: 401,
-//                 message: 'Incorrect password'
-//             });
-//         }
-//     });
-// };
 
 const getAllUsers = (req, res) => {
     collection.getAllUsers((err, result) => {

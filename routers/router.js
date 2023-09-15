@@ -32,4 +32,5 @@ router.put('/update-progress', verifyAndAuthorize, (req, res) => {
     // if IDs match, process with updating
 });
 
-module.exports = router; 
+
+module.exports = { router }; 

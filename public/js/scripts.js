@@ -19,7 +19,8 @@ async function signupUser(user) {
         if (result.statusCode === 201) {
             alert('User post successful');
         } else {
-            alert('Signup failed. ' + (result.message || ''));
+            // alert('Signup failed. ' + (result.message || ''));
+            M.toast({ html: 'Signup failed. ' + (result.message || '') });
         }
     } catch (err) {
         alert('Failed to signup. Please try again.');
@@ -46,8 +47,10 @@ async function loginUser(loginData) {
 
         if (data && data.token) {
             localStorage.setItem('token', data.token);
-            // window.location.href = '/progress.html'
-            window.location.reload();
+            localStorage.setItem('userData', JSON.stringify(data.user))
+            // console.log(data.user)
+            window.location.href = '/details.html'
+            // window.location.reload();
         } else {
             alert("Error loggin in");
         }
@@ -139,6 +142,8 @@ $(document).ready(function () {
     $('#logoutButton').on('click', function () {
         // remove the token from local storage
         localStorage.removeItem('token');
+        localStorage.removeItem('userData');
+        
 
         // hide the logout button and message
         logoutContainer.hide();
