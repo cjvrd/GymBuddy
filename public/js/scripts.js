@@ -17,7 +17,7 @@ async function signupUser(user) {
         const result = await response.json();
 
         if (result.statusCode === 201) {
-            alert('User post successful'); //once user post succesful, need to be redirected to login page
+            alert('User post successful');
         } else {
             // alert('Signup failed. ' + (result.message || ''));
             M.toast({ html: 'Signup failed. ' + (result.message || '') });
