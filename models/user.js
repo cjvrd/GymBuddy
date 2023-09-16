@@ -17,11 +17,18 @@ function createUser(user, callback){
             return callback(err);
         };
         user.password = hash;
-        collection.insertOne(user, callback);
+        collection.insertOne(user, (err, result) =>{
+            if(err) {
+                return callback(err);
+            }
+
+            user._id = result.insertedId;
+            callback(null, user);
+        });
     });
 };
 
-// finding user instance by email 
+// finding user instance by email
 function findUserByEmail(email, callback){
     collection.findOne({email: email}, callback);
 };

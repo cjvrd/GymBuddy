@@ -48,6 +48,7 @@ async function loginUser(loginData) {
         if (data && data.token) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('userData', JSON.stringify(data.user))
+            localStorage.setItem('userCycles', JSON.stringify(data.cycles))
             // console.log(data.user)
             window.location.href = '/details.html'
             // window.location.reload();

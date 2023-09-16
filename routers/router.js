@@ -9,11 +9,6 @@ router.get('/users', (req,res) =>{
     controller.getAllUsers(req, res);
 });
 
-// POST user handler
-// router.post('/', function(req, res){
-//     controller.postUser(req, res);
-// })
-
 // SignUp handler
 router.post('/signup', controller.signUp);
 
