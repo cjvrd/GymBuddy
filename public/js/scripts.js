@@ -62,6 +62,13 @@ async function loginUser(loginData) {
     }
 };
 
+//logout function
+function logoutUser() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userData');
+    window.location.href = './';
+}
+
 // This function checks if the passwords match
 function checkPasswordsMatch() {
     let password = $('#password').val();
@@ -69,7 +76,7 @@ function checkPasswordsMatch() {
 
     // Check if passwords match
     if (password !== confirmPassword) {
-        M.toast({ html: 'Passwords do not match!' });
+        M.toast({ html: 'Passwords do not match!' }); //will need to be changed
         $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
     } else {
         $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
@@ -118,41 +125,9 @@ $(document).ready(function () {
         loginUser(loginData);
     });
 
-    // check for the token in local storage and display appropraite UI
-    const token = localStorage.getItem('token');
-    const loginContainer = $("#loginContainer");
-    const newuserContainer = $("#newuserContainer");
-    const logoutContainer = $("#logoutContainer");
-    const wrapper = $(".wrapper");
-
-    if (token) {
-        // user is logged in
-        loginContainer.hide();
-        newuserContainer.hide();
-        logoutContainer.show();
-        wrapper.append("<h3> Logged in</h3>");
-    } else {
-        // user is not logged in
-        loginContainer.show();
-        newuserContainer.show();
-        logoutContainer.hide();
-    }
-
     // handle logout
-    $('#logoutButton').on('click', function () {
-        // remove the token from local storage
-        localStorage.removeItem('token');
-        localStorage.removeItem('userData');
-        
-
-        // hide the logout button and message
-        logoutContainer.hide();
-        wrapper.find("h3:contains('Logged in')").remove();
-
-        // show the login form
-        loginContainer.show();
-        newuserContainer.show();
-        console.log("refreshing..")
-        location.reload('');
+    $('#logoutButton').on('click', function (event) {
+        event.preventDefault();
+        logoutUser();
     });
 });
