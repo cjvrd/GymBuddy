@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const secret = 'SECRET_KEY';
 
-const signUp = (req, res) => {
+const signUp = (req, res) => { 
     let user = req.body;
 
     // checking if email already exists
@@ -54,13 +54,13 @@ const signUp = (req, res) => {
     });
 };
 
-const signIn = (req, res) => {
+const signIn = (req, res) => { //finds user data in DB
     let {email, password} = req.body;
     User.findUserByEmail(email, (err, user) => {
         if(err || !user){
             return res.status(400).json({message: 'User not found'});
         }
-        // compare passwords
+        // compare entered password to password in DB
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if(err || !isMatch){
                 return res.status(400).json({message: 'Incorrect password'});
@@ -72,6 +72,7 @@ const signIn = (req, res) => {
                     return res.status(500).json({message: 'Error fetching cycles'});
                 }
                 // console.log(JSON.stringify(cycles, null, 2));
+
                 // if passwords match, create a JWT
                 const token = jwt.sign({id: user._id, email: user.email}, secret, {
                     expiresIn: '1h'
@@ -89,7 +90,7 @@ const signIn = (req, res) => {
     });
 };
 
-const postUser = (req, res) => {
+const postUser = (req, res) => { //can probably remove this function
     let user = req.body;
     User.postUser(user, (err, result) => {
         if (!err) {
@@ -108,7 +109,7 @@ const postUser = (req, res) => {
 };
 
 
-const getAllUsers = (req, res) => {
+const getAllUsers = (req, res) => { //can probably remove this function
     User.getAllUsers((err, result) => {
         if (!err) {
             res.json({
