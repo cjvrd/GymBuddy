@@ -17,7 +17,9 @@ async function signupUser(user) {
         const result = await response.json();
 
         if (result.statusCode === 201) {
-            alert('User post successful');
+            console.log('User post successful'); //once user post succesful, need to be redirected to login page
+            window.location.href = './';
+            alert("You have successfully signed up! Please log in to continue.");
         } else {
             // alert('Signup failed. ' + (result.message || ''));
             M.toast({ html: 'Signup failed. ' + (result.message || '') });
@@ -49,19 +51,24 @@ async function loginUser(loginData) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('userData', JSON.stringify(data.user))
             localStorage.setItem('userCycles', JSON.stringify(data.cycles))
-            // console.log(data.user)
             window.location.href = '/details.html'
-            // window.location.reload();
+
         } else {
             alert("Error loggin in");
         }
     }
 
     catch (err) {
-        // alert('Login error. Please try again.');
         console.error('Login Error:', err);
     }
 };
+
+//logout function
+function logoutUser() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userData');
+    window.location.href = './';
+}
 
 // This function checks if the passwords match
 function checkPasswordsMatch() {
@@ -70,7 +77,7 @@ function checkPasswordsMatch() {
 
     // Check if passwords match
     if (password !== confirmPassword) {
-        M.toast({ html: 'Passwords do not match!' });
+        M.toast({ html: 'Passwords do not match!' }); //will need to be changed
         $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
     } else {
         $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
@@ -91,14 +98,13 @@ $(document).ready(function () {
         // Gather form data
         const user = {
             fullName: $("#fullName").val(),
-            age: $("#age").val(),
-            Gender: $("#Gender").val(),
-            weight: $("#weight").val(),
             email: $("#email").val(),
             password: $("#password").val(),
             confirmPassword: $("#confirmPassword").val(),
-            phone: $("#phone").val(),
-            goal: $("#goal").val()
+
+            age: $('input:radio[name=age]:checked').val(), //this needed to be changed, because for the radios to work, ids need to be different for each box
+            goal: $('input:radio[name=goal]:checked').val(),
+            gender: $('input:radio[name=gender]:checked').val()
         };
 
         // Send the data via a POST request
@@ -119,41 +125,9 @@ $(document).ready(function () {
         loginUser(loginData);
     });
 
-    // check for the token in local storage and display appropraite UI
-    const token = localStorage.getItem('token');
-    const loginContainer = $("#loginContainer");
-    const newuserContainer = $("#newuserContainer");
-    const logoutContainer = $("#logoutContainer");
-    const wrapper = $(".wrapper");
-
-    if (token) {
-        // user is logged in
-        loginContainer.hide();
-        newuserContainer.hide();
-        logoutContainer.show();
-        wrapper.append("<h3> Logged in</h3>");
-    } else {
-        // user is not logged in
-        loginContainer.show();
-        newuserContainer.show();
-        logoutContainer.hide();
-    }
-
     // handle logout
-    $('#logoutButton').on('click', function () {
-        // remove the token from local storage
-        localStorage.removeItem('token');
-        localStorage.removeItem('userData');
-        
-
-        // hide the logout button and message
-        logoutContainer.hide();
-        wrapper.find("h3:contains('Logged in')").remove();
-
-        // show the login form
-        loginContainer.show();
-        newuserContainer.show();
-        console.log("refreshing..")
-        location.reload('');
+    $('#logoutButton').on('click', function (event) {
+        event.preventDefault();
+        logoutUser();
     });
 });
