@@ -19,68 +19,104 @@
         </div>
     </div>
 
+    <!-- sign up form -->
     <div class="container">
         <form id="signupForm">
             <div class="row justify-content-center" id="signUp">
-                <div class="col-9">
-                    <p class="text-white text-center fs-4">Enter new account details below:</p>
+                <div class="col-sm-9">
+                    <!-- account details -->    
+                    <p class="text-white text-center fs-4">Enter new account details:</p>
 
-                    <div class="form-floating shadow mb-3">
+                    <div class="form-floating shadow mb-1">
                         <input type="text" class="form-control" id="name" name="name" placeholder="firstname">
                         <label for="name">Full Name:</label>
                     </div>
 
-                    <div class="form-floating shadow mb-3">
+                    <div class="form-floating shadow mb-1">
                         <input type="email" class="form-control" id="email" name="email" placeholder="email@email.com">
                         <label for="email">Email Address:</label>
                     </div>
 
-                    <div class="form-floating shadow mb-3">
+                    <div class="form-floating shadow mb-1">
                         <input type="password" class="form-control" id="password" name="password"
                             placeholder="password">
                         <label for="password">Password:</label>
                     </div>
 
-                    <div class="form-floating shadow mb-3">
+                    <div class="form-floating shadow mb-1">
                         <input type="password" class="form-control" id="confirmpassword" name="confirmPassword"
                             placeholder="password">
                         <label for="confirmPassword">Re-enter Password:</label>
                     </div>
 
-                    <p class="text-white text-center fs-4">Fill out your details for your program below:</p>
+                    <!-- user details for program -->
+                    <p class="text-white text-center fs-4">Fill out your details for your program:</p>
 
-                    <div class="btn-group" id="details">
-                        <div class="col-3">
-                            <input type="radio" class="btn-check" name="options" id="buildMuscle" value="buildMuscle"
-                                checked>
-                            <label class="btn btn-dark" for="buildMuscle">Build Muscle</label>
+                    <div class="wrapper text-center d-grid" id="age">
+                        <p class="text-white fs-5"> How old are you? </p>
+
+                        <div class="btn-group">
+                            <input type="radio" class="btn-check" name="age" id="young" value="young" checked>
+                            <label class="btn btn-dark" for="young">16-39</label>
+
+                            <input type="radio" class="btn-check" name="age" id="middle" value="middle">
+                            <label class="btn btn-dark" for="middle">40-65</label>
+
+                            <input type="radio" class="btn-check" name="age" id="old" value="old">
+                            <label class="btn btn-dark" for="old">65+</label>
                         </div>
 
-                        <div class="col-3">
-                            <input type="radio" class="btn-check" name="options" id="buildStrength"
-                                value="buildStrength">
-                            <label class="btn btn-dark" for="buildStrength">Build Strength</label>
-                        </div>
+                    </div>
 
-                        <div class="col-3">
-                            <input type="radio" class="btn-check" name="options" id="loseWeight" value="loseWeight">
-                            <label class="btn btn-dark" for="loseWeight">Lose Weight</label>
+                    <br>
+                    
+                    <div class="wrapper text-center d-grid" id="gender">
+                        <p class="text-white fs-5"> What is your gender?</p>
+
+                        <div class="btn-group">
+                            <input type="radio" class="btn-check" name="gender" id="male" value="male" checked>
+                            <label class="btn btn-dark" for="male">Male</label>
+
+                            <input type="radio" class="btn-check" name="gender" id="female" value="female">
+                            <label class="btn btn-dark" for="female">Female</label>
+
+                            <input type="radio" class="btn-check" name="gender" id="other" value="other">
+                            <label class="btn btn-dark" for="other">Other</label>
                         </div>
                     </div>
 
                     <br>
-                    <br>
-                    <br>
 
+                    <div class="wrapper text-center d-grid" id="goal">
+
+                        <p class="text-white fs-5"> What are you training goals?</p>
+
+                        <div class="btn-group">
+                            <input type="radio" class="btn-check" name="goal" id="buildMuscle" value="buildMuscle"
+                                checked>
+                            <label class="btn btn-dark" for="buildMuscle">Build Muscle</label>
+
+                            <input type="radio" class="btn-check" name="goal" id="buildStrength" value="buildStrength">
+                            <label class="btn btn-dark" for="buildStrength">Build Strength</label>
+
+                            <input type="radio" class="btn-check" name="goal" id="loseWeight" value="loseWeight">
+                            <label class="btn btn-dark" for="loseWeight">Lose Weight</label>
+                        </div>
+
+                    </div>
+
+                    <br>
+                    <!-- submit button -->
                     <div class="d-grid">
                         <button type="submit" class="btn btn-dark">Submit</button>
                     </div>
+
+                    <br>
+
                 </div>
             </div>
         </form>
     </div>
-
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
