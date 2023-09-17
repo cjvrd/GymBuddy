@@ -50,14 +50,15 @@ async function loginUser(loginData) {
         if (data && data.token) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('userData', JSON.stringify(data.user))
-            window.location.href = '/details.html';
+            localStorage.setItem('userCycles', JSON.stringify(data.cycles))
+            window.location.href = '/details.html'
+
         } else {
             alert("Error loggin in");
         }
     }
 
     catch (err) {
-        // alert('Login error. Please try again.');
         console.error('Login Error:', err);
     }
 };

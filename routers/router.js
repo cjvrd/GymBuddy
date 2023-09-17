@@ -9,11 +9,6 @@ router.get('/users', (req,res) =>{
     controller.getAllUsers(req, res);
 });
 
-// POST user handler
-// router.post('/', function(req, res){
-//     controller.postUser(req, res);
-// })
-
 // SignUp handler
 router.post('/signup', controller.signUp);
 
@@ -32,5 +27,4 @@ router.put('/update-progress', verifyAndAuthorize, (req, res) => {
     // if IDs match, process with updating
 });
 
-
-module.exports = router;
+module.exports = router; 
