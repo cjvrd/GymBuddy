@@ -18,7 +18,8 @@ async function signupUser(user) {
 
         if (result.statusCode === 201) {
             console.log('User post successful'); //once user post succesful, need to be redirected to login page
-            window.location.href = '/details.html';
+            window.location.href = './';
+            alert("You have successfully signed up! Please log in to continue.");
         } else {
             // alert('Signup failed. ' + (result.message || ''));
             M.toast({ html: 'Signup failed. ' + (result.message || '') });
@@ -49,9 +50,7 @@ async function loginUser(loginData) {
         if (data && data.token) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('userData', JSON.stringify(data.user))
-            // console.log(data.user)
-            window.location.href = '/details.html'
-            // window.location.reload();
+            window.location.href = './';
         } else {
             alert("Error loggin in");
         }
@@ -98,14 +97,13 @@ $(document).ready(function () {
         // Gather form data
         const user = {
             fullName: $("#fullName").val(),
-            age: $("#age").val(),
-            Gender: $("#Gender").val(),
-            weight: $("#weight").val(),
             email: $("#email").val(),
             password: $("#password").val(),
             confirmPassword: $("#confirmPassword").val(),
-            phone: $("#phone").val(),
-            goal: $("#goal").val()
+
+            age: $('input:radio[name=age]:checked').val(), //this needed to be changed, because for the radios to work, ids need to be different for each box
+            goal: $('input:radio[name=goal]:checked').val(),
+            gender: $('input:radio[name=gender]:checked').val()
         };
 
         // Send the data via a POST request

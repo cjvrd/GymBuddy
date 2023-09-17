@@ -28,7 +28,7 @@
                     <p class="text-white text-center fs-4">Enter new account details:</p>
 
                     <div class="form-floating shadow mb-1">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="firstname">
+                        <input type="text" class="form-control" id="fullName" name="name" placeholder="firstname">
                         <label for="name">Full Name:</label>
                     </div>
 
@@ -52,9 +52,9 @@
                     <!-- user details for program -->
                     <p class="text-white text-center fs-4">Fill out your details for your program:</p>
 
-                    <div class="wrapper text-center d-grid" id="age">
+                    <div class="wrapper text-center d-grid">
                         <p class="text-white fs-5"> How old are you? </p>
-
+                        <!-- age group selector -->
                         <div class="btn-group">
                             <input type="radio" class="btn-check" name="age" id="young" value="young" checked>
                             <label class="btn btn-dark" for="young">16-39</label>
@@ -65,14 +65,13 @@
                             <input type="radio" class="btn-check" name="age" id="old" value="old">
                             <label class="btn btn-dark" for="old">65+</label>
                         </div>
-
                     </div>
 
                     <br>
                     
                     <div class="wrapper text-center d-grid" id="gender">
                         <p class="text-white fs-5"> What is your gender?</p>
-
+                        <!-- gender selector -->
                         <div class="btn-group">
                             <input type="radio" class="btn-check" name="gender" id="male" value="male" checked>
                             <label class="btn btn-dark" for="male">Male</label>
@@ -89,8 +88,8 @@
 
                     <div class="wrapper text-center d-grid" id="goal">
 
-                        <p class="text-white fs-5"> What are you training goals?</p>
-
+                        <p class="text-white fs-5"> What are your training goals?</p>
+                        <!-- goals selector -->
                         <div class="btn-group">
                             <input type="radio" class="btn-check" name="goal" id="buildMuscle" value="buildMuscle"
                                 checked>
