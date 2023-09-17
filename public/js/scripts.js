@@ -50,7 +50,7 @@ async function loginUser(loginData) {
         if (data && data.token) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('userData', JSON.stringify(data.user))
-            window.location.href = './';
+            window.location.href = '/details.html';
         } else {
             alert("Error loggin in");
         }
