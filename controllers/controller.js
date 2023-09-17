@@ -6,14 +6,51 @@ const secret = 'SECRET_KEY';
 
 const signUp = (req, res) => {
     let user = req.body;
-    collection.createUser(user, (err, result) => {
-        if(!err){
-            res.json({
-                statusCode: 201,
-                data: result,
-                message: 'User registered successfully'
+
+    // checking if email already exists
+    User.findUserByEmail(user.email, (err, existingUser) => {
+        if (err) {
+            return res.json({
+                statusCode: 500,
+                message: 'Server error when checking email'
+            })
+        }
+
+        // if a user with the given email is found
+        if (existingUser) {
+            return res.json({
+                statusCode: 400,
+                message: 'Email already in use'
             });
         }
+        // creating the new user
+        User.createUser(user, (err, result) => {
+            if(err){
+                return res.json({
+                    statusCode: 500,
+                    message: 'Server error when creating user'
+                });
+            }
+
+            // console.log(result)
+            // creating the cycle for the user
+            Cycle.createCycleForUser(result, (err, cycleResult) => {
+                if(err){
+                    return res.json({
+                        statusCode: 500,
+                        message: 'Server error when creating cycle for user'
+                    })
+                }
+                // console.log(cycleResult)
+
+                res.json({
+                    statusCode: 201,
+                    data: result,
+                    cycleData: cycleResult,
+                    message: 'User registered successfully'
+                });
+            })
+        });
     });
 };
 
