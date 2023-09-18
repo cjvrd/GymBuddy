@@ -14,7 +14,7 @@ async function signupUser(user) {
             throw new Error("Received non-JSON response");
         }
 
-        const result = await response.json();
+        const result = await response.json(); //can this variable in signup and login be aligned?  one is data, one is result
 
         if (result.statusCode === 201) {
             console.log('User post successful'); 
@@ -22,7 +22,6 @@ async function signupUser(user) {
             alert("You have successfully signed up! Please log in to continue.");
         } else {
             alert('Signup failed. ' + (result.message || ''));
-            // M.toast({ html: 'Signup failed. ' + (result.message || '') });
         }
     } catch (err) {
         alert('Failed to signup. Please try again.');
@@ -45,16 +44,16 @@ async function loginUser(loginData) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data = await response.json();  //can this variable in signup and login be aligned? one is data, one is result
 
         if (data && data.token) { //assign data to local storage, send user to details page (successfully logged in)
             localStorage.setItem('token', data.token);
-            localStorage.setItem('userData', JSON.stringify(data.user))
-            localStorage.setItem('userCycles', JSON.stringify(data.cycles))
-            window.location.href = '/details.html'
+            localStorage.setItem('userData', JSON.stringify(data.user));
+            localStorage.setItem('userCycles', JSON.stringify(data.cycles));
+            window.location.href = '/details.html';
 
         } else {
-            alert("Error loggin in");
+            alert('Login failed. ' + (data.message || '')); //this is not working, not sure how to fix, i think it gets stuck at line 44 before moving on
         }
     }
 
@@ -77,9 +76,10 @@ function checkPasswordsMatch() {
     let confirmPassword = $('#confirmPassword').val();
 
     // Check if passwords match
-    if (password !== confirmPassword) {
-        M.toast({ html: 'Passwords do not match!' }); //might need to be changed, can just use alert instead
-        $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
+    if (password !== confirmPassword) { //this will need to be altered so that the form doesn't submit if passwords dont match
+        // M.toast({ html: 'Passwords do not match!' }); 
+        alert('Password does not match! Please try again'); //this needs to be changed to something more dynamic in the form
+        $('#confirmPassword').addClass('invalid'); //this doesnt work, needs to be fixed
     } else {
         $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
     }
@@ -93,7 +93,7 @@ $(document).ready(function () {
     $('#confirmPassword').on('blur', checkPasswordsMatch);
 
     // Attach event to handle form submission
-    $('#signupForm').on('submit', function (event) {
+    $('#signupForm').on('submit', function (event) {  //if passwords dont match function, break, else continue
         event.preventDefault();
 
         // Gather form data and assign to user variable
