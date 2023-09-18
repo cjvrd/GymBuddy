@@ -16,7 +16,7 @@ function createCycleForUser(user, callback) {
 
     let newCycle = {
         userId: user._id,
-        program: pickProgram(age, user.goal),
+        program: pickProgram(user.age, user.goal), //changed to user.age
     };
     collection.insertOne(newCycle, (err, result) => {
         if (err) {

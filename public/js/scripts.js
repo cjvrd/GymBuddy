@@ -21,8 +21,8 @@ async function signupUser(user) {
             window.location.href = './'; //once user post succesful redirect to login page
             alert("You have successfully signed up! Please log in to continue.");
         } else {
-            // alert('Signup failed. ' + (result.message || ''));
-            M.toast({ html: 'Signup failed. ' + (result.message || '') });
+            alert('Signup failed. ' + (result.message || ''));
+            // M.toast({ html: 'Signup failed. ' + (result.message || '') });
         }
     } catch (err) {
         alert('Failed to signup. Please try again.');
@@ -67,6 +67,7 @@ async function loginUser(loginData) {
 function logoutUser() {
     localStorage.removeItem('token'); //removes jwt and user data from local storage
     localStorage.removeItem('userData');
+    localStorage.removeItem('userCycles');
     window.location.href = './'; //returns user to index (login page)
 }
 
