@@ -1,73 +1,19 @@
-html, body{
-    height: 100%;
+body {
+    background-image: linear-gradient(to right, rgb(255, 221, 0), rgb(255, 106, 0) );
 }
 
-body{
-    min-height: 100%;
-}
-
-.navbar-size {
-    width: 95%;
-    margin: 0 auto;
-}
-
-.nav-wrapper ul{
-    list-style-type: none;
-}
-
-.user-image-size {
-height: 64px;
-}
-
-.main-body {
-    background-color: #F28487;
-    color: white;
-    min-height: 100%;
-}
-
-.container p{
+#GymBuddyTitle {
     text-align: center;
+    color: whitesmoke;
+    text-shadow: 2px 2px 5px black;
+    font-size: 60px;
+    font-weight: bold;
+    font-family: League Spartan, sans-serif;
 }
 
-#heading{
-    margin-top: 0;
-    padding-top: 40px;
+.border-class
+{
+  border:thin black solid;
+  margin:20px;
+  padding:20px;
 }
-
-.click-me-button{
-    background-color: #EE6E73;
-    margin: 35px 0px 35px 0px;
-}
-
-.click-me-wrapper{
-    display: flex;
-    justify-content: center;
-}
-
-.container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.cards-section{
-    display: flex;
-    justify-content: center;
-}
-
-.cards-wrapper{
-    display: flex;
-    justify-content: center;
-    width: 70%;
-    justify-content: space-evenly;
-    padding: 0 100px 0 100px;
-    flex-wrap: wrap;
-}
-
-
-.card-image{
-    max-height: 170px !important;
-    height: 120px;
-    width: 200px;
-}
-

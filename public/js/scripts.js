@@ -17,9 +17,12 @@ async function signupUser(user) {
         const result = await response.json();
 
         if (result.statusCode === 201) {
-            alert('User post successful');
+            console.log('User post successful'); 
+            window.location.href = './'; //once user post succesful redirect to login page
+            alert("You have successfully signed up! Please log in to continue.");
         } else {
             alert('Signup failed. ' + (result.message || ''));
+            // M.toast({ html: 'Signup failed. ' + (result.message || '') });
         }
     } catch (err) {
         alert('Failed to signup. Please try again.');
@@ -30,7 +33,7 @@ async function signupUser(user) {
 // POST request for login using fetch
 async function loginUser(loginData) {
     try {
-        const response = await fetch('/signin', {
+        const response = await fetch('/signin', { //fetch login data
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -44,20 +47,29 @@ async function loginUser(loginData) {
 
         const data = await response.json();
 
-        if (data && data.token) {
+        if (data && data.token) { //assign data to local storage, send user to details page (successfully logged in)
             localStorage.setItem('token', data.token);
-            // window.location.href = '/progress.html'
-            window.location.reload();
+            localStorage.setItem('userData', JSON.stringify(data.user))
+            localStorage.setItem('userCycles', JSON.stringify(data.cycles))
+            window.location.href = '/details.html'
+
         } else {
             alert("Error loggin in");
         }
     }
 
     catch (err) {
-        // alert('Login error. Please try again.');
         console.error('Login Error:', err);
     }
 };
+
+//logout function
+function logoutUser() {
+    localStorage.removeItem('token'); //removes jwt and user data from local storage
+    localStorage.removeItem('userData');
+    localStorage.removeItem('userCycles');
+    window.location.href = './'; //returns user to index (login page)
+}
 
 // This function checks if the passwords match
 function checkPasswordsMatch() {
@@ -66,7 +78,7 @@ function checkPasswordsMatch() {
 
     // Check if passwords match
     if (password !== confirmPassword) {
-        M.toast({ html: 'Passwords do not match!' });
+        M.toast({ html: 'Passwords do not match!' }); //might need to be changed, can just use alert instead
         $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
     } else {
         $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
@@ -84,17 +96,16 @@ $(document).ready(function () {
     $('#signupForm').on('submit', function (event) {
         event.preventDefault();
 
-        // Gather form data
+        // Gather form data and assign to user variable
         const user = {
             fullName: $("#fullName").val(),
-            age: $("#age").val(),
-            Gender: $("#Gender").val(),
-            weight: $("#weight").val(),
             email: $("#email").val(),
             password: $("#password").val(),
             confirmPassword: $("#confirmPassword").val(),
-            phone: $("#phone").val(),
-            goal: $("#goal").val()
+
+            age: $('input:radio[name=age]:checked').val(),
+            goal: $('input:radio[name=goal]:checked').val(),
+            gender: $('input:radio[name=gender]:checked').val()
         };
 
         // Send the data via a POST request
@@ -115,39 +126,9 @@ $(document).ready(function () {
         loginUser(loginData);
     });
 
-    // check for the token in local storage and display appropraite UI
-    const token = localStorage.getItem('token');
-    const loginContainer = $("#loginContainer");
-    const newuserContainer = $("#newuserContainer");
-    const logoutContainer = $("#logoutContainer");
-    const wrapper = $(".wrapper");
-
-    if (token) {
-        // user is logged in
-        loginContainer.hide();
-        newuserContainer.hide();
-        logoutContainer.show();
-        wrapper.append("<h3> Logged in</h3>");
-    } else {
-        // user is not logged in
-        loginContainer.show();
-        newuserContainer.show();
-        logoutContainer.hide();
-    }
-
     // handle logout
-    $('#logoutButton').on('click', function () {
-        // remove the token from local storage
-        localStorage.removeItem('token');
-
-        // hide the logout button and message
-        logoutContainer.hide();
-        wrapper.find("h3:contains('Logged in')").remove();
-
-        // show the login form
-        loginContainer.show();
-        newuserContainer.show();
-        console.log("refreshing..")
-        location.reload('');
+    $('#logoutButton').on('click', function (event) {
+        event.preventDefault();
+        logoutUser();
     });
 });
