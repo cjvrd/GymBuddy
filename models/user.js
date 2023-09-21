@@ -2,11 +2,11 @@ let client = require('../dbConnection');
 const bcrypt = require('bcrypt');
 let collection = client.db().collection('User');
 
-function postUser(user, callback){ //this function can probably be removed
-    collection.insertOne(user, callback);
-};
+// function postUser(user, callback){ //this function can probably be removed
+//     collection.insertOne(user, callback);
+// };
 
-function getAllUsers(callback){ //this can probably be removed
+function getAllUsers(callback){
     collection.find({}).toArray(callback);
 };
 
@@ -33,4 +33,4 @@ function findUserByEmail(email, callback){
     collection.findOne({email: email}, callback);
 };
 
-module.exports = {getAllUsers, postUser, createUser, findUserByEmail};
+module.exports = {getAllUsers, createUser, findUserByEmail};

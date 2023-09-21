@@ -92,23 +92,23 @@ const signIn = (req, res) => { //finds user data in DB
     });
 };
 
-const postUser = (req, res) => { //can probably remove this function
-    let user = req.body;
-    User.postUser(user, (err, result) => {
-        if (!err) {
-            res.json({
-                statusCode: 201,
-                data: result,
-                message: 'User registered successfully'
-            });
-        } else {
-            res.json({
-                statusCode: 500,
-                message: 'Error registering user'
-            });
-        };
-    });
-};
+// const postUser = (req, res) => { //can probably remove this function
+//     let user = req.body;
+//     User.postUser(user, (err, result) => {
+//         if (!err) {
+//             res.json({
+//                 statusCode: 201,
+//                 data: result,
+//                 message: 'User registered successfully'
+//             });
+//         } else {
+//             res.json({
+//                 statusCode: 500,
+//                 message: 'Error registering user'
+//             });
+//         };
+//     });
+// };
 
 
 const getAllUsers = (req, res) => { //can probably remove this function
@@ -128,4 +128,4 @@ const getAllUsers = (req, res) => { //can probably remove this function
     });
 };
 
-module.exports = {postUser, getAllUsers, signUp, signIn};
+module.exports = {getAllUsers, signUp, signIn};

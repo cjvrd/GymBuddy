@@ -37,7 +37,7 @@ describe('Test SignUp API', function() {
 
             // Check the response status code
             expect(response.status).to.equal(201);
-
+            
             // Check the response message for successful registration
             expect(response.data.message).to.equal('User registered successfully');
         } catch (error) {
