@@ -53,7 +53,7 @@ async function loginUser(loginData) {
             window.location.href = '/details.html';
 
         } else {
-            alert('Login failed. ' + (data.message || '')); //this is not working, not sure how to fix, i think it gets stuck at line 44 before moving on
+            alert('Login failed. ' + (data.message || '')); //this is not working, not sure how to fix, i think it gets stuck at line 44 before moving on (christian)
         }
     }
 
@@ -76,7 +76,7 @@ function checkPasswordsMatch() {
     let confirmPassword = $('#confirmPassword').val();
 
     // Check if passwords match
-    if (password !== confirmPassword) { //this will need to be altered so that the form doesn't submit if passwords dont match
+    if (password !== confirmPassword) { //this will need to be altered so that the form doesn't submit if passwords dont match (christian)
         // M.toast({ html: 'Passwords do not match!' }); 
         alert('Password does not match! Please try again'); //this needs to be changed to something more dynamic in the form
         $('#confirmPassword').addClass('invalid'); //this doesnt work, needs to be fixed
@@ -93,7 +93,7 @@ $(document).ready(function () {
     $('#confirmPassword').on('blur', checkPasswordsMatch);
 
     // Attach event to handle form submission
-    $('#signupForm').on('submit', function (event) {  //if passwords dont match function, break, else continue
+    $('#signupForm').on('submit', function (event) {  //if passwords dont match function, break, else continue (christian)
         event.preventDefault();
 
         // Gather form data and assign to user variable
