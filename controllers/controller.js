@@ -59,7 +59,7 @@ const signIn = (req, res) => { //finds user data in DB
     let {email, password} = req.body;
     User.findUserByEmail(email, (err, user) => {
         if(err || !user){
-            return res.status(400).json({message: 'User not found'}); //need these messages to display as an alert when failed log in occurs
+            return res.status(400).json({message: 'User not found'}); //need these messages to display as an alert when failed log in occurs (christian)
         }; 
 
         // compare entered password to password in DB

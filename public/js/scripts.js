@@ -14,7 +14,7 @@ async function signupUser(user) {
             throw new Error("Received non-JSON response");
         }
 
-        const result = await response.json(); //can this variable in signup and login be aligned?  one is data, one is result
+        const result = await response.json(); //can this variable in signup and login be aligned?  one is data, one is result (christian)
 
         if (result.statusCode === 201) {
             console.log('User post successful'); 
@@ -44,7 +44,7 @@ async function loginUser(loginData) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const data = await response.json();  //can this variable in signup and login be aligned? one is data, one is result
+        const data = await response.json();  //can this variable in signup and login be aligned? one is data, one is result (christian)
 
         if (data && data.token) { //assign data to local storage, send user to details page (successfully logged in)
             localStorage.setItem('token', data.token);
@@ -78,7 +78,7 @@ function checkPasswordsMatch() {
     // Check if passwords match
     if (password !== confirmPassword) { //this will need to be altered so that the form doesn't submit if passwords dont match (christian)
         // M.toast({ html: 'Passwords do not match!' }); 
-        alert('Password does not match! Please try again'); //this needs to be changed to something more dynamic in the form
+        alert('Password does not match! Please try again'); //this needs to be changed to something more dynamic in the form (christian)
         $('#confirmPassword').addClass('invalid'); //this doesnt work, needs to be fixed
     } else {
         $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
