@@ -1,10 +1,10 @@
 let User = require('../models/user.js');
-let Cycle = require('../models/cycle')
+let Cycle = require('../models/cycle');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const secret = 'SECRET_KEY';
 
-const signUp = (req, res) => {
+const signUp = (req, res) => { 
     let user = req.body;
 
     // checking if email already exists
@@ -14,7 +14,7 @@ const signUp = (req, res) => {
                 statusCode: 500,
                 message: 'Server error when checking email'
             })
-        }
+        };
 
         // if a user with the given email is found
         if (existingUser) {
@@ -22,7 +22,8 @@ const signUp = (req, res) => {
                 statusCode: 400,
                 message: 'Email already in use'
             });
-        }
+        };
+
         // creating the new user
         User.createUser(user, (err, result) => {
             if(err){
@@ -41,7 +42,7 @@ const signUp = (req, res) => {
                         message: 'Server error when creating cycle for user'
                     })
                 }
-                console.log(cycleResult)
+                // console.log(cycleResult)
 
                 res.json({
                     statusCode: 201,
@@ -54,13 +55,14 @@ const signUp = (req, res) => {
     });
 };
 
-const signIn = (req, res) => {
+const signIn = (req, res) => { //finds user data in DB
     let {email, password} = req.body;
     User.findUserByEmail(email, (err, user) => {
         if(err || !user){
-            return res.status(400).json({message: 'User not found'});
-        }
-        // compare passwords
+            return res.status(400).json({message: 'User not found'}); //need these messages to display as an alert when failed log in occurs
+        }; 
+
+        // compare entered password to password in DB
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if(err || !isMatch){
                 return res.status(400).json({message: 'Incorrect password'});
@@ -70,8 +72,9 @@ const signIn = (req, res) => {
             Cycle.getCyclesForUser(user._id, (err, cycles) => {
                 if(err) {
                     return res.status(500).json({message: 'Error fetching cycles'});
-                }
+                };
                 // console.log(JSON.stringify(cycles, null, 2));
+
                 // if passwords match, create a JWT
                 const token = jwt.sign({id: user._id, email: user.email}, secret, {
                     expiresIn: '1h'
@@ -84,12 +87,12 @@ const signIn = (req, res) => {
                     cycles: cycles,
                     message: 'Logged in successfully'
                 });
-            })
+            });
         });
     });
 };
 
-const postUser = (req, res) => {
+const postUser = (req, res) => { //can probably remove this function
     let user = req.body;
     User.postUser(user, (err, result) => {
         if (!err) {
@@ -103,12 +106,12 @@ const postUser = (req, res) => {
                 statusCode: 500,
                 message: 'Error registering user'
             });
-        }
+        };
     });
 };
 
 
-const getAllUsers = (req, res) => {
+const getAllUsers = (req, res) => { //can probably remove this function
     User.getAllUsers((err, result) => {
         if (!err) {
             res.json({
@@ -121,7 +124,7 @@ const getAllUsers = (req, res) => {
                 statusCode: 500,
                 message: 'Error fetching users'
             });
-        }
+        };
     });
 };
 
