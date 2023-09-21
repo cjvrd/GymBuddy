@@ -14,15 +14,14 @@ async function signupUser(user) {
             throw new Error("Received non-JSON response");
         }
 
-        const result = await response.json();
+        const result = await response.json(); //can this variable in signup and login be aligned?  one is data, one is result (christian)
 
         if (result.statusCode === 201) {
-            console.log('User post successful'); //once user post succesful, need to be redirected to login page
-            window.location.href = './';
+            console.log('User post successful'); 
+            window.location.href = './'; //once user post succesful redirect to login page
             alert("You have successfully signed up! Please log in to continue.");
         } else {
-            // alert('Signup failed. ' + (result.message || ''));
-            M.toast({ html: 'Signup failed. ' + (result.message || '') });
+            alert('Signup failed. ' + (result.message || ''));
         }
     } catch (err) {
         alert('Failed to signup. Please try again.');
@@ -33,7 +32,7 @@ async function signupUser(user) {
 // POST request for login using fetch
 async function loginUser(loginData) {
     try {
-        const response = await fetch('/signin', {
+        const response = await fetch('/signin', { //fetch login data
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -45,16 +44,16 @@ async function loginUser(loginData) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data = await response.json();  //can this variable in signup and login be aligned? one is data, one is result (christian)
 
-        if (data && data.token) {
+        if (data && data.token) { //assign data to local storage, send user to details page (successfully logged in)
             localStorage.setItem('token', data.token);
-            localStorage.setItem('userData', JSON.stringify(data.user))
-            localStorage.setItem('userCycles', JSON.stringify(data.cycles))
-            window.location.href = '/details.html'
+            localStorage.setItem('userData', JSON.stringify(data.user));
+            localStorage.setItem('userCycles', JSON.stringify(data.cycles));
+            window.location.href = '/details.html';
 
         } else {
-            alert("Error loggin in");
+            alert('Login failed. ' + (data.message || '')); //this is not working, not sure how to fix, i think it gets stuck at line 44 before moving on (christian)
         }
     }
 
@@ -65,9 +64,10 @@ async function loginUser(loginData) {
 
 //logout function
 function logoutUser() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('token'); //removes jwt and user data from local storage
     localStorage.removeItem('userData');
-    window.location.href = './';
+    localStorage.removeItem('userCycles');
+    window.location.href = './'; //returns user to index (login page)
 }
 
 // This function checks if the passwords match
@@ -76,9 +76,10 @@ function checkPasswordsMatch() {
     let confirmPassword = $('#confirmPassword').val();
 
     // Check if passwords match
-    if (password !== confirmPassword) {
-        M.toast({ html: 'Passwords do not match!' }); //will need to be changed
-        $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
+    if (password !== confirmPassword) { //this will need to be altered so that the form doesn't submit if passwords dont match (christian)
+        // M.toast({ html: 'Passwords do not match!' }); 
+        alert('Password does not match! Please try again'); //this needs to be changed to something more dynamic in the form (christian)
+        $('#confirmPassword').addClass('invalid'); //this doesnt work, needs to be fixed
     } else {
         $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
     }
@@ -92,17 +93,17 @@ $(document).ready(function () {
     $('#confirmPassword').on('blur', checkPasswordsMatch);
 
     // Attach event to handle form submission
-    $('#signupForm').on('submit', function (event) {
+    $('#signupForm').on('submit', function (event) {  //if passwords dont match function, break, else continue (christian)
         event.preventDefault();
 
-        // Gather form data
+        // Gather form data and assign to user variable
         const user = {
             fullName: $("#fullName").val(),
             email: $("#email").val(),
             password: $("#password").val(),
             confirmPassword: $("#confirmPassword").val(),
 
-            age: $('input:radio[name=age]:checked').val(), //this needed to be changed, because for the radios to work, ids need to be different for each box
+            age: $('input:radio[name=age]:checked').val(),
             goal: $('input:radio[name=goal]:checked').val(),
             gender: $('input:radio[name=gender]:checked').val()
         };
