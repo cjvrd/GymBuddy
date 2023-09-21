@@ -46,7 +46,6 @@
    
    4.5 Workout Tracking
    
-   4.6 AI Chatbot Interaction (optional)
    
 
 9. Non-functional Requirements
@@ -111,7 +110,6 @@
     - Program Generation
     - Guided Workouts
     - Progress Tracking
-    - AI Chatbot Interaction (optional)
 
 **3. External Interfaces**
 
@@ -141,7 +139,6 @@
     4.5 Workout Tracking
     Users can track workout progress, recording sets, reps, weights, and other details.
 
-    4.6 AI Chatbot Interaction (optional)
 
 **5. Non-functional Requirements**
 
