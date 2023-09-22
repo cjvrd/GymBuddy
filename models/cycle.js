@@ -20,7 +20,7 @@ function createCycleForUser(user, callback) {
 
 function pickProgram(age, goal) { //this function takes in form data and assigns a program according to selection of age+goal
     // for old users
-    if (age === "old") { //can probably change this to a switch so it is a bit cleaner
+    if (age === "old") { //can probably change this to a switch so it is a bit cleaner //also write test for this (christian)
         if (goal === "buildStrength") {
             return trainingPrograms.oldBuildStrength;
         } else if (goal === "loseWeight") {
