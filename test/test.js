@@ -13,7 +13,7 @@ const signUpData = {
 };
 
 const signInData = {
-    email: 'john.doe@example.com',
+    email: 'john@example.com',
     password: 'password123'
 };
 
