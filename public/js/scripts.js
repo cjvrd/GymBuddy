@@ -51,7 +51,19 @@ async function loginUser(loginData) {
         const data = await response.json();  //can this variable in signup and login be aligned? one is data, one is result (christian)
 
         if (data && data.token) { //assign data to local storage, send user to details page (successfully logged in)
+            
+            // emit 'user-login' upon successful login
             socket.emit('user-login', loginData.email);
+
+            // listen for login success notification
+            socket.on('user-login-success', (message) => {
+                console.log(message);  // e.g., "Welcome, user@email.com"
+            });
+            // listen for logout success notification
+            socket.on('user-logout-success', (message) => {
+                console.log(message);  // e.g., "Goodbye, user@email.com"
+            });
+
             localStorage.setItem('email', loginData.email);
 
             localStorage.setItem('token', data.token);
