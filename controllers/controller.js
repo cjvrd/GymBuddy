@@ -59,7 +59,7 @@ const signIn = (req, res) => { //finds user data in DB
     let {email, password} = req.body;
     User.findUserByEmail(email, (err, user) => {
         if(err || !user){
-            return res.status(400).json({message: 'User not found'}); //need these messages to display as an alert when failed log in occurs (christian)
+            return res.status(400).json({message: 'User not found'});
         }; 
 
         // compare entered password to password in DB
@@ -92,26 +92,7 @@ const signIn = (req, res) => { //finds user data in DB
     });
 };
 
-// const postUser = (req, res) => { //can probably remove this function
-//     let user = req.body;
-//     User.postUser(user, (err, result) => {
-//         if (!err) {
-//             res.json({
-//                 statusCode: 201,
-//                 data: result,
-//                 message: 'User registered successfully'
-//             });
-//         } else {
-//             res.json({
-//                 statusCode: 500,
-//                 message: 'Error registering user'
-//             });
-//         };
-//     });
-// };
-
-
-const getAllUsers = (req, res) => { //can probably remove this function
+const getAllUsers = (req, res) => { 
     User.getAllUsers((err, result) => {
         if (!err) {
             res.json({
