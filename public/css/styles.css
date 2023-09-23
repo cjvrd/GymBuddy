@@ -11,9 +11,17 @@ body {
     font-family: League Spartan, sans-serif;
 }
 
-.border-class
-{
-  border:thin black solid;
-  margin:20px;
-  padding:20px;
+.nav-link {
+    color:#fff !important;
+    background-color: #212529 !important;
+}
+
+.nav-link:hover {
+    color: #fff !important;
+    background-color: #424649 !important;
+}
+
+.nav-link.active {
+    color:#fff !important;
+    background-color: #424649 !important;
 }
