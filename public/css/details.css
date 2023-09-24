@@ -1,0 +1,27 @@
+body {
+    background-image: linear-gradient(to right, rgb(255, 221, 0), rgb(255, 106, 0) );
+}
+
+#GymBuddyTitle {
+    text-align: center;
+    color: whitesmoke;
+    text-shadow: 2px 2px 5px black;
+    font-size: 60px;
+    font-weight: bold;
+    font-family: League Spartan, sans-serif;
+}
+
+.nav-link {
+    color:#fff !important;
+    background-color: #212529 !important;
+}
+
+.nav-link:hover {
+    color: #fff !important;
+    background-color: #424649 !important;
+}
+
+.nav-link.active {
+    color:#fff !important;
+    background-color: #424649 !important;
+}
