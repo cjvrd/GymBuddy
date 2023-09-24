@@ -21,52 +21,32 @@
 
     <!-- sign up form -->
     <div class="container">
-        <form id="signupForm" class="needs-validation" novalidate>
+        <form id="signupForm">
             <div class="row justify-content-center" id="signUp">
                 <div class="col-sm-9">
-                    <!-- account details -->
+                    <!-- account details -->    
                     <p class="text-white text-center fs-4">Enter new account details:</p>
 
                     <div class="form-floating shadow mb-1">
-                      
-                        <input type="text" class="form-control" id="fullName" name="name" placeholder="Full Name" required>
+                        <input type="text" class="form-control" id="fullName" name="name" placeholder="firstname">
                         <label for="fullName">Full Name:</label>
-                        <div class="invalid-feedback">
-                            Please enter your full name.
-                        </div>
-
                     </div>
 
                     <div class="form-floating shadow mb-1">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="email@email.com">
                         <label for="email">Email Address:</label>
-                        <div class="invalid-feedback">
-                            Please enter a valid email address.
-                        </div>
                     </div>
 
                     <div class="form-floating shadow mb-1">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" pattern="[a-zA-Z0-9]+" required>
-                        <label for="username">Username:</label>
-                        <div class="invalid-feedback">
-                            Please enter a valid username (only letters and numbers are allowed).
-                        </div>
-                    </div>
-
-                    <div class="form-floating shadow mb-1">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" required>
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="password">
                         <label for="password">Password:</label>
-                        <div class="invalid-feedback">
-                            Please enter a password with at least 8 characters.
-                        </div>
                     </div>
 
                     <div class="form-floating shadow mb-1">
-                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                            placeholder="password">
                         <label for="confirmPassword">Confirm Password:</label>
-                        <div class="invalid-feedback">
-                            Please confirm your password.
-                        </div>
                     </div>
 
                     <!-- user details for program -->
@@ -76,64 +56,58 @@
                         <p class="text-white fs-5"> How old are you? </p>
                         <!-- age group selector -->
                         <div class="btn-group">
-                            <input type="radio" class="btn-check" name="age" id="young" value="young" checked required>
+                            <input type="radio" class="btn-check" name="age" id="young" value="young" checked>
                             <label class="btn btn-dark" for="young">16-39</label>
 
-                            <input type="radio" class="btn-check" name="age" id="middle" value="middle" required>
+                            <input type="radio" class="btn-check" name="age" id="middle" value="middle">
                             <label class="btn btn-dark" for="middle">40-65</label>
 
-                            <input type="radio" class="btn-check" name="age" id="old" value="old" required>
+                            <input type="radio" class="btn-check" name="age" id="old" value="old">
                             <label class="btn btn-dark" for="old">65+</label>
-                        </div>
-                        <div class="invalid-feedback">
-                            Please select an age group.
                         </div>
                     </div>
 
                     <br>
-
+                    
                     <div class="wrapper text-center d-grid" id="gender">
                         <p class="text-white fs-5"> What is your gender?</p>
                         <!-- gender selector -->
                         <div class="btn-group">
-                            <input type="radio" class="btn-check" name="gender" id="male" value="male" checked required>
+                            <input type="radio" class="btn-check" name="gender" id="male" value="male" checked>
                             <label class="btn btn-dark" for="male">Male</label>
 
-                            <input type="radio" class="btn-check" name="gender" id="female" value="female" required>
+                            <input type="radio" class="btn-check" name="gender" id="female" value="female">
                             <label class="btn btn-dark" for="female">Female</label>
 
-                            <input type="radio" class="btn-check" name="gender" id="other" value="other" required>
+                            <input type="radio" class="btn-check" name="gender" id="other" value="other">
                             <label class="btn btn-dark" for="other">Other</label>
-                        </div>
-                        <div class="invalid-feedback">
-                            Please select your gender.
                         </div>
                     </div>
 
                     <br>
 
                     <div class="wrapper text-center d-grid" id="goal">
+
                         <p class="text-white fs-5"> What are your training goals?</p>
                         <!-- goals selector -->
                         <div class="btn-group">
-                            <input type="radio" class="btn-check" name="goal" id="buildMuscle" value="buildMuscle" checked required>
+                            <input type="radio" class="btn-check" name="goal" id="buildMuscle" value="buildMuscle"
+                                checked>
                             <label class="btn btn-dark" for="buildMuscle">Build Muscle</label>
 
-                            <input type="radio" class="btn-check" name="goal" id="buildStrength" value="buildStrength" required>
+                            <input type="radio" class="btn-check" name="goal" id="buildStrength" value="buildStrength">
                             <label class="btn btn-dark" for="buildStrength">Build Strength</label>
 
-                            <input type="radio" class="btn-check" name="goal" id="loseWeight" value="loseWeight" required>
+                            <input type="radio" class="btn-check" name="goal" id="loseWeight" value="loseWeight">
                             <label class="btn btn-dark" for="loseWeight">Lose Weight</label>
                         </div>
-                        <div class="invalid-feedback">
-                            Please select a training goal.
-                        </div>
+
                     </div>
 
                     <br>
                     <!-- submit button -->
                     <div class="d-grid justify-content-center">
-                        <button type="submit" class="btn btn-dark" id="submitButton" onclick="return validateForm()">Submit</button>
+                        <button type="submit" class="btn btn-dark" id="submitButton">Submit</button>
                     </div>
 
                     <br>
@@ -151,35 +125,6 @@
         crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
 
-    <script>
-        // Validate the signup form
-        function validateForm() {
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            // Check if the full name is at least 3 characters
-            if (fullName.length < 3) {
-                alert('Full name must be at least 3 characters long.');
-                return false;
-            }
-
-            // Check if the email is valid
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('Please enter a valid email address.');
-                return false;
-            }
-
-            // Check if the password is at least 8 characters
-            if (password.length < 8) {
-                alert('Password must be at least 8 characters long.');
-                return false;
-            }
-
-            return true;
-        }
-    </script>
 </body>
 
 </html>
