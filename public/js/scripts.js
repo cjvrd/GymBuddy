@@ -80,7 +80,7 @@ async function loginUser(loginData) {
 };
 
 //logout function
-function logoutUser() {
+window.logoutUser = function() {
     localStorage.removeItem('token'); //removes jwt and user data from local storage
     localStorage.removeItem('userData');
     localStorage.removeItem('userCycles');
