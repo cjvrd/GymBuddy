@@ -1,69 +1,95 @@
-// const clickMe = () => {
-//     alert("Thanks for clicking. Hope you have a nice day!")
-// }
+// POST request using fetch
+const socket = io.connect('http://localhost:3000'); //should this be in controller or models?
 
-// const addCards = (items) => {
-//     items.forEach(item => {
-//     let itemToAppend =
-//     '<div class="card"><div class="card-image waves-effect waves-block waves-light"><img class="activator" src="'+item.path+'">'+
-//     '</div><div class="card-content">'+
-//     '<span class="card-title activator grey-text text-darken-4">'+item.title+'<i class="material-icons right">more_vert</i></span><p><a href="#">'+item.link+'</a></p></div>'+
-//     '<div class="card-reveal">'+
-//     '<span class="card-title grey-text text-darken-4">'+item.title+'<i class="material-icons right">close</i></span>'+
-//     '<p class="card-text">'+item.desciption+'</p>'+
-//     '</div></div>';
+async function signupUser(user) {
+    try {
+        const response = await fetch('/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        });
 
-//     $(".cards-wrapper").append(itemToAppend)
-//     });
-// }
+        // ensure the response has the JSON content type before parsing it as JSON
+        if (!response.headers.get("content-type") || !response.headers.get("content-type").includes("application/json")) {
+            throw new Error("Received non-JSON response");
+        }
 
-const submitForm = (event) => {
-    event.preventDefault();
+        const data = await response.json();
 
-    let password = $('#password').val();
-    let confirmPassword = $('#confirmPassword').val();
+        if (data.statusCode === 201) {
+            console.log('User post successful');
+            window.location.href = './'; //once user post succesful redirect to login page
+            alert("You have successfully signed up! Please log in to continue.");
+        } else {
+            alert('Signup failed. ' + (data.message || ''));
+        }
+    } catch (err) {
+        alert('Failed to signup. Please try again.');
+        console.error('Signup Error:', err);
+    }
+};
 
-    // Check if passwords match
-    if (password !== confirmPassword) {
-        M.toast({ html: 'Passwords do not match!' });
-        return; // Exit the function if passwords do not match
+// POST request for login using fetch
+async function loginUser(loginData) {
+    try {
+        const response = await fetch('/signin', { //fetch login data
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(loginData)
+        });
+
+        // if (!response.ok) {
+        //     throw new Error(`HTTP error! Status: ${response.status}`);
+        // } dont think we need this
+
+        const data = await response.json();
+
+        if (data && data.token) { //assign data to local storage, send user to details page (successfully logged in)
+
+            // emit 'user-login' upon successful login
+            socket.emit('user-login', loginData.email);
+
+            // listen for login success notification
+            socket.on('user-login-success', (message) => {
+                console.log(message);  // e.g., "Welcome, user@email.com"
+            });
+            // listen for logout success notification
+            socket.on('user-logout-success', (message) => {
+                console.log(message);  // e.g., "Goodbye, user@email.com"
+            });
+
+            localStorage.setItem('email', loginData.email);
+
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userData', JSON.stringify(data.user));
+            localStorage.setItem('userCycles', JSON.stringify(data.cycles));
+            window.location.href = '/details.html';
+
+        } else {
+            alert('Login failed. ' + (data.message || ''));
+        }
     }
 
-    let formData = {};
-    formData.fullName = $('#fullName').val();
-    formData.email = $('#subTitle').val();
-    formData.phone = $('#phone').val();
-    formData.goal = $('#goal').val();
-    formData.password = password; // Assuming you also want to send the password
+    catch (err) {
+        console.error('Login Error:', err);
+    }
+};
 
-    postUser(formData);
+//logout function
+function logoutUser() {
+    localStorage.removeItem('token'); //removes jwt and user data from local storage
+    localStorage.removeItem('userData');
+    localStorage.removeItem('userCycles');
+    let userEmail = localStorage.getItem('email');
+    if (userEmail) {
+        socket.emit('user-logout', userEmail);
+    }
+    window.location.href = './'; //returns user to index (login page)
 }
-
-
-// POST request 
-function postUser(user) {
-    console.log("in  postUser")
-    $.ajax({
-        url: '/api/users',
-        type: 'POST',
-        data: user,
-        success: function (result) {
-            if (result.statusCode === 201) {
-                alert('user post successful')
-            };
-        }
-    });
-};
-
-// GET request
-function getAllUsers() {
-    $.get('/api/users', (response) => {
-        if (response.statusCode === 200) {
-            addCards(response.data)
-
-        }
-    });
-};
 
 // This function checks if the passwords match
 function checkPasswordsMatch() {
@@ -72,13 +98,13 @@ function checkPasswordsMatch() {
 
     // Check if passwords match
     if (password !== confirmPassword) {
-        M.toast({ html: 'Passwords do not match!' });
-        $('#confirmPassword').addClass('invalid'); // Adds a red underline for materializecss
+        $('#confirmPassword').addClass('is-invalid'); //adds red x if not matching
+        return false;
     } else {
-        $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
+        $('#confirmPassword').removeClass('is-invalid').addClass('is-valid'); // Adds a green tick if they match
+        return true;
     }
 };
-
 
 $(document).ready(function () {
     $('.materialbox').materialbox();
@@ -87,11 +113,54 @@ $(document).ready(function () {
     // Attach the blur event to the confirmPassword field
     $('#confirmPassword').on('blur', checkPasswordsMatch);
 
-    $('#formSubmit').click(() => {
-        submitForm();
-        console.log("formSubmit")
-    })
-    $('.modal').modal();
-    getAllUsers();
+    // Attach event to handle form submission
+    $('#signupForm').on('submit', function (event) {
+        event.preventDefault();
+        if (checkPasswordsMatch() === false) {
+            alert('Password does not match! Please try again');
+        }
+        else {
+            // Gather form data and assign to user variable
+            const user = {
+                fullName: $("#fullName").val(),
+                email: $("#email").val(),
+                password: $("#password").val(),
+                confirmPassword: $("#confirmPassword").val(),
 
-})
+                age: $('input:radio[name=age]:checked').val(),
+                goal: $('input:radio[name=goal]:checked').val(),
+                gender: $('input:radio[name=gender]:checked').val()
+            };
+
+            // Send the data via a POST request
+            signupUser(user);
+        }
+    });
+
+    // Login form submission event
+    $('#loginForm').on('submit', function (event) {
+        event.preventDefault();
+
+        // Gather form data for login
+        const loginData = {
+            email: $("#email").val(),
+            password: $("#password").val()
+        };
+
+        // Send the data via a POST request for login
+        loginUser(loginData);
+    });
+
+    // handle logout
+    $('#logoutButton').on('click', function (event) {
+        event.preventDefault();
+        logoutUser();
+    });
+});
+socket.on('user-login', (email) => {
+    alert(`${email} has connected`);
+});
+
+socket.on('user-logout', (email) => {
+    alert(`${email} has disconnected`);
+});
