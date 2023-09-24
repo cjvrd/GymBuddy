@@ -1,6 +1,5 @@
 // POST request using fetch
-const socket = io.connect('http://localhost:3000');
-
+const socket = io.connect('http://localhost:3000'); //should this be in controller or models?
 
 async function signupUser(user) {
     try {
@@ -20,7 +19,7 @@ async function signupUser(user) {
         const data = await response.json();
 
         if (data.statusCode === 201) {
-            console.log('User post successful'); 
+            console.log('User post successful');
             window.location.href = './'; //once user post succesful redirect to login page
             alert("You have successfully signed up! Please log in to continue.");
         } else {
@@ -50,7 +49,7 @@ async function loginUser(loginData) {
         const data = await response.json();
 
         if (data && data.token) { //assign data to local storage, send user to details page (successfully logged in)
-            
+
             // emit 'user-login' upon successful login
             socket.emit('user-login', loginData.email);
 
@@ -71,7 +70,7 @@ async function loginUser(loginData) {
             window.location.href = '/details.html';
 
         } else {
-            alert('Login failed. ' + (data.message || '')); //this is not working, not sure how to fix, i think it gets stuck at line 44 before moving on (christian)
+            alert('Login failed. ' + (data.message || ''));
         }
     }
 
@@ -82,14 +81,13 @@ async function loginUser(loginData) {
 
 //logout function
 function logoutUser() {
-    
     localStorage.removeItem('token'); //removes jwt and user data from local storage
     localStorage.removeItem('userData');
     localStorage.removeItem('userCycles');
     let userEmail = localStorage.getItem('email');
-if (userEmail) {
-    socket.emit('user-logout', userEmail);
-}
+    if (userEmail) {
+        socket.emit('user-logout', userEmail);
+    }
     window.location.href = './'; //returns user to index (login page)
 }
 
@@ -118,24 +116,22 @@ $(document).ready(function () {
     // Attach event to handle form submission
     $('#signupForm').on('submit', function (event) {
         event.preventDefault();
-        if (checkPasswordsMatch() === false)
-        {
+        if (checkPasswordsMatch() === false) {
             alert('Password does not match! Please try again');
         }
-        else
-        {   
+        else {
             // Gather form data and assign to user variable
             const user = {
                 fullName: $("#fullName").val(),
                 email: $("#email").val(),
                 password: $("#password").val(),
                 confirmPassword: $("#confirmPassword").val(),
-    
+
                 age: $('input:radio[name=age]:checked').val(),
                 goal: $('input:radio[name=goal]:checked').val(),
                 gender: $('input:radio[name=gender]:checked').val()
             };
-    
+
             // Send the data via a POST request
             signupUser(user);
         }
