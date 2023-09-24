@@ -1,6 +1,5 @@
 // POST request using fetch
-const socket = io.connect('http://localhost:3000');
-
+const socket = io.connect('http://localhost:3000'); //should this be in controller or models?
 
 async function signupUser(user) {
     try {
@@ -17,15 +16,14 @@ async function signupUser(user) {
             throw new Error("Received non-JSON response");
         }
 
-        const result = await response.json(); //can this variable in signup and login be aligned?  one is data, one is result (christian)
+        const data = await response.json();
 
-        if (result.statusCode === 201) {
-            
-            console.log('User post successful'); 
+        if (data.statusCode === 201) {
+            console.log('User post successful');
             window.location.href = './'; //once user post succesful redirect to login page
             alert("You have successfully signed up! Please log in to continue.");
         } else {
-            alert('Signup failed. ' + (result.message || ''));
+            alert('Signup failed. ' + (data.message || ''));
         }
     } catch (err) {
         alert('Failed to signup. Please try again.');
@@ -44,14 +42,14 @@ async function loginUser(loginData) {
             body: JSON.stringify(loginData)
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        // if (!response.ok) {
+        //     throw new Error(`HTTP error! Status: ${response.status}`);
+        // } dont think we need this
 
-        const data = await response.json();  //can this variable in signup and login be aligned? one is data, one is result (christian)
+        const data = await response.json();
 
         if (data && data.token) { //assign data to local storage, send user to details page (successfully logged in)
-            
+
             // emit 'user-login' upon successful login
             socket.emit('user-login', loginData.email);
 
@@ -72,7 +70,7 @@ async function loginUser(loginData) {
             window.location.href = '/details.html';
 
         } else {
-            alert('Login failed. ' + (data.message || '')); //this is not working, not sure how to fix, i think it gets stuck at line 44 before moving on (christian)
+            alert('Login failed. ' + (data.message || ''));
         }
     }
 
@@ -83,14 +81,13 @@ async function loginUser(loginData) {
 
 //logout function
 function logoutUser() {
-    
     localStorage.removeItem('token'); //removes jwt and user data from local storage
     localStorage.removeItem('userData');
     localStorage.removeItem('userCycles');
     let userEmail = localStorage.getItem('email');
-if (userEmail) {
-    socket.emit('user-logout', userEmail);
-}
+    if (userEmail) {
+        socket.emit('user-logout', userEmail);
+    }
     window.location.href = './'; //returns user to index (login page)
 }
 
@@ -100,12 +97,12 @@ function checkPasswordsMatch() {
     let confirmPassword = $('#confirmPassword').val();
 
     // Check if passwords match
-    if (password !== confirmPassword) { //this will need to be altered so that the form doesn't submit if passwords dont match (christian)
-        // M.toast({ html: 'Passwords do not match!' }); 
-        alert('Password does not match! Please try again'); //this needs to be changed to something more dynamic in the form (christian)
-        $('#confirmPassword').addClass('invalid'); //this doesnt work, needs to be fixed
+    if (password !== confirmPassword) {
+        $('#confirmPassword').addClass('is-invalid'); //adds red x if not matching
+        return false;
     } else {
-        $('#confirmPassword').removeClass('invalid').addClass('valid'); // Adds a green underline if they match
+        $('#confirmPassword').removeClass('is-invalid').addClass('is-valid'); // Adds a green tick if they match
+        return true;
     }
 };
 
@@ -117,23 +114,27 @@ $(document).ready(function () {
     $('#confirmPassword').on('blur', checkPasswordsMatch);
 
     // Attach event to handle form submission
-    $('#signupForm').on('submit', function (event) {  //if passwords dont match function, break, else continue (christian)
+    $('#signupForm').on('submit', function (event) {
         event.preventDefault();
+        if (checkPasswordsMatch() === false) {
+            alert('Password does not match! Please try again');
+        }
+        else {
+            // Gather form data and assign to user variable
+            const user = {
+                fullName: $("#fullName").val(),
+                email: $("#email").val(),
+                password: $("#password").val(),
+                confirmPassword: $("#confirmPassword").val(),
 
-        // Gather form data and assign to user variable
-        const user = {
-            fullName: $("#fullName").val(),
-            email: $("#email").val(),
-            password: $("#password").val(),
-            confirmPassword: $("#confirmPassword").val(),
+                age: $('input:radio[name=age]:checked').val(),
+                goal: $('input:radio[name=goal]:checked').val(),
+                gender: $('input:radio[name=gender]:checked').val()
+            };
 
-            age: $('input:radio[name=age]:checked').val(),
-            goal: $('input:radio[name=goal]:checked').val(),
-            gender: $('input:radio[name=gender]:checked').val()
-        };
-
-        // Send the data via a POST request
-        signupUser(user);
+            // Send the data via a POST request
+            signupUser(user);
+        }
     });
 
     // Login form submission event
