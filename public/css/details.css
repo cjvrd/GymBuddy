@@ -1,0 +1,102 @@
+body, html{
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-image: linear-gradient(to right, rgb(255, 221, 0), rgb(255, 106, 0) );
+    height: 100vh;
+}
+
+#GymBuddyTitle {
+    text-align: center;
+    color: whitesmoke;
+    text-shadow: 2px 2px 5px black;
+    font-size: 45px;
+    font-weight: bold;
+    font-family: League Spartan, sans-serif;
+}
+
+.navbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 90px;
+    padding: 10px 10px 15px 10px;
+    background-image: linear-gradient(to right, rgb(255, 221, 0), rgb(255, 106, 0) );
+}
+
+
+.tab-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.739);
+    transition: background-color 0.3s;
+    border-radius: 20px;
+}
+
+.tab-button:hover {
+    background-color: gray;
+    color: white;
+}
+
+.tab-button.active {
+    background-color: #535353;
+    color: white;
+}
+
+.tab-content .tab-pane {
+    display: none;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.tab-content .tab-pane.active {
+    display: block;
+}
+.tab1-header {
+    margin-top: -5px;
+    margin-bottom: 40px;
+}
+
+.content{
+    background-image: linear-gradient(to bottom, #268bd99b, #0000004c);
+    border-radius: 20px;
+    color: white;
+    height: 70vh;
+}
+
+.cycle-status {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    height: 70%;
+}
+
+.progress-container {
+    width: 30px;
+    height: 100%;
+    background-color: #e0e0e077;
+    margin-right: 20px; /* Spacing between the progress bar and the text */
+    position: relative;
+    border-radius: 35px;
+    border: 1px solid white;
+}
+
+.progress-bar {
+    background-color: #e9eaeb;
+    position: absolute;
+    width: 100%;
+    bottom: 0; /* This will help us to fill the progress from bottom to top */
+    border-radius: 35px;
+}
+
+.progress-text {
+    font-size: 14px;
+}
+

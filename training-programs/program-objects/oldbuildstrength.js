@@ -31,6 +31,7 @@ const oldBuildStrength = {
           done: false
         },
       ],
+      done: false
     },
     {
       weekNumber: 2,
