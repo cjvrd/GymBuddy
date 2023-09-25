@@ -6,7 +6,7 @@ You must have the following installed in your device:
 - Git (https://git-scm.com/download/win)
 - VSCode (or any IDE of your choice)
 - NPM (https://nodejs.org/en/download)
-### Quick Start
+## Quick Start
 clone the repository:
 ```bash
 git clone https://github.com/cjvrd/GymBuddy.git
@@ -23,7 +23,18 @@ Then visit http://localhost:3000/ on your browser.
 
 ### You're all set! :rocket:
 You can signup for a new account, and start progressing in your workout!
-### Dependencies
+
+## Testing
+To run the testing, have two terminals open:
+in terminal 1:
+```bash
+npm run start
+```
+in terminal 2:
+```bash
+npm run test
+```
+## Dependencies
 ```json
   "dependencies": {
     "ajax": "^0.0.4",
