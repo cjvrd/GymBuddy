@@ -15,6 +15,12 @@ after downloading/cloning the project to your local device, go to /GymBuddy fold
 ```bash
 npm install
 ```
+in the same folder, run:
+```bash
+echo "JWT_SECRET=your_jwt_secret_value_here" > .env
+```
+(Note: JWT_SECRET is stored in .env which isn't uploaded to the repo; in production, JWT_SECRET value should be different than its value in development )
+
 then start the app:
 ```bash
 npm run start
