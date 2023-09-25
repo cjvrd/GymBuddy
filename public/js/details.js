@@ -53,11 +53,11 @@ $(document).ready(function () {
     progressText.innerHTML = "&nbsp;"+progressPercentage + "%";
 
     // redirecting to week page
-    // Select the .container element
-    const container = document.querySelector('.container');
+    // target the the element with ID "tab1"
+    const tab1 = document.getElementById('tab1');
 
-    // Add a click event listener to the .container element
-    container.addEventListener('click', function() {
+    // add a click event listener to the #tab1 element
+    tab1.addEventListener('click', function() {
         // Redirect to the desired page
         window.location.href = 'week1.html';
     });
