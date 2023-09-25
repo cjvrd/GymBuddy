@@ -5,7 +5,7 @@ const baseUrl = 'http://localhost:3000';
 
 const signUpData = {
     fullName: 'John Doe',
-    email: 'john@example.com',
+    email: 'john@example2.com',
     password: 'password123',
     age: 'middle',
     goal: 'buildStrength',
@@ -36,7 +36,7 @@ describe('Test SignUp API', function() {
             const response = await axios.post(`${baseUrl}/signup`, signUpData);
 
             // Check the response status code
-            expect(response.status).to.equal(201);
+            expect(response.data.statusCode).to.equal(201);
             
             // Check the response message for successful registration
             expect(response.data.message).to.equal('User registered successfully');
