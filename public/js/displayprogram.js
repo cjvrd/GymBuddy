@@ -30,29 +30,29 @@ function displayDay(days, tableId) {
 
         dayTableBody.appendChild(row);
     });
-}
+};
 
 // Display the exercises for each day depending on the week
 if (window.location.href.endsWith('/week1.html')) {
     displayDay(cycles[0].program.weeks[0].days[0], 'dayOneBody');
     displayDay(cycles[0].program.weeks[0].days[1], 'dayTwoBody');
     displayDay(cycles[0].program.weeks[0].days[2], 'dayThreeBody');
-}
+};
 
 if (window.location.href.endsWith('/week2.html')) {
     displayDay(cycles[0].program.weeks[1].days[0], 'dayOneBody');
     displayDay(cycles[0].program.weeks[1].days[1], 'dayTwoBody');
     displayDay(cycles[0].program.weeks[1].days[2], 'dayThreeBody');
-}
+};
 
 if (window.location.href.endsWith('/week3.html')) {
     displayDay(cycles[0].program.weeks[2].days[0], 'dayOneBody');
     displayDay(cycles[0].program.weeks[2].days[1], 'dayTwoBody');
     displayDay(cycles[0].program.weeks[2].days[2], 'dayThreeBody');
-}
+};
 
 if (window.location.href.endsWith('/week4.html')) {
     displayDay(cycles[0].program.weeks[3].days[0], 'dayOneBody');
     displayDay(cycles[0].program.weeks[3].days[1], 'dayTwoBody');
     displayDay(cycles[0].program.weeks[3].days[2], 'dayThreeBody');
-}
+};
