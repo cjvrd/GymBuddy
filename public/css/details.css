@@ -77,6 +77,10 @@ body {
     align-items: center; /* Center items vertically */
     height: 70%;
 }
+.container:hover {
+    cursor: pointer;
+}
+
 
 .progress-container {
     width: 30px;
