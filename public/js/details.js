@@ -10,11 +10,11 @@ $(document).ready(function () {
 
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Deactivate all buttons and panes
+            // deactivate all buttons and panes
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabPanes.forEach(pane => pane.classList.remove('active'));
 
-            // Activate clicked button and its corresponding pane
+            // activate clicked button and its corresponding pane
             button.classList.add('active');
             const targetPaneId = button.getAttribute('data-for');
             document.getElementById(targetPaneId).classList.add('active');
@@ -68,9 +68,10 @@ function calculateProgressByDays(cycles){
     let totalDays = 0;
     let CurrentWeekNumber = 0;
     let currentWeekDay = 0;
+    let currentDayExercise = 0;
     let dayFound = false;
     cycles[0].program.weeks.map(week =>{
-        console.log(week)
+        // console.log(week)
         if(week.done === true){
             CurrentWeekNumber++;
         }
@@ -83,7 +84,7 @@ function calculateProgressByDays(cycles){
     });
     CurrentWeekNumber++;
 
-    // find the current on-going day of the week
+    // find the current day of the week
     var currentWeekData = cycles[0].program.weeks.find(week => week.weekNumber === CurrentWeekNumber)
     currentWeekData.days.map(day => {
         if(day.done === true){
@@ -92,6 +93,16 @@ function calculateProgressByDays(cycles){
     })
     currentWeekDay++;
 
-    return ({completedDays, totalDays, CurrentWeekNumber, currentWeekDay});
+    // find the current exercise of the day
+    var currentDayData = currentWeekData.days.find(day => day.dayNumber === currentWeekDay);
+    currentDayData.exercises.map(exercise => {
+        if(exercise.done === true){
+            currentDayExercise++;
+        }
+    })
+    currentDayExercise++;
+
+
+    return ({completedDays, totalDays, CurrentWeekNumber, currentWeekDay, currentDayExercise});
 }
 
