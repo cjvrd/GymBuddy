@@ -51,6 +51,16 @@ $(document).ready(function () {
     // update text (assuming it's a simple percentage, adjust as needed)
     let progressText = document.querySelector('.progress-text');
     progressText.innerHTML = "&nbsp;"+progressPercentage + "%";
+
+    // redirecting to week page
+    // Select the .container element
+    const container = document.querySelector('.container');
+
+    // Add a click event listener to the .container element
+    container.addEventListener('click', function() {
+        // Redirect to the desired page
+        window.location.href = 'week1.html';
+    });
 });
 
 function calculateProgressByDays(cycles){
