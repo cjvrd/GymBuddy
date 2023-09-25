@@ -151,6 +151,15 @@ $(document).ready(function () {
         loginUser(loginData);
     });
 
+    // Check if user is logged in
+    if (localStorage.getItem('token') && localStorage.getItem('userData')) {
+        // If user is logged in, hide the login container
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('newuserContainer').style.display = 'none';
+
+        window.location.href = 'details.html';
+    }
+
     // handle logout
     $('#logoutButton').on('click', function (event) {
         event.preventDefault();
