@@ -76,7 +76,7 @@ const signIn = (req, res) => { //finds user data in DB
                 // console.log(JSON.stringify(cycles, null, 2));
 
                 // if passwords match, create a JWT
-                const token = jwt.sign({id: user._id, email: user.email}, secret, {
+                const token = jwt.sign({id: user._id, email: user.email}, process.env.JWT_SECRET, {
                     expiresIn: '1h'
                 });
 
