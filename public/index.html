@@ -48,6 +48,23 @@
                         <div class="d-grid">
                             <button type="submit" class="btn btn-dark">Login</button>
                         </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Chatbot Container -->
+        <div id="chatbot-container">
+            <div id="chat-header">
+                Chatbot
+                <span id="close-btn" onclick="toggleChatbot()">×</span>
+            </div>
+            <div id="chat-messages"></div>
+            <div id="message-input">
+                <input type="text" id="user-input" placeholder="Type a message..." />
+                <button id="send-btn" onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+        <button id="chatbot-btn" onclick="toggleChatbot()">Chat with us</button>
 
                     </form>
                 </div>
@@ -66,7 +83,7 @@
                 <a href="/signup.html" class="btn btn-dark">Sign Up Here</a>
             </div>
         </div>
-
+       
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"
             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -75,6 +92,7 @@
             crossorigin="anonymous"></script>
             <script src="/socket.io/socket.io.js"></script>
         <script src="js/scripts.js"></script>
+        
 </body>
 
 </html>

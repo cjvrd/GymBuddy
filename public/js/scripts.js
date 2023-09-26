@@ -173,3 +173,44 @@ socket.on('user-login', (email) => {
 socket.on('user-logout', (email) => {
     alert(`${email} has disconnected`);
 });
+
+function toggleChatbot() {
+    var chatbotContainer = document.getElementById('chatbot-container');
+    var chatbotButton = document.getElementById('chatbot-btn');
+    
+    // Check if the chatbot container is currently not displayed
+    if (chatbotContainer.style.display === 'none') {
+        // then display the chatbot container and hide the button
+        chatbotContainer.style.display = 'flex';
+        chatbotButton.style.display = 'none';
+    } else {
+        //  hide the chatbot container 
+        chatbotContainer.style.display = 'none';
+        chatbotButton.style.display = 'block';
+    }
+}
+
+function sendMessage() {
+    var userInput = document.getElementById('user-input').value;
+    var chatMessages = document.getElementById('chat-messages');
+    chatMessages.innerHTML += '<div>User: ' + userInput + '</div>';
+    
+    // Send the user's input to the server and get the bot's response
+    fetch('/chatbot', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: userInput })
+    })
+    .then(response => response.json())
+    .then(data => {
+        chatMessages.innerHTML += '<div>Bot: ' + data.message + '</div>';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        chatMessages.innerHTML += '<div>Error communicating with bot</div>';
+    });
+    
+    document.getElementById('user-input').value = '';
+}

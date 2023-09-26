@@ -4,10 +4,12 @@ const http = require('http');
 const socketIo = require('socket.io');
 const server = http.createServer(app);
 const io = socketIo(server);
+const axios = require('axios');
 require('dotenv').config();
 
-
-
+const OPENAI_API_KEY="" // provide the api_key
+const OpenAI = require('openai');
+const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
 var port = process.env.port || 3000;
 let router = require('./routers/router');
@@ -62,6 +64,38 @@ app.get('/signup', (req, res) => {
 //     console.log("App listening to: "+port)
 // });
 
+app.post('/chatbot', async (req, res) => {
+    const userMessage = req.body.message;
+    
+    try {
+        const chatCompletion = await openai.chat.completions.create({
+            messages: [{ role: 'user', content: userMessage }],
+            model: 'gpt-3.5-turbo',
+        });
+        
+        console.log("chatCompletion:", JSON.stringify(chatCompletion, null, 2));
+        
+        if (chatCompletion.choices && chatCompletion.choices.length > 0 && chatCompletion.choices[0].message.content) {
+            const botMessage = chatCompletion.choices[0].message.content.trim();
+            res.send({ message: botMessage });
+        } else {
+            console.log("No response received from OpenAI API");
+            res.status(500).send({ error: 'No response received from OpenAI API' });
+        }
+    } catch (err) {
+        if (err instanceof OpenAI.RateLimitError) {
+            console.log("Rate limit exceeded");
+            res.status(429).send({ error: 'Rate limit exceeded, please try again later' });
+        } else if (err instanceof OpenAI.APIError) {
+            console.log(err.status);
+            console.log(err.name);
+            console.log(err.headers);
+            res.status(500).send({ error: 'Error communicating with OpenAI API' });
+        } else {
+            throw err;
+        }
+    }
+});
 server.listen(port, () => {
     console.log(`App listening to: ${port}`);
 });
