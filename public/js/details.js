@@ -21,12 +21,6 @@ $(document).ready(function () {
         });
     });
 
-// handle logout
-    $('#logoutButton').on('click', function (event) {
-        event.preventDefault();
-        logoutUser();
-    });
-
     // calculating status in for dynamic values in tab1 content
     var cycles = JSON.parse(localStorage.getItem('userCycles'));
     var {completedDays, totalDays, CurrentWeekNumber, currentWeekDay} = calculateProgressByDays(cycles)

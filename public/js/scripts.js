@@ -80,8 +80,9 @@ async function loginUser(loginData) {
 };
 
 //logout function
-window.logoutUser = function() {
+window.logoutUser = function () {
     localStorage.removeItem('token'); //removes jwt and user data from local storage
+    localStorage.removeItem('email');
     localStorage.removeItem('userData');
     localStorage.removeItem('userCycles');
     let userEmail = localStorage.getItem('email');
@@ -107,9 +108,6 @@ function checkPasswordsMatch() {
 };
 
 $(document).ready(function () {
-    $('.materialbox').materialbox();
-    $('select').formSelect();
-
     // Attach the blur event to the confirmPassword field
     $('#confirmPassword').on('blur', checkPasswordsMatch);
 
@@ -159,13 +157,14 @@ $(document).ready(function () {
 
         window.location.href = 'details.html';
     }
-
-    // handle logout
-    $('#logoutButton').on('click', function (event) {
-        event.preventDefault();
-        logoutUser();
-    });
 });
+
+// handle logout
+$('#logoutButton').on('click', function (event) {
+    event.preventDefault();
+    logoutUser();
+});
+
 socket.on('user-login', (email) => {
     alert(`${email} has connected`);
 });
