@@ -1,5 +1,5 @@
 #  GymBuddy 
-GymBuddy is a dynamic web application that offers personalized fitness programs tailored to users' unique goals and preferences. 
+GymBuddy is a dynamic web application that offers personalized fitness programs tailored to users' age and unique goals. The application was designed to bridge the gap between high personal trainer costs and the desire for quality training, while still offering a personalised and guided approach. The UI is a mobile first design to allow users to seamlessly use the application while working out.
 
 ### Requirements:
 You must have the following installed in your device:
@@ -22,7 +22,20 @@ npm run start
 Then visit http://localhost:3000/ on your browser.
 
 ### You're all set! :rocket:
-You can signup for a new account, and start progressing in your workout!
+You can signup for a new account, and start progressing in your workouts!
+
+## How to use GymBuddy
+1. Click on the the sign up button at the bottom of the homepage.
+2. Enter your full name, email, and password to create an account.
+3. Fill out the details form (Age, Gender, Goal) and click the Submit button.
+4. Log into your new account and you will be directed to the dashboard which shows your current cycle progress.
+5. Click on the Workout button to see your workouts for week 1.
+6. Click on Day 1 and complete the exercises as prescribed, checking off exercises as you complete them.
+7. Gymbuddy will save your progress as you go.
+8. Once you have completed a full week, check the complete week box.
+9. You can check your progress as you work your way through the cycle on the dashboard.
+10. Once you have completed a full 4 weeks of training, you will be assigned a new cycle starting from week 1 day 1.
+11. To check what you completed in your previous cycle, simply head to the dashboard page, and click the completed cycles button.
 
 ## Testing
 To run the testing, have two terminals open:
