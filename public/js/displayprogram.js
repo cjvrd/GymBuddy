@@ -32,27 +32,75 @@ function displayDay(days, tableId) {
     });
 };
 
-// Display the exercises for each day depending on the week
-if (window.location.href.endsWith('/week1.html')) {
-    displayDay(cycles[0].program.weeks[0].days[0], 'dayOneBody');
-    displayDay(cycles[0].program.weeks[0].days[1], 'dayTwoBody');
-    displayDay(cycles[0].program.weeks[0].days[2], 'dayThreeBody');
-};
+function toggleCollapse(dayNumber){
+    var button1 = document.querySelector('#day1');
+    var instance1 = new bootstrap.Collapse(button1, { toggle: false }); // ensure toggle is set to false
+    var button2 = document.querySelector('#day2');
+    var instance2 = new bootstrap.Collapse(button2, { toggle: false }); // ensure toggle is set to false
+    var button3 = document.querySelector('#day3');
+    var instance3 = new bootstrap.Collapse(button3, { toggle: false }); // ensure toggle is set to false
 
-if (window.location.href.endsWith('/week2.html')) {
-    displayDay(cycles[0].program.weeks[1].days[0], 'dayOneBody');
-    displayDay(cycles[0].program.weeks[1].days[1], 'dayTwoBody');
-    displayDay(cycles[0].program.weeks[1].days[2], 'dayThreeBody');
-};
+    if(dayNumber === 1){
+        instance1.show();
+    } else if (dayNumber === 2){
+        instance2.show();
+    } else if (dayNumber === 3){
+        instance3.show();
+    }
+}
 
-if (window.location.href.endsWith('/week3.html')) {
-    displayDay(cycles[0].program.weeks[2].days[0], 'dayOneBody');
-    displayDay(cycles[0].program.weeks[2].days[1], 'dayTwoBody');
-    displayDay(cycles[0].program.weeks[2].days[2], 'dayThreeBody');
-};
+function setActiveWeek(weekNumber) {
+    // select all navigation links
+    var navLinks = document.querySelectorAll('.nav-link');
+    for (var i =0; i < navLinks.length; i++){
+        if(i === weekNumber - 1){
+            navLinks[i].classList.add('active');
+        } else {
+            navLinks[i].classList.remove('active');
+        }
+    }
+}
 
-if (window.location.href.endsWith('/week4.html')) {
-    displayDay(cycles[0].program.weeks[3].days[0], 'dayOneBody');
-    displayDay(cycles[0].program.weeks[3].days[1], 'dayTwoBody');
-    displayDay(cycles[0].program.weeks[3].days[2], 'dayThreeBody');
-};
+function getWeekExercises(cycle, weekNumber){
+    // var days = localStorage.get
+    var week = cycle.find(week => week.weekNumber === weekNumber);
+    return week.days;
+}
+
+function displayDaysDetails(days){
+    days.map(day => {
+        if (day.dayNumber === 1){
+            displayDay(day, 'dayOneBody');
+        } if (day.dayNumber === 2){
+            displayDay(day, 'dayTwoBody');
+        } if (day.dayNumber === 3){
+            displayDay(day, 'dayThreeBody');
+        }
+    })
+}
+
+$(document).ready(function () {
+    var cycles = JSON.parse(localStorage.getItem('userCycles'));
+    var currentWeekDay = parseInt(localStorage.getItem('currentWeekDay'));
+    var currentWeekNumber = parseInt(localStorage.getItem('currentWeekNumber'));
+    var clickedWeek = 0;
+    // get the days of the on-going week and display each day's exercises
+    var days = getWeekExercises(cycles[0].program.weeks, currentWeekNumber);
+    displayDaysDetails(days);
+    // open current day and current week
+    toggleCollapse(currentWeekDay);
+    setActiveWeek(currentWeekNumber);
+
+    // if week # clicked, update 'days' value
+    // listener to week buttons should return clickedWeek number
+    // add listener to week buttons
+    $(document).on('click', '.nav-link', function() {
+        $('.nav-link').removeClass('active');  // remove active class from all nav links
+        $(this).addClass('active');  // add active class to the clicked nav link
+        clickedWeek = $(this).data('week');
+        // get the days of the clicked week and display each day's exercises
+        var days = getWeekExercises(cycles[0].program.weeks, clickedWeek);
+        displayDaysDetails(days);
+    });
+});
+
