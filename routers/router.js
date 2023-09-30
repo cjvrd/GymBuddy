@@ -16,7 +16,7 @@ router.post('/signup', controller.signUp);
 router.post('/signin', controller.signIn);
 
 // Sample protected route
-router.put('/update-progress', verifyAndAuthorize, (req, res) => {
+router.put('/update-program', verifyAndAuthorize, (req, res) => {
     const userIdFromToken = req.userId;
     const userIdFromPath = req.params.userId;
 
