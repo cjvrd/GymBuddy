@@ -23,13 +23,16 @@ $(document).ready(function () {
 
     // calculating status in for dynamic values in tab1 content
     var cycles = JSON.parse(localStorage.getItem('userCycles'));
-    var {completedDays, totalDays, CurrentWeekNumber, currentWeekDay} = calculateProgressByDays(cycles)
+    var {completedDays, totalDays, currentWeekNumber, currentWeekDay} = calculateProgressByDays(cycles)
+    // storing current week and day in localStorage for use in displayprogram.js
+    localStorage.setItem('currentWeekNumber', currentWeekNumber)
+    localStorage.setItem('currentWeekDay', currentWeekDay)
     // replacing html element with the number of completed days
     var daysCompletedElement = document.querySelector(".progress-details > p:nth-child(2)");
     daysCompletedElement.textContent = `${completedDays} out of 12 days completed`;
     // replacing week number in status
     var currentWeek = document.querySelector(".progress-details > p:nth-child(3)");
-    currentWeek.textContent = `Week: ${CurrentWeekNumber}`;
+    currentWeek.textContent = `Week: ${currentWeekNumber}`;
     // replacing week number in status
     var currentWeek = document.querySelector(".progress-details > p:nth-child(4)");
     currentWeek.textContent = `Day: ${currentWeekDay}`;
@@ -60,14 +63,14 @@ $(document).ready(function () {
 function calculateProgressByDays(cycles){
     let completedDays = 0;
     let totalDays = 0;
-    let CurrentWeekNumber = 0;
+    let currentWeekNumber = 0;
     let currentWeekDay = 0;
     let currentDayExercise = 0;
     let dayFound = false;
     cycles[0].program.weeks.map(week =>{
         // console.log(week)
         if(week.done === true){
-            CurrentWeekNumber++;
+            currentWeekNumber++;
         }
         week.days.map(day => {
             if(day.done === true){
@@ -76,10 +79,10 @@ function calculateProgressByDays(cycles){
             totalDays++;
         });
     });
-    CurrentWeekNumber++;
+    currentWeekNumber++;
 
     // find the current day of the week
-    var currentWeekData = cycles[0].program.weeks.find(week => week.weekNumber === CurrentWeekNumber)
+    var currentWeekData = cycles[0].program.weeks.find(week => week.weekNumber === currentWeekNumber)
     currentWeekData.days.map(day => {
         if(day.done === true){
             currentWeekDay++;
@@ -97,6 +100,6 @@ function calculateProgressByDays(cycles){
     currentDayExercise++;
 
 
-    return ({completedDays, totalDays, CurrentWeekNumber, currentWeekDay, currentDayExercise});
+    return ({completedDays, totalDays, currentWeekNumber, currentWeekDay, currentDayExercise});
 }
 
