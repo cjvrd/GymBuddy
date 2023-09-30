@@ -1,12 +1,12 @@
 var cycles = JSON.parse(localStorage.getItem('userCycles'));
 
 // Function to display cycleData in a specific days table
-function displayDay(days, tableId) {
+function displayDay(day, tableId) {
     const dayTableBody = document.getElementById(tableId);
 
     dayTableBody.innerHTML = ''; // Clear previous data
 
-    days.exercises.forEach((exercises) => {
+    day.exercises.forEach((exercises) => {
         const row = document.createElement('tr');
 
         const nameCell = document.createElement('td');
@@ -30,31 +30,6 @@ function displayDay(days, tableId) {
 
         dayTableBody.appendChild(row);
     });
-};
-
-// Display the exercises for each day depending on the week
-if (window.location.href.endsWith('/week1.html')) {
-    displayDay(cycles[0].program.weeks[0].days[0], 'dayOneBody');
-    displayDay(cycles[0].program.weeks[0].days[1], 'dayTwoBody');
-    displayDay(cycles[0].program.weeks[0].days[2], 'dayThreeBody');
-};
-
-if (window.location.href.endsWith('/week2.html')) {
-    displayDay(cycles[0].program.weeks[1].days[0], 'dayOneBody');
-    displayDay(cycles[0].program.weeks[1].days[1], 'dayTwoBody');
-    displayDay(cycles[0].program.weeks[1].days[2], 'dayThreeBody');
-};
-
-if (window.location.href.endsWith('/week3.html')) {
-    displayDay(cycles[0].program.weeks[2].days[0], 'dayOneBody');
-    displayDay(cycles[0].program.weeks[2].days[1], 'dayTwoBody');
-    displayDay(cycles[0].program.weeks[2].days[2], 'dayThreeBody');
-};
-
-if (window.location.href.endsWith('/week4.html')) {
-    displayDay(cycles[0].program.weeks[3].days[0], 'dayOneBody');
-    displayDay(cycles[0].program.weeks[3].days[1], 'dayTwoBody');
-    displayDay(cycles[0].program.weeks[3].days[2], 'dayThreeBody');
 };
 
 function toggleCollapse(dayNumber){
@@ -86,14 +61,48 @@ function setActiveWeek(weekNumber) {
     }
 }
 
+function getWeekExercises(cycle, weekNumber){
+    // var days = localStorage.get
+    var week = cycle.find(week => week.weekNumber === weekNumber);
+    return week.days;
+}
+
+function displayDaysDetails(days){
+    days.map(day => {
+        if (day.dayNumber === 1){
+            displayDay(day, 'dayOneBody');
+        } if (day.dayNumber === 2){
+            displayDay(day, 'dayTwoBody');
+        } if (day.dayNumber === 3){
+            displayDay(day, 'dayThreeBody');
+        }
+    })
+}
+
 $(document).ready(function () {
     var cycles = JSON.parse(localStorage.getItem('userCycles'));
     var currentWeekDay = parseInt(localStorage.getItem('currentWeekDay'));
     var currentWeekNumber = parseInt(localStorage.getItem('currentWeekNumber'));
-    console.log(cycles[0].program);
-
-    // open current day
+    var clickedWeek = 0;
+    // get the days of the on-going week and display each day's exercises
+    var days = getWeekExercises(cycles[0].program.weeks, currentWeekNumber);
+    displayDaysDetails(days);
+    // open current day and current week
     toggleCollapse(currentWeekDay);
     setActiveWeek(currentWeekNumber);
 
+    // if week # clicked, update 'days' value
+    // listener to week buttons should return clickedWeek number
+    // add listener to week buttons
+    $(document).on('click', '.nav-link', function() {
+        $('.nav-link').removeClass('active');  // remove active class from all nav links
+        $(this).addClass('active');  // add active class to the clicked nav link
+        clickedWeek = $(this).data('week');
+        // get the days of the clicked week and display each day's exercises
+        var days = getWeekExercises(cycles[0].program.weeks, clickedWeek);
+        displayDaysDetails(days);
+    });
+
+
 });
+
