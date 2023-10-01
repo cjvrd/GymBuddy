@@ -23,7 +23,8 @@ $(document).ready(function () {
 
     // calculating status in for dynamic values in tab1 content
     var cycles = JSON.parse(localStorage.getItem('userCycles'));
-    var {completedDays, totalDays, currentWeekNumber, currentWeekDay} = calculateProgressByDays(cycles)
+    var program = JSON.parse(localStorage.getItem('program'));
+    var {completedDays, totalDays, currentWeekNumber, currentWeekDay} = calculateProgressByDays(program)
     // storing current week and day in localStorage for use in displayprogram.js
     localStorage.setItem('currentWeekNumber', currentWeekNumber)
     localStorage.setItem('currentWeekDay', currentWeekDay)
@@ -60,14 +61,14 @@ $(document).ready(function () {
     });
 });
 
-function calculateProgressByDays(cycles){
+function calculateProgressByDays(program){
     let completedDays = 0;
     let totalDays = 0;
     let currentWeekNumber = 0;
     let currentWeekDay = 0;
     let currentDayExercise = 0;
     let dayFound = false;
-    cycles[0].program.weeks.map(week =>{
+    program.weeks.map(week =>{
         // console.log(week)
         if(week.done === true){
             currentWeekNumber++;
@@ -82,7 +83,7 @@ function calculateProgressByDays(cycles){
     currentWeekNumber++;
 
     // find the current day of the week
-    var currentWeekData = cycles[0].program.weeks.find(week => week.weekNumber === currentWeekNumber)
+    var currentWeekData = program.weeks.find(week => week.weekNumber === currentWeekNumber)
     currentWeekData.days.map(day => {
         if(day.done === true){
             currentWeekDay++;

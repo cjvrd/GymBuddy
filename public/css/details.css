@@ -65,6 +65,10 @@ body {
     margin-bottom: 40px;
 }
 
+#tab1 {
+    cursor: pointer;
+}
+
 .content{
     background-image: linear-gradient(to bottom, #268bd99b, #0000004c);
     border-radius: 20px;
