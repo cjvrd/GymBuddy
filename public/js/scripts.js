@@ -70,6 +70,9 @@ async function loginUser(loginData) {
             localStorage.setItem('userCycles', JSON.stringify(data.cycles));
             localStorage.setItem('cycleId', JSON.stringify(data.cycles[0]._id));
             localStorage.setItem('program', JSON.stringify(data.cycles[0].program));
+            localStorage.setItem('currentWeek', JSON.stringify(data.cycles[0].currentWeek));
+            localStorage.setItem('currentDay', JSON.stringify(data.cycles[0].currentDay));
+
             // console.log(data.cycles[0].program)
             window.location.href = '/details.html';
 
