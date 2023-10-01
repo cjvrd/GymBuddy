@@ -139,22 +139,36 @@ $(document).ready(function () {
         // find the week associated with the clickedWeek
         var week = program.weeks.find(w => w.weekNumber === clickedWeek);
         if(week){
+            // find the number of workout days in this week
+            var numDay = week.days.length;
             // find the day with dayNumber === dayNumber from checkbox
             var day = week.days.find(d => d.dayNumber === dayNumber);
             if(day){
-                // find name of last exercise to compare against checked exercise
-                var lastExercise = day.exercises[day.exercises.length-1].name;
                 var exercise = day.exercises.find(ex => ex.name === exerciseName);
                 if(exercise){
                     exercise.done = isChecked;  // Simply assign the 'isChecked' value to the 'done' property
+                    // find name of last exercise to compare against checked exercise
+                    var lastExercise = day.exercises[day.exercises.length-1].name;
                     if(exercise.name === lastExercise){
                         day.done = isChecked;
                         if(day.done){
                             currentDay++;
+                            // if last day of week && day is completed/checked: check week
+                            if(day.dayNumber === numDay){
+                                week.done = isChecked;
+                                currentWeek++;
+                                currentDay = 1;
+                            }
                         } else {
                             currentDay--;
+                            // if last day of week && day is unchecked: uncheck week
+                            if(day.dayNumber === numDay){
+                                week.done = isChecked;
+                                currentWeek--;
+                            }
                         }
                         localStorage.setItem('currentDay', currentDay.toString());
+                        localStorage.setItem('currentWeek', currentWeek.toString());
                     }
                 }
             }
