@@ -66,6 +66,7 @@ async function loginUser(loginData) {
 
             localStorage.setItem('token', data.token);
             localStorage.setItem('userData', JSON.stringify(data.user));
+            localStorage.setItem('userId', JSON.stringify(data.user._id));
             localStorage.setItem('userCycles', JSON.stringify(data.cycles));
             localStorage.setItem('cycleId', JSON.stringify(data.cycles[0]._id));
             localStorage.setItem('program', JSON.stringify(data.cycles[0].program));

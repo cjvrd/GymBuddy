@@ -5,23 +5,25 @@ function displayDay(day, tableId) {
     const dayTableBody = document.getElementById(tableId);
 
     dayTableBody.innerHTML = ''; // Clear previous data
-    day.exercises.forEach((exercises) => {
+    day.exercises.forEach((exercise) => {
         const row = document.createElement('tr');
 
         const nameCell = document.createElement('td');
-        nameCell.textContent = exercises.name;
+        nameCell.textContent = exercise.name;
         nameCell.classList.add('exercise-name')
 
         const setsCell = document.createElement('td');
-        setsCell.textContent = exercises.sets;
+        setsCell.textContent = exercise.sets;
 
         const repsCell = document.createElement('td');
-        repsCell.textContent = exercises.reps;
+        repsCell.textContent = exercise.reps;
 
         const completeCell = document.createElement('td');
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.setAttribute('data-day-number', day.dayNumber)
+        // check or uncheck the checkbox based on the 'done' value
+        checkbox.checked = exercise.done
         completeCell.appendChild(checkbox);
 
         row.appendChild(nameCell);
@@ -81,11 +83,34 @@ function displayDaysDetails(days){
     })
 }
 
+function updateCycleRequest(updatedProgram){
+    var userId = JSON.parse(localStorage.getItem('userId'));
+    var cycleId = JSON.parse(localStorage.getItem('cycleId'));
+    const token = localStorage.getItem('token');
+    fetch(`/update-program/${userId}/${cycleId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ program: updatedProgram })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            console.log(data.message);
+        }
+    })
+    .catch(err => {
+        console.error('Error updating program:', err);
+    });
+}
+
 $(document).ready(function () {
     // var cycles = JSON.parse(localStorage.getItem('userCycles'));
     // program: {weeks:[], done: false}
     var program = JSON.parse(localStorage.getItem('program'));
-    console.log(program)
+    // console.log(program)
     var currentWeekDay = parseInt(localStorage.getItem('currentWeekDay'));
     var currentWeekNumber = parseInt(localStorage.getItem('currentWeekNumber'));
     var clickedWeek = currentWeekNumber;
@@ -101,27 +126,31 @@ $(document).ready(function () {
         var isChecked = $(this).prop('checked');
         var dayNumber = $(this).data('day-number');
         var exerciseName = $(this).closest('tr').find('.exercise-name').text();
-
-        if(isChecked) {
-            console.log(`Checkbox for ${exerciseName} is checked!`);
-            // find the week associated with the clickedWeek
-            var week = program.weeks.find(w => w.weekNumber === clickedWeek);
-            if(week){
-                // find the day with dayNumber === dayNumber from checkbox
-                var day = week.days.find(d => d.dayNumber === dayNumber);
-                if(day){
-                    var exercise = day.exercises.find(ex => ex.name === exerciseName);
-                    if(exercise){
-                        exercise.done = true;
-                    }
+    
+        // find the week associated with the clickedWeek
+        var week = program.weeks.find(w => w.weekNumber === clickedWeek);
+        if(week){
+            // find the day with dayNumber === dayNumber from checkbox
+            var day = week.days.find(d => d.dayNumber === dayNumber);
+            if(day){
+                var exercise = day.exercises.find(ex => ex.name === exerciseName);
+                if(exercise){
+                    exercise.done = isChecked;  // Simply assign the 'isChecked' value to the 'done' property
                 }
             }
-            // update 'program' in localStorage 
-            localStorage.setItem('program', JSON.stringify(program));
+        }
+    
+        if(isChecked) {
+            console.log(`Checkbox for ${exerciseName} is checked!`);
         } else {
             console.log(`Checkbox for ${exerciseName} is unchecked!`);
         }
-    })
+    
+        // update 'program' in localStorage 
+        localStorage.setItem('program', JSON.stringify(program));
+        updateCycleRequest(program);
+    });
+    
 
     // if week # clicked, update 'days' value
     // listener to week buttons should return clickedWeek number
@@ -135,6 +164,7 @@ $(document).ready(function () {
         displayDaysDetails(days);
     });
 
-
 });
+
+
 
