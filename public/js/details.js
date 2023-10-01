@@ -22,21 +22,21 @@ $(document).ready(function () {
     });
 
     // calculating status in for dynamic values in tab1 content
-    var cycles = JSON.parse(localStorage.getItem('userCycles'));
     var program = JSON.parse(localStorage.getItem('program'));
-    var {completedDays, totalDays, currentWeekNumber, currentWeekDay} = calculateProgressByDays(program)
-    // storing current week and day in localStorage for use in displayprogram.js
-    localStorage.setItem('currentWeekNumber', currentWeekNumber)
-    localStorage.setItem('currentWeekDay', currentWeekDay)
+    var completedDays = parseInt(localStorage.getItem('currentDay') -1)
+    var currentWeek = parseInt(localStorage.getItem('currentWeek'))
+    var currentDay = parseInt(localStorage.getItem('currentDay'))
+
+    var {totalDays} = calculateTotalDays(program)
     // replacing html element with the number of completed days
     var daysCompletedElement = document.querySelector(".progress-details > p:nth-child(2)");
     daysCompletedElement.textContent = `${completedDays} out of 12 days completed`;
     // replacing week number in status
-    var currentWeek = document.querySelector(".progress-details > p:nth-child(3)");
-    currentWeek.textContent = `Week: ${currentWeekNumber}`;
-    // replacing week number in status
-    var currentWeek = document.querySelector(".progress-details > p:nth-child(4)");
-    currentWeek.textContent = `Day: ${currentWeekDay}`;
+    var weekElement = document.querySelector(".progress-details > p:nth-child(3)");
+    weekElement.textContent = `Week: ${currentWeek}`;
+    // replacing day number in status
+    var dayElement = document.querySelector(".progress-details > p:nth-child(4)");
+    dayElement.textContent = `Day: ${currentDay}`;
 
     // code for the progress bar
     // say we want to show a 50% progress.
@@ -61,46 +61,15 @@ $(document).ready(function () {
     });
 });
 
-function calculateProgressByDays(program){
-    let completedDays = 0;
+function calculateTotalDays(program){
     let totalDays = 0;
-    let currentWeekNumber = 0;
-    let currentWeekDay = 0;
-    let currentDayExercise = 0;
-    let dayFound = false;
+    // calculating total days of workout
     program.weeks.map(week =>{
-        // console.log(week)
-        if(week.done === true){
-            currentWeekNumber++;
-        }
-        week.days.map(day => {
-            if(day.done === true){
-                completedDays++;
-            }
-            totalDays++;
-        });
+        totalDays += week.days.length;
     });
-    currentWeekNumber++;
-
-    // find the current day of the week
-    var currentWeekData = program.weeks.find(week => week.weekNumber === currentWeekNumber)
-    currentWeekData.days.map(day => {
-        if(day.done === true){
-            currentWeekDay++;
-        }
-    })
-    currentWeekDay++;
-
-    // find the current exercise of the day
-    var currentDayData = currentWeekData.days.find(day => day.dayNumber === currentWeekDay);
-    currentDayData.exercises.map(exercise => {
-        if(exercise.done === true){
-            currentDayExercise++;
-        }
-    })
-    currentDayExercise++;
 
 
-    return ({completedDays, totalDays, currentWeekNumber, currentWeekDay, currentDayExercise});
+
+    return ({totalDays});
 }
 

@@ -83,17 +83,24 @@ function displayDaysDetails(days){
     })
 }
 
-function updateCycleRequest(updatedProgram){
+function updateCycleRequest(updatedProgram) {
     var userId = JSON.parse(localStorage.getItem('userId'));
     var cycleId = JSON.parse(localStorage.getItem('cycleId'));
+    var currentWeek = parseInt(localStorage.getItem('currentWeek'));
+    var currentDay = parseInt(localStorage.getItem('currentDay'));
     const token = localStorage.getItem('token');
+    
     fetch(`/update-program/${userId}/${cycleId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token
         },
-        body: JSON.stringify({ program: updatedProgram })
+        body: JSON.stringify({
+            program: updatedProgram,
+            currentWeek: currentWeek,
+            currentDay: currentDay
+        })
     })
     .then(response => response.json())
     .then(data => {
@@ -106,40 +113,53 @@ function updateCycleRequest(updatedProgram){
     });
 }
 
+
 $(document).ready(function () {
     // var cycles = JSON.parse(localStorage.getItem('userCycles'));
     // program: {weeks:[], done: false}
     var program = JSON.parse(localStorage.getItem('program'));
+
     // console.log(program)
-    var currentWeekDay = parseInt(localStorage.getItem('currentWeekDay'));
-    var currentWeekNumber = parseInt(localStorage.getItem('currentWeekNumber'));
-    var clickedWeek = currentWeekNumber;
+    var currentDay = parseInt(localStorage.getItem('currentDay'));
+    var currentWeek = parseInt(localStorage.getItem('currentWeek'));
+    var clickedWeek = currentWeek;
     // get the days of the on-going week and display each day's exercises
-    var days = getWeekExercises(program.weeks, currentWeekNumber);
+    var days = getWeekExercises(program.weeks, currentWeek);
     displayDaysDetails(days);
     // open current day and current week
-    toggleCollapse(currentWeekDay);
-    setActiveWeek(currentWeekNumber);
+    toggleCollapse(currentDay);
+    setActiveWeek(currentWeek);
 
     // handle checkbox changes
     $(document).on('change', 'input[type="checkbox"]', function() {
         var isChecked = $(this).prop('checked');
         var dayNumber = $(this).data('day-number');
         var exerciseName = $(this).closest('tr').find('.exercise-name').text();
-    
+        
         // find the week associated with the clickedWeek
         var week = program.weeks.find(w => w.weekNumber === clickedWeek);
         if(week){
             // find the day with dayNumber === dayNumber from checkbox
             var day = week.days.find(d => d.dayNumber === dayNumber);
             if(day){
+                // find name of last exercise to compare against checked exercise
+                var lastExercise = day.exercises[day.exercises.length-1].name;
                 var exercise = day.exercises.find(ex => ex.name === exerciseName);
                 if(exercise){
                     exercise.done = isChecked;  // Simply assign the 'isChecked' value to the 'done' property
+                    if(exercise.name === lastExercise){
+                        day.done = isChecked;
+                        if(day.done){
+                            currentDay++;
+                        } else {
+                            currentDay--;
+                        }
+                        localStorage.setItem('currentDay', currentDay.toString());
+                    }
                 }
             }
         }
-    
+            
         if(isChecked) {
             console.log(`Checkbox for ${exerciseName} is checked!`);
         } else {
@@ -148,6 +168,7 @@ $(document).ready(function () {
     
         // update 'program' in localStorage 
         localStorage.setItem('program', JSON.stringify(program));
+
         updateCycleRequest(program);
     });
     
