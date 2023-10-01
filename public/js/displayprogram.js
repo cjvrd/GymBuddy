@@ -138,6 +138,8 @@ $(document).ready(function () {
         
         // find the week associated with the clickedWeek
         var week = program.weeks.find(w => w.weekNumber === clickedWeek);
+        // number of weeks in the cycle
+        var numWeeks = program.weeks.length;
         if(week){
             // find the number of workout days in this week
             var numDay = week.days.length;
@@ -153,18 +155,27 @@ $(document).ready(function () {
                         day.done = isChecked;
                         if(day.done){
                             currentDay++;
-                            // if last day of week && day is completed/checked: check week
-                            if(day.dayNumber === numDay){
+                            // if last day of week && day is completed/checked && last week: 
+                            // check week & cycle, keep currentWeek and currentDay
+                            if(day.dayNumber === numDay && week.weekNumber === numWeeks){
+                                week.done = isChecked;
+                                // cycle will be marked completed in backend
+                                program.done = isChecked;
+                            }
+                            
+                            // if last day of week && day is completed/checked: 
+                            // check week and increment currentWeek
+                            else if(day.dayNumber === numDay){
                                 week.done = isChecked;
                                 currentWeek++;
                                 currentDay = 1;
                             }
+
                         } else {
                             currentDay--;
                             // if last day of week && day is unchecked: uncheck week
                             if(day.dayNumber === numDay){
                                 week.done = isChecked;
-                                currentWeek--;
                             }
                         }
                         localStorage.setItem('currentDay', currentDay.toString());
