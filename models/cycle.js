@@ -57,4 +57,25 @@ function getCyclesForUser(userId, callback) {
     collection.find({ userId: userId }).toArray(callback);
 };
 
-module.exports = { createCycleForUser, getCyclesForUser };
+function updateCycleProgram(userId, cycleId, updatedProgram, callback) {
+    // find the cycle by userId and cycleId and update the program
+    const ObjectId = require('mongodb').ObjectId;
+    let userIdObj = ObjectId(userId);
+    let cycleIdObj = ObjectId(cycleId);
+
+    collection.updateOne(
+        { userId: userIdObj, _id: cycleIdObj },
+        { $set: { program: updatedProgram } },
+        (err, result) => {
+            if (err) {
+                return callback(err);
+            }
+            if (result.matchedCount === 0) {
+                return callback(new Error('No matching cycle found for given user and cycle IDs.'));
+            }
+            callback(null, result);
+        }
+    );
+}
+
+module.exports = { createCycleForUser, getCyclesForUser, updateCycleProgram };
