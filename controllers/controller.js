@@ -3,7 +3,7 @@ let Cycle = require('../models/cycle');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const secret = 'SECRET_KEY';
-
+const db = require('../dbConnection'); 
 const signUp = (req, res) => { 
     let user = req.body;
 
@@ -117,5 +117,47 @@ const getAllUsers = (req, res) => {
         };
     });
 };
-
-module.exports = {getAllUsers, signUp, signIn};
+const updateExerciseStatus = async (req, res) => {
+    const { userId, weekNumber, dayNumber, exerciseName, status } = req.body;
+    
+    try {
+        // Update the specific exercise's status in the database
+        
+        await db.collection('trainingPrograms').updateOne(
+            { userId, "weeks.weekNumber": weekNumber, "weeks.days.dayNumber": dayNumber, "weeks.days.exercises.name": exerciseName },
+            { $set: { "weeks.$.days.$.exercises.$.done": status } }
+        );
+        res.status(200).send({ message: 'Exercise status updated successfully.' });
+    } catch (error) {
+        res.status(500).send({ message: 'Failed to update exercise status.', error });
+    }
+};
+const updateDayStatus = async (req, res) => {
+    const { userId, weekNumber, dayNumber, status } = req.body;
+    
+    try {
+        // Update the day's status in the database
+        await db.collection('trainingPrograms').updateOne(
+            { userId, "weeks.weekNumber": weekNumber, "weeks.days.dayNumber": dayNumber },
+            { $set: { "weeks.$.days.$.done": status } }
+        );
+        res.status(200).send({ message: 'Day status updated successfully.' });
+    } catch (error) {
+        res.status(500).send({ message: 'Failed to update day status.', error });
+    }
+};
+const updateWeekStatus = async (req, res) => {
+    const { userId, weekNumber, status } = req.body;
+    
+    try {
+        // Update the week's status in the database
+        await db.collection('trainingPrograms').updateOne(
+            { userId, "weeks.weekNumber": weekNumber },
+            { $set: { "weeks.$.done": status } }
+        );
+        res.status(200).send({ message: 'Week status updated successfully.' });
+    } catch (error) {
+        res.status(500).send({ message: 'Failed to update week status.', error });
+    }
+};
+module.exports = {getAllUsers, signUp, signIn, updateExerciseStatus, updateDayStatus,updateWeekStatus};

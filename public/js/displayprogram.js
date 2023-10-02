@@ -67,8 +67,14 @@ function setActiveWeek(weekNumber) {
 
 function getWeekExercises(cycle, weekNumber){
     // var days = localStorage.get
+    
     var week = cycle.find(week => week.weekNumber === weekNumber);
-    return week.days;
+    if (week) {
+        return week.days;
+    } else {
+        console.error('Week not found:', weekNumber);
+        return [];
+    }
 }
 
 function displayDaysDetails(days){
@@ -113,6 +119,72 @@ function updateCycleRequest(updatedProgram) {
     });
 }
 
+function updateExerciseStatus(userId, weekNumber, dayNumber, exerciseName, status) {
+    // Update status in localStorage
+    let program = JSON.parse(localStorage.getItem('trainingProgram'));
+    let exercise = program.weeks[weekNumber - 1].days[dayNumber - 1].exercises.find(ex => ex.name === exerciseName);
+    if (exercise) {
+        exercise.done = status;
+        localStorage.setItem('trainingProgram', JSON.stringify(program));
+    }
+
+    // Update status in backend
+    fetch('/update-exercise-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, weekNumber, dayNumber, exerciseName, status })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message !== 'Exercise status updated successfully.') {
+            console.error('Failed to update exercise status in backend:', data.error);
+        }
+    });
+}
+function updateDayStatus(userId, weekNumber, dayNumber, status) {
+    // Update status in localStorage
+    let program = JSON.parse(localStorage.getItem('trainingProgram'));
+    let day = program.weeks[weekNumber - 1].days[dayNumber - 1];
+    if (day) {
+        day.done = status;
+        localStorage.setItem('trainingProgram', JSON.stringify(program));
+    }
+
+    // Update status in backend
+    fetch('/update-day-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, weekNumber, dayNumber, status })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message !== 'Day status updated successfully.') {
+            console.error('Failed to update day status in backend:', data.error);
+        }
+    });
+}
+function updateWeekStatus(userId, weekNumber, status) {
+    // Update status in localStorage
+    let program = JSON.parse(localStorage.getItem('trainingProgram'));
+    let week = program.weeks[weekNumber - 1];
+    if (week) {
+        week.done = status;
+        localStorage.setItem('trainingProgram', JSON.stringify(program));
+    }
+
+    // Update status in backend
+    fetch('/update-week-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, weekNumber, status })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message !== 'Week status updated successfully.') {
+            console.error('Failed to update week status in backend:', data.error);
+        }
+    });
+}
 
 $(document).ready(function () {
     // var cycles = JSON.parse(localStorage.getItem('userCycles'));
@@ -171,7 +243,28 @@ $(document).ready(function () {
 
         updateCycleRequest(program);
     });
-    
+    function updateExerciseStatus(userId, weekNumber, dayNumber, exerciseName, status) {
+    // Update status in localStorage
+    let program = JSON.parse(localStorage.getItem('trainingProgram'));
+    let exercise = program.weeks[weekNumber - 1].days[dayNumber - 1].exercises.find(ex => ex.name === exerciseName);
+    if (exercise) {
+        exercise.done = status;
+        localStorage.setItem('trainingProgram', JSON.stringify(program));
+    }
+
+    // Update status in backend
+    fetch('/update-exercise-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, weekNumber, dayNumber, exerciseName, status })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message !== 'Exercise status updated successfully.') {
+            console.error('Failed to update exercise status in backend:', data.error);
+        }
+    });
+}
 
     // if week # clicked, update 'days' value
     // listener to week buttons should return clickedWeek number
