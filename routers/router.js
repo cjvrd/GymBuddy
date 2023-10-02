@@ -43,4 +43,7 @@ router.put('/update-program/:userId/:cycleId', verifyAndAuthorize, (req, res) =>
 });
 
 
+router.post('/update-exercise-status', controller.updateExerciseStatus);
+router.post('/update-day-status', controller.updateDayStatus);
+router.post('/update-week-status', controller.updateWeekStatus);
 module.exports = router; 
