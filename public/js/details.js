@@ -23,11 +23,11 @@ $(document).ready(function () {
 
     // calculating status in for dynamic values in tab1 content
     var program = JSON.parse(localStorage.getItem('program'));
-    var completedDays = parseInt(localStorage.getItem('currentDay') -1)
-    var currentWeek = parseInt(localStorage.getItem('currentWeek'))
-    var currentDay = parseInt(localStorage.getItem('currentDay'))
+    var currentWeek = parseInt(localStorage.getItem('currentWeek'));
+    var currentDay = parseInt(localStorage.getItem('currentDay'));
 
-    var {totalDays} = calculateTotalDays(program)
+    var {totalDays} = calculateTotalDays(program);
+    var {completedDays} = calculateCompletedDays(program);
     // replacing html element with the number of completed days
     var daysCompletedElement = document.querySelector(".progress-details > p:nth-child(2)");
     daysCompletedElement.textContent = `${completedDays} out of 12 days completed`;
@@ -48,7 +48,7 @@ $(document).ready(function () {
 
     // update text (assuming it's a simple percentage, adjust as needed)
     let progressText = document.querySelector('.progress-text');
-    progressText.innerHTML = "&nbsp;"+progressPercentage + "%";
+    progressText.innerHTML = "&nbsp;"+progressPercentage.toFixed(2) + " %";
 
     // redirecting to week page
     // target the the element with ID "tab1"
@@ -67,9 +67,20 @@ function calculateTotalDays(program){
     program.weeks.map(week =>{
         totalDays += week.days.length;
     });
-
-
-
     return ({totalDays});
 }
+
+function calculateCompletedDays(program){
+    let completedDays = 0;
+
+    program.weeks.map(week =>{
+        week.days.map(day => {
+            if(day.done){
+                completedDays++;
+            }
+        })
+    })
+    return {completedDays};
+}
+
 
