@@ -3,6 +3,7 @@ const uri = "mongodb+srv://admin:admin@cluster0.btwcixe.mongodb.net/?retryWrites
 // const uri = "mongodb+srv://admin:admin@cluster0.xq9spst.mongodb.net/?retryWrites=true&w=majority"; //Majeed
 //const uri = "mongodb+srv://admin:admin@gymbuddy.vx3hwqs.mongodb.net/?retryWrites=true&w=majority" //christian
 
+
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
