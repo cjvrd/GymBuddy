@@ -4,7 +4,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const server = http.createServer(app);
 const io = socketIo(server);
-
+const client = require('./dbConnection');
 var port = process.env.port || 3000;
 let router = require('./routers/router');
 
@@ -16,6 +16,7 @@ const userSocketMap = {
 };
 
 io.on('connection', (socket) => {
+    const db = client.db("chatdb");
     // when a user logs in
     socket.on('user-login', (email) => {
         // map the user's email to their socket ID
@@ -46,6 +47,50 @@ io.on('connection', (socket) => {
             delete userSocketMap.emailToSocket[email];
             delete userSocketMap.socketToEmail[socket.id];
         }
+    });
+      // Chatroom Logic
+      socket.on('sendMessageToRoom', async (data) => {
+        try {
+            const timestamp = new Date();
+            const messageToSave = {
+                msg: data.message,
+                roomName: data.roomName, 
+                username: data.username,
+                timestamp: timestamp
+            };
+
+            await db.collection("messages").insertOne(messageToSave);
+            const { roomName, username, message } = data;
+
+            io.in(roomName).emit('newMessage', {
+                username,
+                message,
+                timestamp: timestamp.toISOString()
+            });
+        } catch (error) {
+            console.error("Error saving the message:", error);
+            socket.emit('errorOnSend', 'There was an error sending your message.');
+        }
+    });
+
+    socket.on('joinRoom', async (roomName) => {
+        try {
+            const messages = await db.collection("messages").find({ roomName }).toArray();
+            socket.join(roomName);
+            socket.emit('joinedRoom', roomName);
+            socket.emit('initialMessages', messages.map(m => ({
+                username: m.username,
+                message: m.msg,
+                timestamp: m.timestamp.toISOString()
+            })));
+        } catch (error) {
+            console.error("Error joining the room:", error);
+            socket.emit('errorOnJoin', 'There was an error joining the room.');
+        }
+    });
+    socket.on('leaveRoom', (roomName) => {
+        socket.leave(roomName);
+        console.log(`A user has left the room: ${roomName}`);
     });
 });
 
