@@ -1,7 +1,8 @@
 const socket = io.connect('/');  // Connect to the server's socket
-function formatDate(dateString) {
+function formatTimestamp(timestampString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
+    const timestampDate = new Date(timestampString);
+    return timestampDate.toLocaleDateString('en-US', options) + " - ";
 }
 const userEmail = localStorage.getItem('email');
 document.addEventListener('DOMContentLoaded', () => {
@@ -18,10 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Listens for incoming messages and appends to the message container
     socket.on('newMessage', (messageData) => {
         const messageElem = document.createElement('div');
-        messageElem.innerText = `${formatDate(messageData.timestamp)} - ${messageData.username}: ${messageData.message}`;
+        messageElem.innerText = formatTimestamp(messageData.timestamp) + `${messageData.username}: ${messageData.message}`;
         messageContainer.appendChild(messageElem);
     });
-
     // Handles sending of new messages
     sendButton.addEventListener('click', () => {
         const message = messageInput.value;
@@ -40,19 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
         messageContainer.innerHTML = '';
         messages.forEach(messageData => {
             const messageElem = document.createElement('div');
-            messageElem.innerText = `${messageData.timestamp} - ${messageData.username}: ${messageData.message}`;
+            messageElem.innerText = formatTimestamp(messageData.timestamp) + `${messageData.username}: ${messageData.message}`;
             messageContainer.appendChild(messageElem);
         });
     });
 
-    leaveButton.addEventListener('click', () => {
-        socket.emit('leaveRoom', currentRoom);
-        // Logic to redirect user or inform about leaving room
-    });
+    // leaveButton.addEventListener('click', () => {
+    //     socket.emit('leaveRoom', currentRoom);
+    //     // Logic to redirect user or inform about leaving room
+    // });
 
     backButton.addEventListener('click', () => {
         // Logic to navigate back to previous page or main dashboard
         window.history.back();
+        localStorage.removeItem('userEmail');
     });
 
     // You can add more functionalities like changing rooms, updating usernames, etc.

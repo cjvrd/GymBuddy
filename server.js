@@ -88,10 +88,7 @@ io.on('connection', (socket) => {
             socket.emit('errorOnJoin', 'There was an error joining the room.');
         }
     });
-    socket.on('leaveRoom', (roomName) => {
-        socket.leave(roomName);
-        console.log(`A user has left the room: ${roomName}`);
-    });
+    
 });
 
 app.use(express.static(__dirname+'/public'));
