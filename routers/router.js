@@ -2,11 +2,10 @@ let express = require('express');
 let router = express.Router();
 let controller = require('../controllers/controller');
 const verifyAndAuthorize = require('../middleware/jwt-verify-authorize');
-const {updateCycleProgram} = require('../models/cycle')
+const {updateCycleProgram} = require('../models/cycle');
 
 // GET users handler
 router.get('/users', (req,res) =>{
-    // res.render('index.html')
     controller.getAllUsers(req, res);
 });
 

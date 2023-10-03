@@ -6,7 +6,6 @@ function getAllUsers(callback){
     collection.find({}).toArray(callback);
 };
 
-// using this function instead of postUser
 function createUser(user, callback){
     bcrypt.hash(user.password, 10, (err, hash) => {
         if(err){
