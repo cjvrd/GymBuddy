@@ -114,7 +114,7 @@ function checkPasswordsMatch() {
     }
 };
 
-document.addEventListener("DOMContentLoaded", function() {
+$(document).ready(function () {
     // Attach the blur event to the confirmPassword field
     $('#confirmPassword').on('blur', checkPasswordsMatch);
 
