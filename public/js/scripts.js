@@ -158,6 +158,33 @@ $(document).ready(function () {
     }
 });
 
+function validateForm() {
+    const fullName = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Check if the full name is at least 3 characters
+    if (fullName.length < 3) {
+        alert('Full name must be at least 3 characters long.');
+        return false;
+    }
+
+    // Check if the email is valid
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address.');
+        return false;
+    }
+
+    // Check if the password is at least 8 characters
+    if (password.length < 8) {
+        alert('Password must be at least 8 characters long.');
+        return false;
+    }
+
+    return true;
+}
+
 //return to dashboard button
 $('#dashboardButton').on('click', function () {
     window.location.href = '/dashboard.html';
