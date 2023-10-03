@@ -25,13 +25,13 @@ $(document).ready(function () {
     var {totalDays} = calculateTotalDays(program);
     var {completedDays} = calculateCompletedDays(program);
     // replacing html element with the number of completed days
-    var daysCompletedElement = document.querySelector(".progress-details > p:nth-child(2)");
+    var daysCompletedElement = document.querySelector(".progress-details > p:nth-child(1)");
     daysCompletedElement.textContent = `${completedDays} out of 12 days completed`;
     // replacing week number in status
-    var weekElement = document.querySelector(".progress-details > p:nth-child(3)");
+    var weekElement = document.querySelector(".progress-details > p:nth-child(2)");
     weekElement.textContent = `Week: ${currentWeek}`;
     // replacing day number in status
-    var dayElement = document.querySelector(".progress-details > p:nth-child(4)");
+    var dayElement = document.querySelector(".progress-details > p:nth-child(3)");
     dayElement.textContent = `Day: ${currentDay}`;
 
     // code for the progress bar
@@ -46,13 +46,8 @@ $(document).ready(function () {
     let progressText = document.querySelector('.progress-text');
     progressText.innerHTML = "&nbsp;"+progressPercentage.toFixed(2) + " %";
 
-    // redirecting to week page
-    // target the the element with ID "tab1"
-    const tab1 = document.getElementById('tab1');
-
-    // add a click event listener to the #tab1 element
-    tab1.addEventListener('click', function() {
-        // Redirect to the desired page
+    //training button
+    $('#trainingButton').on('click', function() {
         window.location.href = '/training.html';
     });
 });

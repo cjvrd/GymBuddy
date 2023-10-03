@@ -154,8 +154,13 @@ $(document).ready(function () {
         document.getElementById('loginContainer').style.display = 'none';
         document.getElementById('newuserContainer').style.display = 'none';
 
-        window.location.href = 'dashboard.html';
+        window.location.href = '/dashboard.html';
     }
+});
+
+//return to dashboard button
+$('#dashboardButton').on('click', function () {
+    window.location.href = '/dashboard.html';
 });
 
 // handle logout
