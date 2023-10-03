@@ -1,6 +1,6 @@
-// POST request using fetch
-const socket = io.connect('http://localhost:3000'); //should this be in controller or models?
+const socket = io.connect('http://localhost:3000');
 
+// POST request using fetch
 async function signupUser(user) {
     try {
         const response = await fetch('/signup', {
@@ -42,13 +42,9 @@ async function loginUser(loginData) {
             body: JSON.stringify(loginData)
         });
 
-        // if (!response.ok) {
-        //     throw new Error(`HTTP error! Status: ${response.status}`);
-        // } dont think we need this
-
         const data = await response.json();
 
-        if (data && data.token) { //assign data to local storage, send user to details page (successfully logged in)
+        if (data && data.token) { //assign data to local storage, send user to dashboard (successfully logged in)
 
             // emit 'user-login' upon successful login
             socket.emit('user-login', loginData.email);
@@ -74,7 +70,7 @@ async function loginUser(loginData) {
             localStorage.setItem('currentDay', JSON.stringify(data.cycles[0].currentDay));
 
             // console.log(data.cycles[0].program)
-            window.location.href = '/details.html';
+            window.location.href = '/dashboard.html';
 
         } else {
             alert('Login failed. ' + (data.message || ''));
@@ -88,14 +84,11 @@ async function loginUser(loginData) {
 
 //logout function
 window.logoutUser = function () {
-    localStorage.removeItem('token'); //removes jwt and user data from local storage
-    localStorage.removeItem('email');
-    localStorage.removeItem('userData');
-    localStorage.removeItem('userCycles');
     let userEmail = localStorage.getItem('email');
     if (userEmail) {
         socket.emit('user-logout', userEmail);
     }
+    localStorage.clear(); //remove all data from local storage
     window.location.href = './'; //returns user to index (login page)
 }
 
@@ -130,7 +123,6 @@ $(document).ready(function () {
                 fullName: $("#fullName").val(),
                 email: $("#email").val(),
                 password: $("#password").val(),
-                confirmPassword: $("#confirmPassword").val(),
 
                 age: $('input:radio[name=age]:checked').val(),
                 goal: $('input:radio[name=goal]:checked').val(),
@@ -162,7 +154,7 @@ $(document).ready(function () {
         document.getElementById('loginContainer').style.display = 'none';
         document.getElementById('newuserContainer').style.display = 'none';
 
-        window.location.href = 'details.html';
+        window.location.href = 'dashboard.html';
     }
 });
 

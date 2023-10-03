@@ -1,0 +1,74 @@
+<!--Page coming after login/signup-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=League+Spartan">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/details.css">
+
+</head>
+
+<body>
+
+    <!-- GymBuddy Heading -->
+    <nav class="navbar">
+        <div>
+            <h1 id="GymBuddyTitle">Training Cycles</h1>
+        </div>
+        <!-- Logout Button -->
+        <div id="logoutContainer">
+            <button id="logoutButton">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Tab buttons -->
+        <div class="tab-buttons">
+            <button class="tab-button active" data-for="tab1">Tab 1</button>
+            <button class="tab-button" data-for="tab2">Tab 2</button>
+        </div>
+
+        <!-- Tab contents -->
+        <div class="tab-content">
+            <div id="tab1" class="content tab-pane active">
+                <h4 class="tab1-header">Cycle 9/23</h4>
+                <div class="cycle-status">
+                    <div class="progress-container">
+                        <div class="progress-bar"></div>
+                    </div>
+                    <div class="progress-details">
+                        <h5>Status</h5>
+                        <!-- calculate no. days completed in this cycle -->
+                        <p> out of 12 days completed</p>
+                        <!-- retrieve which week is on-going -->
+                        <p>Week: </p>
+                        <!-- retrieve which day is on-going -->
+                        <p>Day: </p>
+                    </div>
+                </div>
+                <!-- calculate exercises done/36 exercises? -->
+                <div class="progress-text"></div>
+            </div>
+            <div id="tab2" class="tab-pane">Content for Tab 2</div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/scripts.js"></script>
+    <script src="js/dashboard.js"></script>
+
+
+</body>
+
+</html>

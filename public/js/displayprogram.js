@@ -1,5 +1,3 @@
-// var cycles = JSON.parse(localStorage.getItem('userCycles'));
-
 // Function to display cycleData in a specific days table
 function displayDay(day, tableId) {
     const dayTableBody = document.getElementById(tableId);
@@ -46,9 +44,11 @@ function toggleCollapse(dayNumber){
 
     if(dayNumber === 1){
         instance1.show();
-    } else if (dayNumber === 2){
+    }
+    if (dayNumber === 2){
         instance2.show();
-    } else if (dayNumber === 3){
+    }
+    if (dayNumber === 3){
         instance3.show();
     }
 }
@@ -66,7 +66,6 @@ function setActiveWeek(weekNumber) {
 }
 
 function getWeekExercises(cycle, weekNumber){
-    // var days = localStorage.get
     var week = cycle.find(week => week.weekNumber === weekNumber);
     return week.days;
 }
@@ -75,13 +74,15 @@ function displayDaysDetails(days){
     days.map(day => {
         if (day.dayNumber === 1){
             displayDay(day, 'dayOneBody');
-        } if (day.dayNumber === 2){
+        }
+        if (day.dayNumber === 2){
             displayDay(day, 'dayTwoBody');
-        } if (day.dayNumber === 3){
+        }
+        if (day.dayNumber === 3){
             displayDay(day, 'dayThreeBody');
         }
     })
-}
+};
 
 function updateCycleRequest(updatedProgram) {
     var userId = JSON.parse(localStorage.getItem('userId'));
@@ -111,21 +112,20 @@ function updateCycleRequest(updatedProgram) {
     .catch(err => {
         console.error('Error updating program:', err);
     });
-}
+};
 
 
 $(document).ready(function () {
-    // var cycles = JSON.parse(localStorage.getItem('userCycles'));
-    // program: {weeks:[], done: false}
     var program = JSON.parse(localStorage.getItem('program'));
 
-    // console.log(program)
     var currentDay = parseInt(localStorage.getItem('currentDay'));
     var currentWeek = parseInt(localStorage.getItem('currentWeek'));
     var clickedWeek = currentWeek;
+
     // get the days of the on-going week and display each day's exercises
     var days = getWeekExercises(program.weeks, currentWeek);
     displayDaysDetails(days);
+
     // open current day and current week
     toggleCollapse(currentDay);
     setActiveWeek(currentWeek);
@@ -175,7 +175,7 @@ $(document).ready(function () {
                             currentDay--;
                             // if last day of week && day is unchecked: uncheck week
                             if(day.dayNumber === numDay){
-                                week.done = isChecked;
+                                week.done = isChecked; //this needs to change (christian)
                             }
                         }
                         localStorage.setItem('currentDay', currentDay.toString());
