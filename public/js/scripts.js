@@ -169,10 +169,10 @@ $('#logoutButton').on('click', function (event) {
     logoutUser();
 });
 
-socket.on('user-login', (email) => {
-    alert(`${email} has connected`);
-});
+// socket.on('user-login', (email) => {
+//     alert(`${email} has connected`);
+// });
 
-socket.on('user-logout', (email) => {
-    alert(`${email} has disconnected`);
-});
+// socket.on('user-logout', (email) => {
+//     alert(`${email} has disconnected`);
+// });
