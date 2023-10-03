@@ -5,9 +5,6 @@ const socketIo = require('socket.io');
 const server = http.createServer(app);
 const io = socketIo(server);
 
-
-
-
 var port = process.env.port || 3000;
 let router = require('./routers/router');
 
@@ -56,10 +53,6 @@ app.use('/', router);
 app.get('/signup', (req, res) => {
     res.sendFile(__dirname + '/public/signup.html');
 });
-
-// app.listen(port,()=>{
-//     console.log("App listening to: "+port)
-// });
 
 server.listen(port, () => {
     console.log(`App listening to: ${port}`);
