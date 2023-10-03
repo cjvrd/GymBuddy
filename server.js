@@ -10,22 +10,26 @@ let router = require('./routers/router');
 
 
 // this object will store the mapping between email addresses and their respective socket IDs
-const userSocketMap = {};
+const userSocketMap = {
+    emailToSocket: {},
+    socketToEmail: {}
+};
 
 io.on('connection', (socket) => {
     // when a user logs in
     socket.on('user-login', (email) => {
         // map the user's email to their socket ID
-        userSocketMap[email] = socket.id;
+        userSocketMap.emailToSocket[email] = socket.id;
 
-        console.log(`${email} has connected`);
+        console.log(`${email} has login`);
         // notify ONLY the user who has just logged in
         socket.emit('user-login-success', `Welcome, ${email}`);
     });
 
     // when a user logs out
     socket.on('user-logout', (email) => {
-        console.log(`${email} has disconnected`);
+        userSocketMap.socketToEmail[socket.id] = email;
+        console.log(`${email} has logout`);
         
         // notify ONLY the user who has just logged out
         if (userSocketMap[email]) {
@@ -36,11 +40,11 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         // find and remove the disconnected socket from the userSocketMap
-        for (let email in userSocketMap) {
-            if (userSocketMap[email] === socket.id) {
-                console.log(`${email} has disconnected due to a socket disconnect`);
-                delete userSocketMap[email];
-            }
+        const email = userSocketMap.socketToEmail[socket.id];
+        if(email) {
+          //  console.log(`${email} has disconnected due to a socket disconnect`);
+            delete userSocketMap.emailToSocket[email];
+            delete userSocketMap.socketToEmail[socket.id];
         }
     });
 });
