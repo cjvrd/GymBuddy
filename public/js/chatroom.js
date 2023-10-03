@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageContainer = document.getElementById('message-container');
     const messageInput = document.getElementById('message-input');
     const sendButton = document.getElementById('send-button');
-    const leaveButton = document.getElementById('leave-button');
     const backButton = document.getElementById('back-button');
 
     let currentRoom = 'global';  // Defaulting to a global room
@@ -22,17 +21,31 @@ document.addEventListener('DOMContentLoaded', () => {
         messageElem.innerText = formatTimestamp(messageData.timestamp) + `${messageData.username}: ${messageData.message}`;
         messageContainer.appendChild(messageElem);
     });
+
+    function wrapLongWords(message) {
+        const words = message.split(' ');
+        const maxWordLength = 40;
+    
+        const wrappedMessage = words.map(word => {
+            if (word.length > maxWordLength) {
+                return word.replace(new RegExp(`.{${maxWordLength}}`, 'g'), '$& ');
+            }
+            return word;
+        }).join(' ');
+        return wrappedMessage;
+    }
     // Handles sending of new messages
     sendButton.addEventListener('click', () => {
         const message = messageInput.value;
         if (message.trim() !== '') {
             socket.emit('sendMessageToRoom', {
                 roomName: currentRoom,
-                message,
+                message: wrapLongWords(message),
                 username: userEmail // email
             });
             messageInput.value = '';
         }
+        
     });
 
     // Handles loading of initial messages when you join a room
