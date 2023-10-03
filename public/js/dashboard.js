@@ -50,7 +50,14 @@ $(document).ready(function () {
     $('#trainingButton').on('click', function() {
         window.location.href = '/training.html';
     });
+    // chatroom button
+$('#chatroomButton').on('click', function() {
+    window.location.href = '/chatroom.html';
 });
+
+    
+});
+
 
 function calculateTotalDays(program){
     let totalDays = 0;
