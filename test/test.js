@@ -71,7 +71,7 @@ describe('Test SignUp API unsuccessful', function() {
             throw new Error(`${error.message}`);
         }
     })
-})
+});
 
 describe('Test SignIn API', function() {
     it('Signs in a user and returns a status code of 200', async function() {
