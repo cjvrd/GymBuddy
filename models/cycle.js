@@ -2,6 +2,7 @@ const trainingPrograms = require('../training-programs/program-objects');
 let client = require('../dbConnection');
 let collection = client.db().collection('Cycle');
 
+//this function creates a cycle for the user, it attaches the appropriate program and creates a reference to the user id
 function createCycleForUser(user, callback) {
 
     let newCycle = {
@@ -20,7 +21,8 @@ function createCycleForUser(user, callback) {
     });
 };
 
-function pickProgram(age, goal) { //this function takes in form data and assigns a program according to selection of age+goal
+//this function takes in form data and assigns a program according to selection of age+goal
+function pickProgram(age, goal) { 
     // for old users
     if (age === "old") {
         if (goal === "buildStrength") {
@@ -59,6 +61,7 @@ function getCyclesForUser(userId, callback) {
     collection.find({ userId: userId }).toArray(callback);
 };
 
+//this function updates the DB when the user is moving through the program and checking boxes as complete
 function updateCycleProgram(userId, cycleId, updatedProgram, currentWeek, currentDay, callback) {
     // find the cycle by userId and cycleId and update the program
     const ObjectId = require('mongodb').ObjectId;

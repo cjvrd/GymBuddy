@@ -14,7 +14,7 @@ $(document).ready(function () {
 		window.location.href = '/chatroom.html';
 	});
 
-	if (!program.done) {
+	if (!program.done) { //only display new cycle button if program has been completed
 		document.getElementById('resetCycleButton').style.display = "none";
 	} else {
 		document.getElementById('trainingButton').style.display = "none";
@@ -55,6 +55,7 @@ $(document).ready(function () {
 	progressText.innerHTML = "&nbsp;" + progressPercentage.toFixed(2) + " %";
 });
 
+//this function resets the cycle data so the user can start a new cycle
 function resetCycle(program) {
 	var program = JSON.parse(localStorage.getItem('program'));
 	var currentWeek = parseInt(localStorage.getItem('currentWeek'));
@@ -62,7 +63,7 @@ function resetCycle(program) {
 	program.done = false;
 	currentDay = 1;
 	currentWeek = 1;
-	for (const week of program.weeks) {
+	for (const week of program.weeks) { //iterate through program obj and set all done to false
 		week.done = false;
 		for (const day of week.days) {
 			day.done = false;
@@ -71,15 +72,15 @@ function resetCycle(program) {
 			};
 		};
 	};
-	localStorage.setItem('program', JSON.stringify(program));
+	localStorage.setItem('program', JSON.stringify(program)); //update program in local storage
 	localStorage.setItem('currentDay', currentDay.toString()); //update current day in local storage
 	localStorage.setItem('currentWeek', currentWeek.toString()); //update current week in local storage
-	updateCycleRequest(program); //post local storage changes to DB
+	updateCycleRequest(program); //post local storage changes to DB (this function is from displayprogram.js)
 };
 
 function calculateTotalDays(program) {
 	let totalDays = 0;
-	// calculating total days of workout
+	// calculating total days of program
 	program.weeks.map(week => {
 		totalDays += week.days.length;
 	});
@@ -87,19 +88,18 @@ function calculateTotalDays(program) {
 }
 
 function calculateCompletedDays(program) {
-
 	let completedDays = 0;
 
-	// Iterate over the weeks
+	// iterate over the weeks
 	for (const week of program.weeks) {
 		if (week.done) {
-			// If the entire week is marked as done, increment the completed days count by the number of days in that week
+			// if the entire week is marked as done, increment the completed days count by the number of days in that week
 			completedDays += week.days.length;
 		} else {
-			// If the week is not marked as done, check individual days
+			// if the week is not marked as done, check individual days
 			for (const day of week.days) {
 				if (day.done) {
-					// If the day is marked as done, increment the completed days count by 1
+					// if the day is marked as done, increment the completed days count by 1
 					completedDays++;
 				}
 			}
