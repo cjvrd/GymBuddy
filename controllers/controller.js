@@ -31,9 +31,8 @@ const signUp = (req, res) => {
                     statusCode: 500,
                     message: 'Server error when creating user'
                 });
-            }
+            };
 
-            // console.log(result)
             // creating the cycle for the user
             Cycle.createCycleForUser(result, (err, cycleResult) => {
                 if(err){
@@ -42,7 +41,6 @@ const signUp = (req, res) => {
                         message: 'Server error when creating cycle for user'
                     })
                 }
-                // console.log(cycleResult)
 
                 res.json({
                     statusCode: 201,

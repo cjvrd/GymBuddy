@@ -1,4 +1,19 @@
-// Function to display cycleData in a specific days table
+//this function displays the days exercises in the table for each day in the program
+function displayDaysDetails(days) {
+    days.map(day => {
+        if (day.dayNumber === 1) {
+            displayDay(day, 'dayOneBody');
+        };
+        if (day.dayNumber === 2) {
+            displayDay(day, 'dayTwoBody');
+        };
+        if (day.dayNumber === 3) {
+            displayDay(day, 'dayThreeBody');
+        };
+    });
+};
+
+// function to display cycleData in a specific days table
 function displayDay(day, tableId) {
     const dayTableBody = document.getElementById(tableId);
 
@@ -33,7 +48,7 @@ function displayDay(day, tableId) {
     });
 };
 
-
+//this function automatically opens the day that the user is currently up to in the program
 function toggleCollapse(dayNumber) {
     var button1 = document.querySelector('#day1');
     var instance1 = new bootstrap.Collapse(button1, { toggle: false }); // ensure toggle is set to false
@@ -53,6 +68,7 @@ function toggleCollapse(dayNumber) {
     }
 };
 
+//this function displays the data for the week depending on which week is selected
 function setActiveWeek(weekNumber) {
     // select all navigation links
     var navLinks = document.querySelectorAll('.nav-link');
@@ -62,9 +78,10 @@ function setActiveWeek(weekNumber) {
         } else {
             navLinks[i].classList.remove('active');
         }
-    }
+    };
 };
 
+//this function returns the days from the current week as well as tracks whether the week is completed for the complete week checkbox
 function getWeekExercises(cycle, weekNumber) {
     var week = cycle.find(week => week.weekNumber === weekNumber);
     var completeWeekCheckbox = document.getElementById('completeWeek');
@@ -76,25 +93,16 @@ function getWeekExercises(cycle, weekNumber) {
     return week.days;
 };
 
-function displayDaysDetails(days) {
-    days.map(day => {
-        if (day.dayNumber === 1) {
-            displayDay(day, 'dayOneBody');
-        }
-        if (day.dayNumber === 2) {
-            displayDay(day, 'dayTwoBody');
-        }
-        if (day.dayNumber === 3) {
-            displayDay(day, 'dayThreeBody');
-        }
-    })
-};
-
-function updateCycleRequest(updatedProgram) {
+//this function updates the cycle in the DB
+function updateCycleRequest() {
+    // localStorage is always updated
+    // here, we retrieve them before sending the update request to server
     var userId = JSON.parse(localStorage.getItem('userId'));
     var cycleId = JSON.parse(localStorage.getItem('cycleId'));
     var currentWeek = parseInt(localStorage.getItem('currentWeek'));
     var currentDay = parseInt(localStorage.getItem('currentDay'));
+    var updatedProgram = JSON.parse(localStorage.getItem('program'));
+    // the access token for auth
     const token = localStorage.getItem('token');
 
     fetch(`/update-program/${userId}/${cycleId}`, {
@@ -120,11 +128,55 @@ function updateCycleRequest(updatedProgram) {
         });
 };
 
+//this function handles all the checks for each exercise, and dynamically updates the display and local storage
+function updateDisplay(isChecked, dayNumber, exerciseName, program, week, currentWeek, currentDay) {
+    // find day in which the user checks/unchecks exercise checkbox
+    var day = week.days.find(d => d.dayNumber === dayNumber);
+    if (day && day.exercises) {
+        // find the targeted exercise from 'program.week.day.exercises'
+        var exercise = day.exercises.find(ex => ex.name === exerciseName);
+        if (exercise) {
+            // give it the new value (checked/unchecked)
+            exercise.done = isChecked;
+            var lastExercise = day.exercises[day.exercises.length - 1].name;
+            // if last exercise of day is checked, update current day
+            if (exercise.name === lastExercise) {
+                day.done = isChecked; //set day to done in prograam obj
+                var numDays = week.days.length;
+                if (day.done) {
+                    if (currentDay < numDays) { //if not last day, increment current day
+                        currentDay++;
+                    };
+                } else { //if day is unchecked and not first day, decrement currentday
+                    if (currentDay > 1)
+                    currentDay--;
+                };
+            }
+        } else {
+            console.log("Something went wrong when finding the exercise")
+        };
+    };
+
+    return {
+        currentDay: currentDay,
+        currentWeek: currentWeek,
+        program: program
+    };
+};
+
 
 $(document).ready(function () {
+    // Note: all changes will be made on localStorage values, then 
+    // separate functions will retrieve from localStorage and send fetch requests
+
+    // retrieving 'program' from localStorage 
+    // will be used to update 'done' of weeks, day, and exercises in localStorage 'program' 
     var program = JSON.parse(localStorage.getItem('program'));
+    // helps track/update localStorage currentDay to help auto-toggle Day element
     var currentDay = parseInt(localStorage.getItem('currentDay'));
+    // helps track/update localStorage currentWeek to help auto-activate Week tab
     var currentWeek = parseInt(localStorage.getItem('currentWeek'));
+    // initially set to currentWeek, later changes as user switches between tabs
     var clickedWeek = currentWeek;
 
     // get the days of the on-going week and display each day's exercises
@@ -136,45 +188,42 @@ $(document).ready(function () {
     setActiveWeek(currentWeek);
 
 
-    // handle checkbox changes
+    // handle each exercise checkbox change 
     $(document).on('change', 'input[type="checkbox"]', function () {
+        // is the exercise already checked?
         var isChecked = $(this).prop('checked');
+        // which day number is the exercise in?
         var dayNumber = $(this).data('day-number');
+        // name of exercise
         var exerciseName = $(this).closest('tr').find('.exercise-name').text();
-
+        // to get the week.check value later
         var completeWeekCheckbox = document.getElementById('completeWeek');
 
-        // find the week associated with the clickedWeek
-        var week = program.weeks.find(w => w.weekNumber === clickedWeek);
         // number of weeks in the cycle
         var numWeeks = program.weeks.length;
-        if (week) {
-            // find the number of workout days in this week
-            var numDay = week.days.length;
-            // find the day with dayNumber === dayNumber from checkbox
-            var day = week.days.find(d => d.dayNumber === dayNumber);
-            if (day) {
-                var exercise = day.exercises.find(ex => ex.name === exerciseName);
-                if (exercise) {
-                    exercise.done = isChecked;  // Simply assign the 'isChecked' value to the 'done' property
-                    // find name of last exercise to compare against checked exercise
-                    var lastExercise = day.exercises[day.exercises.length - 1].name;
-                    if (exercise.name === lastExercise) {
-                        day.done = isChecked; //if it is last exercise, day = done
-                        if (day.done) {
-                            if (currentDay < numDay) { //not last day, increment current day
-                                currentDay++;
-                            };
-                        } else { //if day is unchcked and not first day, decrement currentday
-                            if (currentDay > 1)
-                            currentDay--;
-                        };
-                    };
-                };
-            };
-        };
-        //if complete week checkbox is checked, week = done
-        if (completeWeekCheckbox.checked) {
+
+        // reference 'program.week' related to clickedWeek
+        var week = program.weeks.find(w => w.weekNumber === clickedWeek);
+
+        //number of days in the week
+        var numDays = week.days.length;
+
+        // calling the function to update currentDay, currentWeek, and program when user checks exercise
+        // ---------------------------------------------------------------------//
+        var updatedValues = updateDisplay(isChecked, dayNumber, exerciseName, program, week, currentWeek, currentDay);
+
+        currentDay = updatedValues.currentDay;
+        currentWeek = updatedValues.currentWeek;
+        program = updatedValues.program;
+
+        localStorage.setItem('currentDay', currentDay.toString());
+        localStorage.setItem('currentWeek', currentWeek.toString());
+        localStorage.setItem('program', JSON.stringify(program));
+        // ---------------------------------------------------------------------//
+
+        // if complete week button is checked
+        // --------------------------------------------------------------------//
+        if ($(this).attr('id') === 'completeWeek') {
             let confirmText = 'Are you sure?\nThis cannot be undone.';
             if (confirm(confirmText) == true) { //confirm complete week first
                 completeWeekCheckbox.setAttribute('disabled', true); //if week is done, disable checkbox
@@ -191,29 +240,26 @@ $(document).ready(function () {
                     } else {
                         currentWeek = numWeeks; //if last week, stay on last week and complete program
                         program.done = isChecked;
-                        currentDay = numDay;
+                        currentDay = numDays;
+                        console.log('program done')
                     };
                 };
             } else {
                 completeWeekCheckbox.checked = false;
             }
+            localStorage.setItem('program', JSON.stringify(program));
+            location.reload();
         };
 
         localStorage.setItem('currentDay', currentDay.toString()); //update current day in local storage
         localStorage.setItem('currentWeek', currentWeek.toString()); //update current week in local storage
 
-        if (isChecked) { //add check message for complete week
-            console.log(`Checkbox for ${exerciseName} is checked!`);
-        } else {
-            console.log(`Checkbox for ${exerciseName} is unchecked!`);
-        };
-
         // update 'program' in localStorage 
         localStorage.setItem('program', JSON.stringify(program));
 
-        updateCycleRequest(program); //post local storage chagnes to DB
+        // update the db
+        updateCycleRequest();
     });
-
 
     // if week # clicked, update 'days' value
     // listener to week buttons should return clickedWeek number

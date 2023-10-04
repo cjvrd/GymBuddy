@@ -6,6 +6,7 @@ function getAllUsers(callback){
     collection.find({}).toArray(callback);
 };
 
+//this function creates a user and hashes the password
 function createUser(user, callback){
     bcrypt.hash(user.password, 10, (err, hash) => {
         if(err){
