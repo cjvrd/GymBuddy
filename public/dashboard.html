@@ -15,6 +15,9 @@
 </head>
 
 <body>
+    <br>
+    <br>
+    <br>
     <div class="container">
         <!-- GymBuddy Heading -->
         <div class="row m-3">
@@ -44,21 +47,26 @@
                 <div class="progress-text"></div>
                 <br>
                 <!-- training button -->
-                <div class="d-grid mb-3" id="trainingContainer">
+                <div class="d-grid mb-1" id="trainingContainer">
                     <button class="btn btn-dark" id="trainingButton">Go To Training</button>
+                </div>
+                <!-- resetCycle button -->
+                <div class="d-grid mb-1" id="resetContainer">
+                    <button class="btn btn-dark" id="resetCycleButton">Start a New Cycle</button>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- chatroom button -->
-<div class="d-flex justify-content-center mb-3" id="chatroomContainer">
-    <button class="btn btn-dark" id="chatroomButton">Chatroom</button>
-</div>
+    <div class="d-flex justify-content-start position-absolute top-0 m-2" id="chatroomContainer">
+        <button class="btn btn-dark" id="chatroomButton">Support Chatroom</button>
+    </div>
 
     <!-- logout button -->
-	<div class="d-grid justify-content-center fixed-bottom mb-3" id="logoutContainer">
-		<button class="btn btn-dark" id="logoutButton">Logout</button>
-	</div>
+    <div class="d-grid justify-content-end position-absolute top-0 end-0 m-2" id="logoutContainer">
+        <button class="btn btn-dark" id="logoutButton">Logout</button>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -67,6 +75,7 @@
         crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/scripts.js"></script>
+    <script src="js/displayprogram.js"></script>
     <script src="js/dashboard.js"></script>
 
 

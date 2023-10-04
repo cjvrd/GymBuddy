@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
         // map the user's email to their socket ID
         userSocketMap.emailToSocket[email] = socket.id;
 
-        console.log(`${email} has login`);
+        console.log(`${email} has logged in`);
         // notify ONLY the user who has just logged in
         socket.emit('user-login-success', `Welcome, ${email}`);
     });
@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
     // when a user logs out
     socket.on('user-logout', (email) => {
         userSocketMap.socketToEmail[socket.id] = email;
-        console.log(`${email} has logout`);
+        console.log(`${email} has logged out`);
         
         // notify ONLY the user who has just logged out
         if (userSocketMap[email]) {

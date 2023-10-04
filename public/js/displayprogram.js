@@ -191,6 +191,7 @@ $(document).ready(function () {
                     } else {
                         currentWeek = numWeeks; //if last week, stay on last week and complete program
                         program.done = isChecked;
+                        currentDay = numDay;
                     };
                 };
             } else {
@@ -210,9 +211,8 @@ $(document).ready(function () {
         // update 'program' in localStorage 
         localStorage.setItem('program', JSON.stringify(program));
 
-        updateCycleRequest(program); //post local storage chagnes to DB
+        updateCycleRequest(program); //post local storage changes to DB
     });
-
 
     // if week # clicked, update 'days' value
     // listener to week buttons should return clickedWeek number
@@ -225,7 +225,6 @@ $(document).ready(function () {
         var days = getWeekExercises(program.weeks, clickedWeek);
         displayDaysDetails(days);
     });
-
 });
 
 

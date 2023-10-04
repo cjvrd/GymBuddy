@@ -195,11 +195,3 @@ $('#logoutButton').on('click', function (event) {
     event.preventDefault();
     logoutUser();
 });
-
-// socket.on('user-login', (email) => {
-//     alert(`${email} has connected`);
-// });
-
-// socket.on('user-logout', (email) => {
-//     alert(`${email} has disconnected`);
-// });
