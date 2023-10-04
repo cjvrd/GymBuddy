@@ -1,20 +1,7 @@
 $(document).ready(function () {
-    
-    // code for the tab buttons
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabPanes = document.querySelectorAll('.tab-pane');
-
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // deactivate all buttons and panes
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabPanes.forEach(pane => pane.classList.remove('active'));
-
-            // activate clicked button and its corresponding pane
-            button.classList.add('active');
-            const targetPaneId = button.getAttribute('data-for');
-            document.getElementById(targetPaneId).classList.add('active');
-        });
+    //training button
+    $('#trainingButton').on('click', function() {
+        window.location.href = '/training.html';
     });
 
     // calculating status in for dynamic values in tab1 content
@@ -35,7 +22,6 @@ $(document).ready(function () {
     dayElement.textContent = `Day: ${currentDay}`;
 
     // code for the progress bar
-    // say we want to show a 50% progress.
     let progressPercentage = 100*(completedDays/totalDays);
 
     // set the height of the progress-bar
@@ -46,10 +32,6 @@ $(document).ready(function () {
     let progressText = document.querySelector('.progress-text');
     progressText.innerHTML = "&nbsp;"+progressPercentage.toFixed(2) + " %";
 
-    //training button
-    $('#trainingButton').on('click', function() {
-        window.location.href = '/training.html';
-    });
 });
 
 function calculateTotalDays(program){
@@ -61,16 +43,26 @@ function calculateTotalDays(program){
     return ({totalDays});
 }
 
-function calculateCompletedDays(program){
+function calculateCompletedDays(program) {
+
     let completedDays = 0;
 
-    program.weeks.map(week =>{
-        week.days.map(day => {
-            if(day.done){
-                completedDays++;
-            }
-        })
-    })
+    // Iterate over the weeks
+    for (const week of program.weeks) {
+      if (week.done) {
+        // If the entire week is marked as done, increment the completed days count by the number of days in that week
+        completedDays += week.days.length;
+      } else {
+        // If the week is not marked as done, check individual days
+        for (const day of week.days) {
+          if (day.done) {
+            // If the day is marked as done, increment the completed days count by 1
+            completedDays++;
+          }
+        }
+      }
+    }
+
     return {completedDays};
 };
 
