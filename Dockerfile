@@ -1,11 +1,11 @@
-FROM node:20-alpine3.17
+FROM node
 
-WORKDIR /usr/src/app
-COPY package*.json ./
+WORKDIR /app
+
+COPY . .
 
 EXPOSE 3000
 
 RUN npm install
-# Copy the rest of the application files into the container
-COPY . .
-CMD npm start
+
+CMD ("npm" "start")
