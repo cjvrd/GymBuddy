@@ -74,6 +74,7 @@ function resetCycle(program) {
 	localStorage.setItem('program', JSON.stringify(program));
 	localStorage.setItem('currentDay', currentDay.toString()); //update current day in local storage
 	localStorage.setItem('currentWeek', currentWeek.toString()); //update current week in local storage
+	updateCycleRequest(program); //post local storage changes to DB
 };
 
 function calculateTotalDays(program) {
