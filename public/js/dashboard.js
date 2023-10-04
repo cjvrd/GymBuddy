@@ -3,7 +3,10 @@ $(document).ready(function () {
     $('#trainingButton').on('click', function() {
         window.location.href = '/training.html';
     });
-
+    // chatroom button
+    $('#chatroomButton').on('click', function() {
+      window.location.href = '/chatroom.html';
+    });
     // calculating status in for dynamic values in tab1 content
     var program = JSON.parse(localStorage.getItem('program'));
     var currentWeek = parseInt(localStorage.getItem('currentWeek'));
@@ -31,8 +34,8 @@ $(document).ready(function () {
     // update text (assuming it's a simple percentage, adjust as needed)
     let progressText = document.querySelector('.progress-text');
     progressText.innerHTML = "&nbsp;"+progressPercentage.toFixed(2) + " %";
-
 });
+
 
 function calculateTotalDays(program){
     let totalDays = 0;
