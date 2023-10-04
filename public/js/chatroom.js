@@ -1,15 +1,18 @@
 const socket = io.connect('/');  // Connect to the server's socket
+
 function formatTimestamp(timestampString) {
-    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    const options = { hour: '2-digit', minute: '2-digit' };
     const timestampDate = new Date(timestampString);
-    return timestampDate.toLocaleDateString('en-US', options) + " - ";
+    return timestampDate.toLocaleDateString('en-US', options);
 }
 const userEmail = localStorage.getItem('email');
+const userData = JSON.parse(localStorage.getItem('userData'));
+const userName = userData.fullName;
+
 document.addEventListener('DOMContentLoaded', () => {
     const messageContainer = document.getElementById('message-container');
     const messageInput = document.getElementById('message-input');
     const sendButton = document.getElementById('send-button');
-    const backButton = document.getElementById('back-button');
 
     let currentRoom = 'global';  // Defaulting to a global room
 
@@ -18,14 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Listens for incoming messages and appends to the message container
     socket.on('newMessage', (messageData) => {
         const messageElem = document.createElement('div');
-        messageElem.innerText = formatTimestamp(messageData.timestamp) + `${messageData.username}: ${messageData.message}`;
+        messageElem.innerText = `${messageData.username}: ${messageData.message}` + ' (' + formatTimestamp(messageData.timestamp) + ')';
         messageContainer.appendChild(messageElem);
     });
 
     function wrapLongWords(message) {
         const words = message.split(' ');
         const maxWordLength = 40;
-    
+
         const wrappedMessage = words.map(word => {
             if (word.length > maxWordLength) {
                 return word.replace(new RegExp(`.{${maxWordLength}}`, 'g'), '$& ');
@@ -41,11 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
             socket.emit('sendMessageToRoom', {
                 roomName: currentRoom,
                 message: wrapLongWords(message),
-                username: userEmail // email
+                username: userName // email
             });
             messageInput.value = '';
         }
-        
+
     });
 
     // Handles loading of initial messages when you join a room
@@ -53,21 +56,29 @@ document.addEventListener('DOMContentLoaded', () => {
         messageContainer.innerHTML = '';
         messages.forEach(messageData => {
             const messageElem = document.createElement('div');
-            messageElem.innerText = formatTimestamp(messageData.timestamp) + `${messageData.username}: ${messageData.message}`;
+            messageElem.innerText = `${messageData.username}: ${messageData.message}` + ' (' + formatTimestamp(messageData.timestamp) + ')';
             messageContainer.appendChild(messageElem);
         });
     });
 
-    // leaveButton.addEventListener('click', () => {
-    //     socket.emit('leaveRoom', currentRoom);
-    //     // Logic to redirect user or inform about leaving room
-    // });
-
-    backButton.addEventListener('click', () => {
-        // Logic to navigate back to previous page or main dashboard
-        window.history.back();
-        localStorage.removeItem('userEmail');
+    //return to dashboard button
+    $('#dashboardButton').on('click', function () {
+        window.location.href = '/dashboard.html';
     });
 
-    // You can add more functionalities like changing rooms, updating usernames, etc.
+    //logout function
+    window.logoutUser = function () {
+        let userEmail = localStorage.getItem('email');
+        if (userEmail) {
+            socket.emit('user-logout', userEmail);
+        }
+        localStorage.clear(); //remove all data from local storage
+        window.location.href = './'; //returns user to index (login page)
+    }
+
+    // handle logout
+    $('#logoutButton').on('click', function (event) {
+        event.preventDefault();
+        logoutUser();
+    });
 });
