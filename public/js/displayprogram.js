@@ -177,6 +177,7 @@ $(document).ready(function () {
         if (completeWeekCheckbox.checked) {
             let confirmText = 'Are you sure?\nThis cannot be undone.';
             if (confirm(confirmText) == true) { //confirm complete week first
+                completeWeekCheckbox.setAttribute('disabled', true); //if week is done, disable checkbox
                 week.done = isChecked;
                 for (let day of week.days) { //if complete week is checked, check all exercises for that week
                     for (let exercise of day.exercises) {
@@ -195,10 +196,6 @@ $(document).ready(function () {
             } else {
                 completeWeekCheckbox.checked = false;
             }
-        };
-
-        if (week.done = true) {
-            completeWeekCheckbox.setAttribute('disabled', true);
         };
 
         localStorage.setItem('currentDay', currentDay.toString()); //update current day in local storage
