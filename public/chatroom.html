@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatroom</title>
+    <link rel="stylesheet" type="text/css" href="./css/chatroom.css">
+</head>
+<body>
+    <div id="chat-container">
+        <h1 id="chat-title">GymBuddy Support Chatroom</h1>
+        <div id="message-container"></div>
+        <input id="message-input" type="text" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+        <button id="back-button">Go Back</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/chatroom.js"></script>
+</body>
+</html>

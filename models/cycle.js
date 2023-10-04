@@ -83,6 +83,6 @@ function updateCycleProgram(userId, cycleId, updatedProgram, currentWeek, curren
             callback(null, result);
         }
     );
-}
+};
 
 module.exports = { createCycleForUser, getCyclesForUser, updateCycleProgram };

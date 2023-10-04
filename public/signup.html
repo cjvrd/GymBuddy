@@ -21,32 +21,44 @@
 
     <!-- sign up form -->
     <div class="container">
-        <form id="signupForm">
+        <form id="signupForm"  class="needs-validation" novalidate>
             <div class="row justify-content-center" id="signUp">
                 <div class="col-sm-9">
                     <!-- account details -->
                     <p class="text-white text-center fs-4">Enter new account details:</p>
 
                     <div class="form-floating shadow mb-1">
-                        <input type="text" class="form-control" id="fullName" name="name" placeholder="firstname">
+                        <input type="text" class="form-control" id="fullName" name="name" placeholder="firstname" required>
                         <label for="fullName">Full Name:</label>
+                        <div class="invalid-feedback">
+                            Please enter your full name.
+                        </div>
                     </div>
 
                     <div class="form-floating shadow mb-1">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="email@email.com">
+                        <input type="email" class="form-control" id="email" name="email" placeholder="email@email.com" required>
                         <label for="email">Email Address:</label>
+                        <div class="invalid-feedback">
+                            Please enter a valid email address.
+                        </div>
                     </div>
 
                     <div class="form-floating shadow mb-1">
                         <input type="password" class="form-control" id="password" name="password"
-                            placeholder="password">
+                            placeholder="password" minlength="8" required>
                         <label for="password">Password:</label>
+                        <div class="invalid-feedback">
+                            Please enter a password with at least 8 characters.
+                        </div>
                     </div>
 
                     <div class="form-floating shadow mb-1">
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                            placeholder="password">
+                            placeholder="password" required>
                         <label for="confirmPassword">Confirm Password:</label>
+                        <div class="invalid-feedback">
+                            Please confirm your password.
+                        </div>
                     </div>
 
                     <!-- user details for program -->
@@ -56,14 +68,17 @@
                         <p class="text-white fs-5"> How old are you? </p>
                         <!-- age group selector -->
                         <div class="btn-group">
-                            <input type="radio" class="btn-check" name="age" id="young" value="young" checked>
+                            <input type="radio" class="btn-check" name="age" id="young" value="young" checked required>
                             <label class="btn btn-dark" for="young">16-39</label>
 
-                            <input type="radio" class="btn-check" name="age" id="middle" value="middle">
+                            <input type="radio" class="btn-check" name="age" id="middle" value="middle" required>
                             <label class="btn btn-dark" for="middle">40-65</label>
 
-                            <input type="radio" class="btn-check" name="age" id="old" value="old">
+                            <input type="radio" class="btn-check" name="age" id="old" value="old" required>
                             <label class="btn btn-dark" for="old">65+</label>
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select an age group.
                         </div>
                     </div>
 
@@ -73,14 +88,17 @@
                         <p class="text-white fs-5"> What is your gender?</p>
                         <!-- gender selector -->
                         <div class="btn-group">
-                            <input type="radio" class="btn-check" name="gender" id="male" value="male" checked>
+                            <input type="radio" class="btn-check" name="gender" id="male" value="male" checked required>
                             <label class="btn btn-dark" for="male">Male</label>
 
-                            <input type="radio" class="btn-check" name="gender" id="female" value="female">
+                            <input type="radio" class="btn-check" name="gender" id="female" value="female" required>
                             <label class="btn btn-dark" for="female">Female</label>
 
-                            <input type="radio" class="btn-check" name="gender" id="other" value="other">
+                            <input type="radio" class="btn-check" name="gender" id="other" value="other" required>
                             <label class="btn btn-dark" for="other">Other</label>
+                        </div>
+                        <div class="invalid-feedback">
+                            Please select your gender.
                         </div>
                     </div>
 
@@ -92,22 +110,24 @@
                         <!-- goals selector -->
                         <div class="btn-group">
                             <input type="radio" class="btn-check" name="goal" id="buildMuscle" value="buildMuscle"
-                                checked>
+                                checked required>
                             <label class="btn btn-dark" for="buildMuscle">Build Muscle</label>
 
-                            <input type="radio" class="btn-check" name="goal" id="buildStrength" value="buildStrength">
+                            <input type="radio" class="btn-check" name="goal" id="buildStrength" value="buildStrength" required>
                             <label class="btn btn-dark" for="buildStrength">Build Strength</label>
 
-                            <input type="radio" class="btn-check" name="goal" id="loseWeight" value="loseWeight">
+                            <input type="radio" class="btn-check" name="goal" id="loseWeight" value="loseWeight" required>
                             <label class="btn btn-dark" for="loseWeight">Lose Weight</label>
                         </div>
-
+                        <div class="invalid-feedback">
+                            Please select a training goal.
+                        </div>
                     </div>
 
                     <br>
                     <!-- submit button -->
                     <div class="d-grid justify-content-center">
-                        <button type="submit" class="btn btn-dark" id="submitButton">Submit</button>
+                        <button type="submit" class="btn btn-dark" id="submitButton" onclick="return validateForm()">Submit</button>
                     </div>
 
                     <br>
@@ -119,7 +139,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>

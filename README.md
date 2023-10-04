@@ -29,7 +29,7 @@ You can signup for a new account, and start progressing in your workouts!
 2. Enter your full name, email, and password to create an account.
 3. Fill out the details form (Age, Gender, Goal) and click the Submit button.
 4. Log into your new account and you will be directed to the dashboard which shows your current cycle progress.
-5. Click on the Workout button to see your workouts for week 1.
+5. Click on the "Go To Training" button to see your workouts for week 1.
 6. Click on Day 1 and complete the exercises as prescribed, checking off exercises as you complete them.
 7. Gymbuddy will save your progress as you go.
 8. Once you have completed a full week, check the complete week box.
