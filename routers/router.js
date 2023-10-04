@@ -21,6 +21,10 @@ router.put('/update-program/:userId/:cycleId', verifyAndAuthorize, (req, res) =>
     const userIdFromPath = req.params.userId;
     const cycleIdFromPath = req.params.cycleId;
 
+    if (!userIdFromPath || !cycleIdFromPath) {
+        return res.status(400).json({ message: 'Both userId and cycleId are required in the path.' });
+    }    
+
     if (userIdFromPath !== userIdFromToken) {
         return res.status(403).json({ message: 'Not authorized to update progress' });
     }

@@ -21,6 +21,15 @@ const signInData = {
     password: 'password123'
 };
 
+let testUserId;
+let testCycleId;
+let testToken;
+const updatedData = {
+    program: {},
+    currentWeek: 2,
+    currentDay: 3
+}
+
 describe('GET /users API', function() {
     it('should return a status code of 200 and an array of users', async function() {
         try {
@@ -43,7 +52,7 @@ describe('Test SignUp API success', function() {
         try {
             // Make a POST request to the signup endpoint
             const response = await axios.post(`${baseUrl}/signup`, signUpData);
-
+            testUserId = response.data.data._id;
             // Check the response status code
             expect(response.data.statusCode).to.equal(201);
             
@@ -77,8 +86,40 @@ describe('Test SignIn API', function() {
     it('Signs in a user and returns a status code of 200', async function() {
         try {
             const response = await axios.post(`${baseUrl}/signin`, signInData);
+
+            // retrieving values for update test
+            testToken = response.data.token;
+            updatedData.program = response.data.cycles[0].program;
+            testCycleId = response.data.cycles[0]._id;
+
             expect(response.status).to.equal(200);
             expect(response.data.message).to.equal('Logged in successfully');
+        } catch (error) {
+            throw new Error(`${error.message}`);
+        }
+    });
+});
+
+describe('Test Update Program API', function() {
+    it('Updates user program and returns a status code of 200', async function() {
+        try {
+            const response = await fetch(`${baseUrl}/update-program/${testUserId}/${testCycleId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + testToken
+                },
+                body: JSON.stringify({
+                    program: updatedData.program,
+                    currentWeek: updatedData.currentWeek,
+                    currentDay: updatedData.currentDay,
+                })
+            });
+
+            const responseData = await response.json();
+
+            expect(response.status).to.equal(200);
+            expect(responseData.message).to.equal('Program updated successfully.');
         } catch (error) {
             throw new Error(`${error.message}`);
         }
