@@ -1,0 +1,70 @@
+body {
+    background-image: linear-gradient(to right, rgb(255, 221, 0), rgb(255, 106, 0) );
+}
+
+#GymBuddyTitle {
+    text-align: center;
+    color: whitesmoke;
+    text-shadow: 2px 2px 5px black;
+    font-size: 60px;
+    font-weight: bold;
+    font-family: League Spartan, sans-serif;
+}
+
+.tab-content .tab-pane {
+    display: none;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.tab-content .tab-pane.active {
+    display: block;
+}
+
+.tab1-header {
+    margin-top: -5px;
+    margin-bottom: 40px;
+    font-size: 40px;
+    font-family: League Spartan, sans-serif;
+}
+
+.content{
+    background-image: linear-gradient(to bottom, #3e3e3e9b, #0000004c);
+    border-radius: 20px;
+    color: white;
+    height: 70vh;
+    font-family: League Spartan, sans-serif;
+    font-size: 20px;
+}
+
+.cycle-status {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    height: 70%;
+}
+
+.progress-container {
+    width: 30px;
+    height: 100%;
+    background-color: #e0e0e077;
+    margin-right: 20px; /* Spacing between the progress bar and the text */
+    position: relative;
+    border-radius: 35px;
+    border: 1px solid white;
+}
+
+.progress-bar {
+    background-color: #e9eaeb;
+    position: absolute;
+    width: 100%;
+    bottom: 0; /* This will help us to fill the progress from bottom to top */
+    border-radius: 35px;
+}
+
+.progress-text {
+    font-size: 14px;
+}
+
+.btn {
+    font-family: League Spartan, sans-serif !important;
+}

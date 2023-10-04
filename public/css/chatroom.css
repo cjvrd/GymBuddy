@@ -1,0 +1,35 @@
+body {
+    background-image: linear-gradient(to right, rgb(255, 221, 0), rgb(255, 106, 0));
+}
+
+#GymBuddyTitle {
+    text-align: center;
+    color: whitesmoke;
+    text-shadow: 2px 2px 5px black;
+    font-size: 60px;
+    font-weight: bold;
+    font-family: League Spartan, sans-serif;
+}
+
+#chat-container {
+    background-image: linear-gradient(to bottom, #3e3e3e9b, #0000004c);
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 10px;
+    height: 65vh;
+    transition: all 0.3s ease-in-out;
+    overflow-y:auto;
+    color: white;
+    font-family: League Spartan, sans-serif;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#message-input {
+    width: calc(100% - 90px);
+    word-wrap: break-word;
+}
+
+.btn {
+    font-family: League Spartan, sans-serif !important;
+}

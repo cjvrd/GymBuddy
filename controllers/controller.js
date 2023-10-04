@@ -92,15 +92,6 @@ const signIn = (req, res) => { //finds user data in DB
     });
 };
 
-const updateProgress = (req, res) => {
-    // need userId, cycleId, weekNumber, dayNumber, exerciseNumber
-    // retrieve cycle, then ensure userId === req.userId
-    // update all weeks.done to true until weekNumber 
-    // retrieve week, then update all days.done to true until dayNumber
-    // retrieve day, then update all exercises.done to true until exerciseNumber
-
-}
-
 const getAllUsers = (req, res) => { 
     User.getAllUsers((err, result) => {
         if (!err) {
