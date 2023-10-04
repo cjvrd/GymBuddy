@@ -144,17 +144,17 @@ function updateDisplay(isChecked, dayNumber, exerciseName, program, week, curren
                 if(isChecked){
                     // Case 1.1.1: if last day of week
                     if(dayNumber === lastDay){
-                        // // Case 1.1.1.1: if last week
-                        // if(currentWeek === program.weeks.length){
-                        //     program.done = true;
-                        // }
-                        // // Case 1.1.1.2: if not last week
-                        // else {
-                        //     // currentWeek++;
-                        //     // currentDay = 1;
-                        //     console.log("checked last exercise!")
-                        // }
-                        // week.done = true;
+                        // Case 1.1.1.1: if last week
+                        if(currentWeek === program.weeks.length){
+                            program.done = true;
+                        }
+                        // Case 1.1.1.2: if not last week
+                        else {
+                            // currentWeek++;
+                            // currentDay = 1;
+                            console.log("checked last exercise!")
+                        }
+                        week.done = true;
                     }
                     // Case 1.1.2: if not last day of week
                     else {
