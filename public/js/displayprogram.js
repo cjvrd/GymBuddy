@@ -191,6 +191,7 @@ $(document).ready(function () {
                     } else {
                         currentWeek = numWeeks; //if last week, stay on last week and complete program
                         program.done = isChecked;
+                        currentDay = numDay;
                     };
                 };
             } else {
