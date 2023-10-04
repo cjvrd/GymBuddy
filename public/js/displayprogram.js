@@ -189,7 +189,7 @@ $(document).ready(function () {
 
 
     // handle each exercise checkbox change 
-    $(document).on('change', 'input[type="checkbox"]', function () {
+    $(document).on('change', 'input[type="checkbox"]', function (e) {
         // is the exercise already checked?
         var isChecked = $(this).prop('checked');
         // which day number is the exercise in?
@@ -207,6 +207,17 @@ $(document).ready(function () {
 
         //number of days in the week
         var numDays = week.days.length;
+
+        // before updating anything, make sure user isn't editing a week that's done
+        if(week.done){
+            alert("Invalid operation! You cannot edit a completed week.");
+
+            // introduce a slight delay to ensure the checkbox is unchecked after the alert
+            setTimeout(() => {
+                $(this).prop('checked', !isChecked);
+            }, 0);
+            return;
+        }
 
         // calling the function to update currentDay, currentWeek, and program when user checks exercise
         // ---------------------------------------------------------------------//
