@@ -107,4 +107,71 @@ const getAllUsers = (req, res) => {
     });
 };
 
-module.exports = {getAllUsers, signUp, signIn};
+const getUserDetails = (req, res) => {
+    let userId = req.params.userId;
+
+    User.findUserById(userId, (err, user) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Server error occurred while fetching user details.'
+            });
+        }
+
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found.'
+            });
+        }
+
+        // Return user details, but avoid sending sensitive info like password
+        const { password, ...userDetails } = user;
+        res.status(200).json(userDetails);
+    });
+};
+
+const deleteUser = (req, res) => {
+    let userId = req.params.userId;
+
+    User.deleteUserById(userId, (err, result) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Server error occurred while deleting the user.'
+            });
+        }
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({
+                message: 'User not found or already deleted.'
+            });
+        }
+
+        res.status(200).json({
+            message: 'User deleted successfully.'
+        });
+    });
+};
+
+const deleteUserCycle = (req, res) => {
+    let userId = req.params.userId;
+    let cycleId = req.params.cycleId;
+
+    Cycle.deleteUserCycle(userId, cycleId, (err, result) => {
+        if (err) {
+            return res.status(500).json({
+                message: 'Server error occurred while deleting the cycle.'
+            });
+        }
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({
+                message: 'Cycle not found or already deleted for the specified user.'
+            });
+        }
+
+        res.status(200).json({
+            message: 'User cycle deleted successfully.'
+        });
+    });
+};
+
+module.exports = {getAllUsers, signUp, signIn, getUserDetails, deleteUser, deleteUserCycle};

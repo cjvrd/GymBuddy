@@ -8,12 +8,23 @@ const {updateCycleProgram} = require('../models/cycle');
 router.get('/users', (req,res) =>{
     controller.getAllUsers(req, res);
 });
+// GET a specific user's details
+router.get('/users/:userId', controller.getUserDetails);
+
+// DELETE a specific user
+router.delete('/users/:userId', controller.deleteUser);
+
+// DELETE a cycle for a user
+router.delete('/users/:userId/cycles/:cycleId', controller.deleteUserCycle);
+
+
 
 // SignUp handler
 router.post('/signup', controller.signUp);
 
 // SignIn handler
 router.post('/signin', controller.signIn);
+
 
 // Sample protected route
 router.put('/update-program/:userId/:cycleId', verifyAndAuthorize, (req, res) => {

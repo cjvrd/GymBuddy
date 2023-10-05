@@ -1,10 +1,26 @@
 let client = require('../dbConnection');
 const bcrypt = require('bcrypt');
 let collection = client.db().collection('User');
+const { ObjectId } = require('mongodb');  // import ObjectId
+
 
 function getAllUsers(callback){
     collection.find({}).toArray(callback);
 };
+
+
+function findUserById(userId, callback){
+    collection.findOne({ _id: ObjectId(userId) }, callback);
+};
+
+
+function deleteUserById(userId, callback) {
+    collection.deleteOne({ _id: ObjectId(userId) }, callback);
+};
+
+
+
+
 
 //this function creates a user and hashes the password
 function createUser(user, callback){
@@ -29,4 +45,4 @@ function findUserByEmail(email, callback){
     collection.findOne({email: email}, callback);
 };
 
-module.exports = {getAllUsers, createUser, findUserByEmail};
+module.exports = {getAllUsers, createUser, findUserByEmail, findUserById, deleteUserById};

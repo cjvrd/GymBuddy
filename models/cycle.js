@@ -1,6 +1,12 @@
 const trainingPrograms = require('../training-programs/program-objects');
 let client = require('../dbConnection');
 let collection = client.db().collection('Cycle');
+const { ObjectId } = require('mongodb');  // Ensure you've imported ObjectId at the top
+
+// function to delete a user cycle
+function deleteUserCycle(userId, cycleId, callback) {
+    collection.deleteOne({ _id: ObjectId(cycleId), userId: ObjectId(userId) }, callback);
+};
 
 //this function creates a cycle for the user, it attaches the appropriate program and creates a reference to the user id
 function createCycleForUser(user, callback) {
@@ -90,4 +96,4 @@ function updateCycleProgram(userId, cycleId, updatedProgram, currentWeek, curren
     );
 };
 
-module.exports = { createCycleForUser, getCyclesForUser, updateCycleProgram };
+module.exports = { createCycleForUser, getCyclesForUser, updateCycleProgram, deleteUserCycle };
